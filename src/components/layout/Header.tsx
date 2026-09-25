@@ -3,10 +3,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, ShoppingCart, Heart, Menu, ChevronDown, X } from "lucide-react";
+import { Search, ShoppingCart, Menu, ChevronDown, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
 import { CATEGORIES, OCCASIONS, RECIPIENTS } from "@/data/categories";
 
 interface HeaderProps {
@@ -16,7 +15,6 @@ interface HeaderProps {
 export function Header({ onOpenSidebar }: HeaderProps) {
   const router = useRouter();
   const { totalQuantity } = useCart();
-  const { wishlistCount } = useWishlist();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -177,22 +175,8 @@ export function Header({ onOpenSidebar }: HeaderProps) {
           )}
         </form>
 
-        {/* Right Actions: Wishlist, Cart, and Mobile Hamburger */}
+        {/* Right Actions: Cart and Mobile Hamburger */}
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-          {/* Wishlist Link (Desktop) */}
-          <Link
-            href="/wishlist"
-            className="hidden sm:flex relative p-2 text-[#4A3E40] hover:text-[#C85250] hover:bg-[#FAF2EE] rounded-full transition-colors items-center justify-center"
-            aria-label={`Wishlist with ${wishlistCount} items`}
-          >
-            <Heart className="w-5 h-5 sm:w-5.5 sm:h-5.5 stroke-[1.8]" />
-            {wishlistCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-[#C85250] text-white text-[10px] sm:text-[11px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-xs">
-                {wishlistCount > 99 ? "99+" : wishlistCount}
-              </span>
-            )}
-          </Link>
-
           {/* Cart Link with badge matching screenshot */}
           <Link
             href="/cart"

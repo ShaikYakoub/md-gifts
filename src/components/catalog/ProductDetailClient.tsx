@@ -7,19 +7,13 @@ import {
   Plus,
   Minus,
   Check,
-  Truck,
-  Heart,
   Share2,
-  Gift,
-  Gem,
-  Package,
   ChevronRight,
   ArrowRight,
 } from "lucide-react";
 import { Product } from "@/types/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
 import { ProductCard } from "@/components/catalog/ProductCard";
 
 interface ProductDetailClientProps {
@@ -29,8 +23,6 @@ interface ProductDetailClientProps {
 
 export function ProductDetailClient({ product, relatedProducts }: ProductDetailClientProps) {
   const { addItem } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist();
-  const isWishlisted = isInWishlist(product.id);
 
   const [selectedSize, setSelectedSize] = useState<string>(product.sizes[0] || '8" × 10"');
   const [selectedColor, setSelectedColor] = useState<string>(product.frameColors[0]?.name || "Black");
@@ -141,19 +133,6 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
             {/* Mobile quick actions overlay */}
             <div className="absolute top-4 right-4 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => toggleWishlist(product)}
-                aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-                className={`p-2.5 rounded-full transition-all cursor-pointer shadow-xs ${
-                  isWishlisted
-                    ? "bg-white text-[#C85250] fill-[#C85250]"
-                    : "bg-white/90 hover:bg-white text-[#5C4F51] hover:text-[#C85250]"
-                }`}
-              >
-                <Heart className={`w-4 h-4 ${isWishlisted ? "fill-[#C85250] text-[#C85250]" : ""}`} />
-              </button>
-
               <button
                 type="button"
                 onClick={handleShare}
@@ -355,41 +334,6 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 </Link>
               </div>
             )}
-          </div>
-
-          {/* 4 Feature Pillars matching input_file_2.png and input_file_4.png */}
-          <div className="pt-4 border-t border-[#F0E6DE] grid grid-cols-2 gap-3 text-xs text-[#5C4F51]">
-            <div className="flex items-center gap-2">
-              <Gift className="w-4 h-4 text-[#C85250] shrink-0" />
-              <div>
-                <p className="font-semibold text-[#221C1D]">Personalized</p>
-                <p className="text-[11px] text-[#7A6D70]">Made just for you</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Gem className="w-4 h-4 text-[#C85250] shrink-0" />
-              <div>
-                <p className="font-semibold text-[#221C1D]">Premium Finish</p>
-                <p className="text-[11px] text-[#7A6D70]">High quality materials</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Package className="w-4 h-4 text-[#C85250] shrink-0" />
-              <div>
-                <p className="font-semibold text-[#221C1D]">Carefully Packed</p>
-                <p className="text-[11px] text-[#7A6D70]">Safe delivery</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Truck className="w-4 h-4 text-[#C85250] shrink-0" />
-              <div>
-                <p className="font-semibold text-[#221C1D]">Fast Delivery</p>
-                <p className="text-[11px] text-[#7A6D70]">Across India</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

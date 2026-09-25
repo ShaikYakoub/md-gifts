@@ -1,52 +1,174 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+interface BannerSlide {
+  id: string;
+  image: string;
+  alt: string;
+  link: string;
+}
+
+const HERO_SLIDES: BannerSlide[] = [
+  {
+    id: "anniversary-special",
+    image: "/images/banners/banner-1.png",
+    alt: "Happy Anniversary - Handcrafted personalized couple photo frames, roses and luxury gifts",
+    link: "/categories/couples",
+  },
+  {
+    id: "diwali-festive",
+    image: "/images/banners/banner-2.png",
+    alt: "Happy Diwali - Customized photo mugs, warm glowing diya lights and family portrait frames",
+    link: "/categories/festivals",
+  },
+  {
+    id: "birthday-bash",
+    image: "/images/banners/banner-3.png",
+    alt: "Happy Birthday - Photo wall collage prints, personalized mugs, cake and celebration hampers",
+    link: "/categories/birthdays",
+  },
+  {
+    id: "daughters-day",
+    image: "/images/banners/banner-4.png",
+    alt: "International Daughter's Day - Heart-collage framed memories, custom mugs and sweet gifts",
+    link: "/categories/personalized-gifts",
+  },
+];
 
 export function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  }, []);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  // Auto-advance banner every 5.5 seconds unless user hovers
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [isPaused, nextSlide]);
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+    setTouchStart(null);
+  };
+
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#FAF4F0] via-[#FDF8F5] to-[#FAF7F4] py-8 sm:py-16">
+    <section
+      className="relative overflow-hidden bg-transparent py-3 sm:py-5"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      aria-label="Promotional banner slider"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Content Column */}
-          <div className="lg:col-span-6 space-y-4 sm:space-y-6 text-center lg:text-left">
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#221C1D] leading-[1.15]">
-              Gifts made for the people who matter.
-            </h1>
-
-            <p className="text-base sm:text-lg text-[#6C5E61] max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Personalized frames, gifts & keepsakes for every occasion. Handcrafted with love and delivered across India.
-            </p>
-
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+        {/* Banner Sliding Container - matches native 1920x720 aspect ratio */}
+        <div className="relative w-full aspect-[2.6/1] sm:aspect-[2.65/1] rounded-xl overflow-hidden border border-[#EDE2DA] shadow-md bg-[#FAF4F0]">
+          {/* Slides Track */}
+          <div
+            className="flex h-full w-full transition-transform duration-700 ease-out"
+            style={{
+              transform: `translateX(-${currentSlide * 100}%)`,
+            }}
+          >
+            {HERO_SLIDES.map((slide, idx) => (
               <Link
-                href="/shop"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#C85250] hover:bg-[#B14140] text-white px-7 py-3.5 rounded-xl font-medium text-base transition-all duration-200 active:scale-95 shadow-md shadow-[#C85250]/20"
+                key={slide.id}
+                href={slide.link}
+                className="relative w-full h-full shrink-0 block cursor-pointer"
+                aria-label={slide.alt}
+                tabIndex={currentSlide === idx ? 0 : -1}
               >
-                <span>Explore Gifts</span>
-                <ArrowRight className="w-4 h-4" />
+                {/* Full-bleed crisp banner graphic without any obscuring overlay */}
+                <Image
+                  src={slide.image}
+                  alt={slide.alt}
+                  fill
+                  priority={idx === 0}
+                  sizes="(max-width: 768px) 100vw, 1280px"
+                  className="object-cover object-center"
+                />
               </Link>
-            </div>
+            ))}
           </div>
 
-          {/* Right Visual Image Column */}
-          <div className="lg:col-span-6">
-            <div className="relative mx-auto max-w-lg lg:max-w-none">
-              {/* Decorative warm aura glow */}
-              <div className="absolute -inset-4 bg-gradient-to-tr from-[#F8D7C9]/40 to-[#FBE8DF]/60 rounded-3xl blur-2xl pointer-events-none" />
+          {/* Navigation Arrows (Desktop / Tablet) */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              prevSlide();
+            }}
+            aria-label="Previous slide"
+            className="hidden sm:flex absolute left-3.5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-[#221C1D] hover:text-[#C85250] items-center justify-center shadow-lg backdrop-blur-xs transition-all border border-[#EDE2DA]/90 hover:scale-105 cursor-pointer"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              nextSlide();
+            }}
+            aria-label="Next slide"
+            className="hidden sm:flex absolute right-3.5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-[#221C1D] hover:text-[#C85250] items-center justify-center shadow-lg backdrop-blur-xs transition-all border border-[#EDE2DA]/90 hover:scale-105 cursor-pointer"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
 
-              {/* Masterpiece Hero Art */}
-              <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden bg-[#FAF1EB] border border-[#EFE0D5] shadow-xl">
-                <Image
-                  src="/images/hero-lifestyle.jpg"
-                  alt="Personalized couple wooden photo frame with gift box and candle"
-                  fill
-                  priority
-                  className="object-cover object-center transform transition-transform duration-700 hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-            </div>
+          {/* Slide Indicator Dots / Progress Pills */}
+          <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-xs px-2.5 py-1 rounded-full">
+            {HERO_SLIDES.map((slide, idx) => (
+              <button
+                key={slide.id}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  goToSlide(idx);
+                }}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                  currentSlide === idx
+                    ? "w-6 sm:w-7 h-2 bg-white shadow-xs"
+                    : "w-2 h-2 bg-white/50 hover:bg-white/80"
+                }`}
+              />
+            ))}
           </div>
         </div>
       </div>

@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
-import { WishlistProvider } from "@/context/WishlistContext";
 import { QuickViewModal } from "@/components/catalog/QuickViewModal";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -82,10 +81,8 @@ export default function RootLayout({
     <html lang="en" className={`${plusJakarta.variable} ${playfair.variable} scroll-smooth`}>
       <body className="font-sans antialiased bg-[#FAF7F4] text-[#221C1D] min-h-screen flex flex-col selection:bg-[#FBE8E7] selection:text-[#C85250]">
         <CartProvider>
-          <WishlistProvider>
-            {children}
-            <QuickViewModal />
-          </WishlistProvider>
+          {children}
+          <QuickViewModal />
         </CartProvider>
       </body>
     </html>

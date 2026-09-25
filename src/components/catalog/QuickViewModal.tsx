@@ -7,11 +7,7 @@ import {
   Plus,
   Minus,
   Check,
-  Truck,
   ArrowRight,
-  Gift,
-  Gem,
-  Package,
 } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
@@ -363,38 +359,6 @@ export function QuickViewModal() {
                   <span>₹{(currentPrice * quantity).toLocaleString("en-IN")}</span>
                 </button>
               )}
-            </div>
-
-            {/* 4 Feature Badges matching reference screenshot */}
-            <div className="pt-3 border-t border-[#F0E6DE] grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-              <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-[#FAF0EC] flex items-center justify-center text-[#C85250] mb-1">
-                  <Gift className="w-4 h-4" />
-                </div>
-                <span className="text-[11px] font-semibold text-[#221C1D]">Personalized</span>
-                <span className="text-[9px] text-[#7A6D70]">Made just for you</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-[#FAF0EC] flex items-center justify-center text-[#C85250] mb-1">
-                  <Gem className="w-4 h-4" />
-                </div>
-                <span className="text-[11px] font-semibold text-[#221C1D]">Premium Finish</span>
-                <span className="text-[9px] text-[#7A6D70]">High quality materials</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-[#FAF0EC] flex items-center justify-center text-[#C85250] mb-1">
-                  <Package className="w-4 h-4" />
-                </div>
-                <span className="text-[11px] font-semibold text-[#221C1D]">Carefully Packed</span>
-                <span className="text-[9px] text-[#7A6D70]">Safe delivery</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="w-8 h-8 rounded-full bg-[#FAF0EC] flex items-center justify-center text-[#C85250] mb-1">
-                  <Truck className="w-4 h-4" />
-                </div>
-                <span className="text-[11px] font-semibold text-[#221C1D]">Fast Delivery</span>
-                <span className="text-[9px] text-[#7A6D70]">Across India</span>
-              </div>
             </div>
           </div>
         </div>

@@ -64,7 +64,7 @@ export const OCCASIONS: CategoryInfo[] = [
     title: "Couple Gifts",
     description: "Personalized gifts to celebrate your special bond, anniversaries, and romantic milestones.",
     productCount: 38,
-    image: "/images/occasions/couples.webp",
+    image: "/images/occasions/couples.png",
     type: "occasion",
   },
   {
@@ -73,7 +73,7 @@ export const OCCASIONS: CategoryInfo[] = [
     title: "Birthday Gifts",
     description: "Make their day unforgettable with personalized birthday frames, memory collages, and sweet surprises.",
     productCount: 45,
-    image: "/images/occasions/birthdays.webp",
+    image: "/images/occasions/birthdays.png",
     type: "occasion",
   },
   {
@@ -82,7 +82,7 @@ export const OCCASIONS: CategoryInfo[] = [
     title: "Anniversary Keepsakes",
     description: "Celebrate milestones, years of love, and cherished companionship with timeless custom gifts.",
     productCount: 32,
-    image: "/images/occasions/anniversaries.webp",
+    image: "/images/occasions/anniversaries.png",
     type: "occasion",
   },
   {
@@ -91,7 +91,7 @@ export const OCCASIONS: CategoryInfo[] = [
     title: "Family Keepsakes",
     description: "Honor family bonds, roots, and togetherness with multi-photo tree collages and wall frames.",
     productCount: 26,
-    image: "/images/occasions/families.webp",
+    image: "/images/occasions/families.png",
     type: "occasion",
   },
   {
@@ -100,7 +100,7 @@ export const OCCASIONS: CategoryInfo[] = [
     title: "Festival Gifts",
     description: "Spread warmth, prosperity, and joy for Diwali, Eid, Christmas, and traditional Indian celebrations.",
     productCount: 29,
-    image: "/images/occasions/festivals.webp",
+    image: "/images/occasions/festivals.png",
     type: "occasion",
   },
   {
@@ -109,7 +109,7 @@ export const OCCASIONS: CategoryInfo[] = [
     title: "Gifts for Friends",
     description: "Celebrate inside jokes, epic road trips, and lifelong friendships with quirky custom keepsakes.",
     productCount: 24,
-    image: "/images/occasions/friends.webp",
+    image: "/images/occasions/friends.png",
     type: "occasion",
   },
   {
@@ -118,7 +118,7 @@ export const OCCASIONS: CategoryInfo[] = [
     title: "New Baby & Newborn Gifts",
     description: "Welcome little miracles with newborn birth stats frames, handprint keepsakes, and nursery plaques.",
     productCount: 16,
-    image: "/images/occasions/new-baby.webp",
+    image: "/images/occasions/new-baby.png",
     type: "occasion",
   },
   {
@@ -127,7 +127,7 @@ export const OCCASIONS: CategoryInfo[] = [
     title: "Housewarming Gifts",
     description: "Help turn a new house into a warm home with custom wooden nameplates and ambient lighting decor.",
     productCount: 19,
-    image: "/images/occasions/housewarming.webp",
+    image: "/images/occasions/housewarming.png",
     type: "occasion",
   },
   {
@@ -157,7 +157,7 @@ export const RECIPIENTS: CategoryInfo[] = [
     title: "Gifts For Her",
     description: "Thoughtful personalized frames, jewelry keepsakes, and custom hampers she will cherish forever.",
     productCount: 46,
-    image: "/images/recipients/for-her.webp",
+    image: "/images/recipients/for-her.png",
     type: "recipient",
   },
   {
@@ -166,7 +166,7 @@ export const RECIPIENTS: CategoryInfo[] = [
     title: "Gifts For Him",
     description: "Minimalist desk frames, leather and metallic engraved keychains, and handsome keepsake boxes for him.",
     productCount: 38,
-    image: "/images/recipients/for-him.webp",
+    image: "/images/recipients/for-him.png",
     type: "recipient",
   },
   {
@@ -175,7 +175,7 @@ export const RECIPIENTS: CategoryInfo[] = [
     title: "Gifts For Couples",
     description: "Twin mugs, romantic LED plaques, and split photo frames designed celebrating companionship.",
     productCount: 40,
-    image: "/images/recipients/for-couples.webp",
+    image: "/images/recipients/for-couples.png",
     type: "recipient",
   },
   {
@@ -184,7 +184,7 @@ export const RECIPIENTS: CategoryInfo[] = [
     title: "Gifts For Parents",
     description: "Heartwarming gifts expressing gratitude, love, and sweet memories to mothers and fathers.",
     productCount: 28,
-    image: "/images/recipients/for-parents.webp",
+    image: "/images/recipients/for-parents.png",
     type: "recipient",
   },
   {
@@ -193,7 +193,7 @@ export const RECIPIENTS: CategoryInfo[] = [
     title: "Gifts For Friends",
     description: "Fun, quirky mugs, Spotify song keychains, and photo grids celebrating your closest bond.",
     productCount: 30,
-    image: "/images/recipients/for-friends.webp",
+    image: "/images/recipients/for-friends.png",
     type: "recipient",
   },
   {
@@ -202,7 +202,7 @@ export const RECIPIENTS: CategoryInfo[] = [
     title: "Gifts For Kids",
     description: "Whimsical personalized night lights, superhero wooden plaques, and custom cute mugs.",
     productCount: 18,
-    image: "/images/recipients/for-kids.webp",
+    image: "/images/recipients/for-kids.png",
     type: "recipient",
   },
   {
@@ -211,7 +211,7 @@ export const RECIPIENTS: CategoryInfo[] = [
     title: "Gifts For Colleagues",
     description: "Sleek desk name organizers, engraved coffee mugs, and farewell keepsakes for teammates.",
     productCount: 22,
-    image: "/images/recipients/for-colleagues.webp",
+    image: "/images/recipients/for-colleagues.png",
     type: "recipient",
   },
   {
@@ -220,7 +220,7 @@ export const RECIPIENTS: CategoryInfo[] = [
     title: "Gifts For Everyone",
     description: "Universally loved keepsakes, premium hampers, and versatile home decor for any recipient.",
     productCount: 110,
-    image: "/images/recipients/for-everyone.webp",
+    image: "/images/recipients/for-everyone.png",
     type: "recipient",
   },
 ];

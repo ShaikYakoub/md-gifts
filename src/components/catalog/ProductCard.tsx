@@ -1,11 +1,10 @@
 "use client";
 
-import React from "react";
-import { Star, Heart } from "lucide-react";
+import React, { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { Product } from "@/types/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
 
 interface ProductCardProps {
   product: Product;
@@ -14,18 +13,28 @@ interface ProductCardProps {
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   const { openQuickView } = useCart();
-  const { isInWishlist, toggleWishlist } = useWishlist();
-  const isWishlisted = isInWishlist(product.id);
 
-  const discountPercent =
-    product.compareAtPrice && product.compareAtPrice > product.price
-      ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
-      : null;
+  // Default color swatches or fallback to product frame colors
+  const colorSwatches =
+    product.frameColors && product.frameColors.length > 0
+      ? product.frameColors.slice(0, 3)
+      : [
+          { name: "Natural Oak", hex: "#C8A27A" },
+          { name: "Walnut", hex: "#5C3826" },
+          { name: "Matte Black", hex: "#1C1B1A" },
+        ];
+
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+
+  // Formatted category eyebrow
+  const eyebrowText = `${product.categorySlug.replace(/-/g, " ")} · ${
+    product.occasionSlugs?.[0]?.replace(/-/g, " ") || "gift"
+  }`.toUpperCase();
 
   return (
     <div
       onClick={() => openQuickView(product)}
-      className="group relative bg-white rounded-2xl border border-[#EDE2DA] overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-[#DDCBBE] cursor-pointer flex flex-col h-full"
+      className="group relative bg-white rounded-lg border border-[#E8DFD8] p-2.5 sm:p-3 shadow-xs hover:shadow-xl hover:border-[#D5C2B4] transition-all duration-300 cursor-pointer flex flex-col h-full select-none"
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
@@ -36,72 +45,89 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       }}
       aria-label={`View and customize ${product.name}`}
     >
-      {/* Product Image Area */}
-      <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#FAF3EE]">
-        <ProductImage
-          slug={product.slug}
-          name={product.name}
-          categorySlug={product.categorySlug}
-          priority={priority}
-          className="transition-transform duration-500 group-hover:scale-105"
-        />
-
-        {/* Discount Badge */}
-        {discountPercent && (
-          <span className="absolute top-2.5 left-2.5 bg-[#FDEBEB] text-[#C85250] text-[11px] font-bold px-2 py-0.5 rounded-full border border-[#F8CDCD] shadow-xs">
-            {discountPercent}% OFF
-          </span>
-        )}
-
-        {/* Wishlist Button matching screenshot */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleWishlist(product);
-          }}
-          aria-label={isWishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
-          className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-            isWishlisted
-              ? "bg-white text-[#C85250] shadow-sm scale-105"
-              : "bg-white/80 hover:bg-white text-[#7A6D70] hover:text-[#C85250] shadow-2xs hover:scale-105"
-          }`}
-        >
-          <Heart
-            className={`w-4 h-4 transition-colors ${
-              isWishlisted ? "fill-[#C85250] text-[#C85250]" : "stroke-[1.8]"
-            }`}
+      {/* 1. Image Container with cream border matching screenshot */}
+      <div className="relative w-full aspect-[4/3] rounded-md bg-[#E8DDD2] p-2 sm:p-2.5 overflow-hidden">
+        <div className="relative w-full h-full rounded-sm overflow-hidden bg-[#FAF6F0] flex items-center justify-center">
+          <ProductImage
+            slug={product.slug}
+            name={product.name}
+            categorySlug={product.categorySlug}
+            aspectRatio="wide"
+            priority={priority}
+            className="transition-transform duration-500 group-hover:scale-105"
           />
-        </button>
+
+          {/* Floating Top-Left Price Badge */}
+          <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 z-10 bg-white text-[#1C1819] font-medium text-xs sm:text-sm px-3 sm:px-3.5 py-1 rounded-md shadow-xs">
+            ₹{product.price.toLocaleString("en-IN")}
+          </div>
+        </div>
       </div>
 
-      {/* Content Area */}
-      <div className="p-3.5 sm:p-4 flex flex-col flex-1 justify-between">
+      {/* 2. Text Content Area */}
+      <div className="pt-3.5 sm:pt-4 px-2 sm:px-2.5 pb-1 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="font-medium text-sm sm:text-[15px] text-[#221C1D] line-clamp-1 group-hover:text-[#C85250] transition-colors">
+          {/* Eyebrow: Category · Occasion */}
+          <span className="block text-[11px] sm:text-xs font-medium tracking-[0.16em] text-[#82756E] uppercase truncate">
+            {eyebrowText}
+          </span>
+
+          {/* Product Title */}
+          <h3 className="mt-1.5 font-sans text-lg sm:text-xl font-bold text-[#191516] tracking-tight line-clamp-1 group-hover:text-[#C85250] transition-colors">
             {product.name}
           </h3>
 
-          {/* Pricing */}
-          <div className="mt-1.5 flex items-baseline gap-2">
-            <span className="text-base sm:text-lg font-bold text-[#221C1D]">
-              ₹{product.price.toLocaleString("en-IN")}
-            </span>
-            {product.compareAtPrice && product.compareAtPrice > product.price && (
-              <span className="text-xs sm:text-sm text-[#94888A] line-through">
-                ₹{product.compareAtPrice.toLocaleString("en-IN")}
-              </span>
-            )}
-          </div>
+          {/* Subtitle / Short Description */}
+          <p className="mt-1 text-xs sm:text-sm text-[#665B57] leading-relaxed line-clamp-2 min-h-[2.6em]">
+            {product.shortDescription || product.description}
+          </p>
         </div>
 
-        {/* Rating */}
-        <div className="mt-2.5 flex items-center gap-1.5 text-xs text-[#7A6E70]">
-          <div className="flex items-center text-[#F59E0B]">
-            <Star className="w-3.5 h-3.5 fill-current" />
+        {/* 3. Bottom Divider & Footer Swatches / Action */}
+        <div className="mt-3.5 sm:mt-4">
+          <div className="w-full h-px bg-[#ECE2DA] mb-3" />
+
+          <div className="flex items-center justify-between gap-2">
+            {/* Color Swatches and Active Name */}
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="flex items-center gap-1.5 shrink-0">
+                {colorSwatches.map((color, idx) => {
+                  const isSelected = idx === selectedColorIndex;
+                  return (
+                    <button
+                      key={color.name + idx}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedColorIndex(idx);
+                      }}
+                      title={color.name}
+                      aria-label={`Select ${color.name}`}
+                      className={`relative w-5 h-5 sm:w-6 sm:h-6 rounded-full transition-transform ${
+                        isSelected
+                          ? "ring-2 ring-[#191516] ring-offset-2 scale-105"
+                          : "hover:scale-105 border border-black/10"
+                      }`}
+                      style={{ backgroundColor: color.hex }}
+                    />
+                  );
+                })}
+              </div>
+
+              {/* Active Color Name */}
+              <span className="text-[10px] sm:text-[11px] font-medium tracking-[0.14em] text-[#7A6D66] uppercase truncate ml-0.5">
+                {colorSwatches[selectedColorIndex]?.name}
+              </span>
+            </div>
+
+            {/* Circular Dark Action Button */}
+            <div
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#1C1819] group-hover:bg-[#C85250] transition-colors duration-300 shrink-0 flex items-center justify-center text-white shadow-xs"
+              aria-hidden="true"
+            >
+              <ArrowUpRight className="w-4 h-4 sm:w-4.5 sm:h-4.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </div>
           </div>
-          <span className="font-semibold text-[#2B2325]">{product.rating}</span>
-          <span className="text-[#9C8F92]">({product.reviewsCount})</span>
         </div>
       </div>
     </div>

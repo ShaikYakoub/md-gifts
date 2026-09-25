@@ -3,14 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, LayoutGrid, Search, Heart, ShoppingCart } from "lucide-react";
+import { Home, LayoutGrid, Search, ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { useWishlist } from "@/context/WishlistContext";
 
 export function MobileBottomNav() {
   const pathname = usePathname();
   const { totalQuantity } = useCart();
-  const { wishlistCount } = useWishlist();
 
   const navItems = [
     { label: "Home", href: "/", icon: Home, isActive: pathname === "/" },
@@ -25,13 +23,6 @@ export function MobileBottomNav() {
       href: "/search",
       icon: Search,
       isActive: pathname === "/search",
-    },
-    {
-      label: "Wishlist",
-      href: "/wishlist",
-      icon: Heart,
-      isActive: pathname === "/wishlist",
-      badge: wishlistCount,
     },
     {
       label: "Cart",
