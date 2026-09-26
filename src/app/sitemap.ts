@@ -2,6 +2,8 @@ import { MetadataRoute } from "next";
 import { ALL_TAXONOMY } from "@/data/categories";
 import { PRODUCTS } from "@/data/products";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://giftly.in";
   const currentDate = new Date().toISOString();
@@ -43,6 +45,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: "weekly" as const,
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/policies`,
+      lastModified: currentDate,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
     },
     {
       url: `${baseUrl}/shipping`,

@@ -5,14 +5,6 @@ import { Phone, Mail, MapPin, Send, CheckCircle2 } from "lucide-react";
 import { InfoPageLayout } from "@/components/informational/InfoPageLayout";
 
 export default function ContactPage() {
-  const navItems = [
-    { label: "Contact Us", href: "/contact", isActive: true },
-    { label: "About Us", href: "/about", isActive: false },
-    { label: "FAQ", href: "/faq", isActive: false },
-    { label: "Shipping Policy", href: "/shipping", isActive: false },
-    { label: "Refund Policy", href: "/refunds", isActive: false },
-  ];
-
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -33,7 +25,6 @@ export default function ContactPage() {
       title="Contact Us"
       subtitle="We're here to help! Get in touch with us for any queries, custom requests or bulk orders."
       breadcrumbLabel="Contact Us"
-      navItems={navItems}
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
         {/* Contact Info Cards (Left Column) */}

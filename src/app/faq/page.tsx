@@ -57,15 +57,6 @@ export default function FAQPage() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const navItems = [
-    { label: "All Questions", href: "#", isActive: activeCategory === "all" },
-    { label: "Ordering", href: "#", isActive: activeCategory === "ordering" },
-    { label: "Customization", href: "#", isActive: activeCategory === "customization" },
-    { label: "Products", href: "#", isActive: activeCategory === "products" },
-    { label: "Delivery", href: "#", isActive: activeCategory === "delivery" },
-    { label: "General", href: "#", isActive: activeCategory === "general" },
-  ];
-
   const filteredFaqs =
     activeCategory === "all"
       ? FAQ_ITEMS
@@ -90,21 +81,14 @@ export default function FAQPage() {
       title="Frequently Asked Questions"
       subtitle="Find fast answers to common questions about ordering, customization proofs, materials, and delivery."
       breadcrumbLabel="FAQ"
-      navItems={navItems.map((item) => ({
-        ...item,
-        href: `/faq?cat=${item.label.toLowerCase()}`,
-        isActive:
-          (item.label === "All Questions" && activeCategory === "all") ||
-          item.label.toLowerCase() === activeCategory,
-      }))}
     >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Category Pills on mobile */}
-      <div className="flex flex-wrap items-center gap-2 mb-6 lg:hidden">
+      {/* Category Filter Pills */}
+      <div className="flex flex-wrap items-center gap-2 mb-6">
         {["all", "ordering", "customization", "products", "delivery", "general"].map((cat) => (
           <button
             key={cat}

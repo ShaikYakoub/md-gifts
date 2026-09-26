@@ -274,21 +274,21 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               </div>
             )}
 
-            {/* Customization Details Input */}
-            <div>
-              <label htmlFor="pdpCustomText" className="block text-xs font-semibold text-[#3C3234] mb-1.5">
-                Names or Special Date to Engrave (Optional)
+            {/* Customization Details & Notes Input */}
+            <div className="p-3.5 bg-[#FAF5F1] rounded-xl border border-[#EDE0D6]">
+              <label htmlFor="pdpCustomText" className="block text-xs font-bold text-[#221C1D] mb-1">
+                Customization Notes & Names (Optional)
               </label>
-              <input
+              <textarea
                 id="pdpCustomText"
-                type="text"
+                rows={2}
                 value={customizationText}
                 onChange={(e) => setCustomizationText(e.target.value)}
-                placeholder="e.g. Rahul & Sneha · 14.02.2024"
-                className="w-full bg-[#FAF5F1] text-xs sm:text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#C85250] outline-none"
+                placeholder="e.g. Names (Rahul & Priya), Anniversary date (14 Feb 2023), or custom quote..."
+                className="w-full bg-white text-xs sm:text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#C85250] focus:ring-1 focus:ring-[#C85250] outline-none"
               />
               <p className="text-[11px] text-[#7A6D70] mt-1">
-                * High-resolution photos are collected on WhatsApp after checkout for maximum quality.
+                📸 High-resolution photos are collected on WhatsApp after placing your order.
               </p>
             </div>
 

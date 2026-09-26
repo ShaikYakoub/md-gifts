@@ -284,25 +284,23 @@ export function QuickViewModal() {
                 </div>
               )}
 
-              {/* Customization Text Field */}
-              {product.hasCustomizationText && (
-                <div className="mt-4">
-                  <label htmlFor="customizationText" className="block text-xs font-semibold text-[#3C3234] mb-1.5">
-                    Customization Details
-                  </label>
-                  <input
-                    id="customizationText"
-                    type="text"
-                    value={customizationText}
-                    onChange={(e) => setCustomizationText(e.target.value)}
-                    placeholder={product.customizationPlaceholder || "Names, date, or special message..."}
-                    className="w-full bg-[#FAF5F1] text-xs sm:text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#C85250] focus:bg-white outline-none"
-                  />
-                  <p className="text-[11px] text-[#8F8385] mt-1">
-                    * Our team will WhatsApp / call you to verify photos and design previews before making.
-                  </p>
-                </div>
-              )}
+              {/* Customization Notes Field */}
+              <div className="mt-4 p-3.5 bg-[#FAF5F1] rounded-xl border border-[#EDE0D6]">
+                <label htmlFor="customizationText" className="block text-xs font-bold text-[#221C1D] mb-1">
+                  Customization Notes & Names
+                </label>
+                <textarea
+                  id="customizationText"
+                  rows={2}
+                  value={customizationText}
+                  onChange={(e) => setCustomizationText(e.target.value)}
+                  placeholder={product.customizationPlaceholder || "Names, special date, quote, or custom instructions for this gift..."}
+                  className="w-full bg-white text-xs sm:text-sm text-[#221C1D] placeholder-[#9E9093] px-3 py-2 rounded-lg border border-[#EDE0D6] focus:border-[#C85250] focus:ring-1 focus:ring-[#C85250] outline-none"
+                />
+                <p className="text-[11px] text-[#7A6D70] mt-1">
+                  📸 High-resolution photos are collected on WhatsApp after placing order.
+                </p>
+              </div>
 
               {/* Quantity Selector */}
               <div className="mt-4 flex items-center justify-between">

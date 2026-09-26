@@ -1,44 +1,30 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, ShieldCheck, Truck, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
+import { ChevronRight, ShieldCheck, Truck, AlertCircle, ArrowRight, MessageCircle, MapPin, CheckCircle2 } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { useCart } from "@/context/CartContext";
 import { ProductImage } from "@/components/ui/ProductImage";
 
 interface FormErrors {
   fullName?: string;
-  phoneNumber?: string;
-  email?: string;
   address?: string;
-  city?: string;
-  state?: string;
-  pincode?: string;
   general?: string;
 }
 
 export default function OrderPage() {
-  const router = useRouter();
   const { items, subtotal, deliveryFee, total, clearCart } = useCart();
 
   const [formData, setFormData] = useState({
     fullName: "",
-    phoneNumber: "",
-    email: "",
     address: "",
-    city: "",
-    state: "",
-    pincode: "",
-    customizationNotes: "",
-    orderNotes: "",
+    landmark: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [placedWhatsAppUrl, setPlacedWhatsAppUrl] = useState<string | null>(null);
 
-  // Validate on client before posting
   const validateForm = (): boolean => {
     const errs: FormErrors = {};
 
@@ -46,40 +32,19 @@ export default function OrderPage() {
       errs.fullName = "Please enter your full name (at least 2 characters).";
     }
 
-    const cleanPhone = formData.phoneNumber.replace(/[^0-9]/g, "");
-    if (!cleanPhone || cleanPhone.length < 10) {
-      errs.phoneNumber = "Please enter a valid 10-digit mobile number.";
-    }
-
-    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errs.email = "Please enter a valid email address.";
-    }
-
     if (!formData.address.trim() || formData.address.trim().length < 5) {
-      errs.address = "Please enter your full delivery address.";
-    }
-
-    if (!formData.city.trim()) {
-      errs.city = "Please enter your city.";
-    }
-
-    if (!formData.state.trim()) {
-      errs.state = "Please enter your state.";
-    }
-
-    if (!formData.pincode.trim() || !/^[1-9][0-9]{5}$/.test(formData.pincode.trim())) {
-      errs.pincode = "Please enter a valid 6-digit PIN code.";
+      errs.address = "Please enter your complete delivery address (at least 5 characters).";
     }
 
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleWhatsAppOrder = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (items.length === 0) {
-      setErrors({ general: "Your cart is empty. Please add items before placing an order." });
+      setErrors({ general: "Your cart is empty. Please add gifts before placing an order." });
       return;
     }
 
@@ -87,58 +52,113 @@ export default function OrderPage() {
       return;
     }
 
-    setIsSubmitting(true);
     setErrors({});
 
-    try {
-      const payload = {
-        fullName: formData.fullName.trim(),
-        phoneNumber: formData.phoneNumber.trim(),
-        email: formData.email.trim() || undefined,
-        address: formData.address.trim(),
-        city: formData.city.trim(),
-        state: formData.state.trim(),
-        pincode: formData.pincode.trim(),
-        customizationNotes: formData.customizationNotes.trim() || undefined,
-        orderNotes: formData.orderNotes.trim() || undefined,
-        items: items.map((i) => ({
-          productId: i.product.id,
-          productName: i.product.name,
-          selectedSize: i.selectedSize,
-          selectedFrameColor: i.selectedFrameColor,
-          selectedMaterial: i.selectedMaterial,
-          customizationText: i.customizationText,
-          quantity: i.quantity,
-        })),
-      };
+    // Construct formatted WhatsApp order message
+    const lines: string[] = [
+      "🎁 *NEW ORDER REQUEST — GIFTLY*",
+      "",
+      "👤 *Customer Details:*",
+      `• *Name:* ${formData.fullName.trim()}`,
+      `• *Delivery Address:* ${formData.address.trim()}`,
+    ];
 
-      const res = await fetch("/api/order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    if (formData.landmark.trim()) {
+      lines.push(`• *Landmark:* ${formData.landmark.trim()}`);
+    }
 
-      const result = (await res.json()) as {
-        success: boolean;
-        orderId: string;
-        error?: string;
-      };
+    lines.push("", `📦 *Order Items (${items.reduce((s, i) => s + i.quantity, 0)}):*`);
 
-      if (res.ok && result.success) {
-        clearCart();
-        router.push(`/order/success?id=${encodeURIComponent(result.orderId)}`);
-      } else {
-        setErrors({
-          general: result.error || "Failed to place order. Please review your details and try again.",
-        });
+    items.forEach((item, idx) => {
+      lines.push(`${idx + 1}. *${item.product.name}*`);
+      lines.push(`   • Qty: ${item.quantity} × ₹${item.price.toLocaleString("en-IN")} = ₹${(item.price * item.quantity).toLocaleString("en-IN")}`);
+      if (item.selectedSize) {
+        lines.push(`   • Size: ${item.selectedSize}`);
       }
-    } catch {
-      setErrors({ general: "An unexpected network error occurred. Please try again." });
-    } finally {
-      setIsSubmitting(false);
+      if (item.selectedFrameColor) {
+        lines.push(`   • Frame: ${item.selectedFrameColor}`);
+      }
+      if (item.selectedMaterial) {
+        lines.push(`   • Material: ${item.selectedMaterial}`);
+      }
+      if (item.customizationText) {
+        lines.push(`   • Custom Notes: "${item.customizationText}"`);
+      }
+    });
+
+    lines.push(
+      "",
+      "💰 *Price Breakdown:*",
+      `• Subtotal: ₹${subtotal.toLocaleString("en-IN")}`,
+      `• Delivery: ${deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`}`,
+      `• *Total Payable:* ₹${total.toLocaleString("en-IN")}`,
+      "",
+      "✨ Please confirm my order and let me know where to send photos for customization!"
+    );
+
+    const fullMessage = lines.join("\n");
+    const whatsappPhone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210";
+    const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(fullMessage)}`;
+
+    setPlacedWhatsAppUrl(whatsappUrl);
+    clearCart();
+
+    // Trigger WhatsApp in new tab/window
+    if (typeof window !== "undefined") {
+      window.open(whatsappUrl, "_blank");
     }
   };
 
+  // If order was submitted, show friendly WhatsApp dispatch view
+  if (placedWhatsAppUrl) {
+    return (
+      <SiteLayout>
+        <div className="py-16 pb-28 sm:py-24 text-center max-w-lg mx-auto px-4">
+          <div className="w-16 h-16 bg-[#E8F5E9] text-[#128C7E] rounded-full flex items-center justify-center mx-auto mb-5 shadow-xs">
+            <CheckCircle2 className="w-8 h-8" />
+          </div>
+
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D]">
+            Order Ready on WhatsApp!
+          </h1>
+          <p className="text-sm text-[#5C4F51] mt-3 leading-relaxed">
+            Your customized order and delivery details have been prepared. Click below to send your message to our design team and submit your photos.
+          </p>
+
+          <div className="mt-8 space-y-3">
+            <a
+              href={placedWhatsAppUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white py-3.5 px-6 rounded-xl font-semibold text-base transition-colors shadow-md"
+            >
+              <MessageCircle className="w-5 h-5" />
+              <span>Send Order on WhatsApp</span>
+            </a>
+
+            <Link
+              href="/shop"
+              className="inline-block text-sm text-[#7A6D70] hover:text-[#C85250] font-medium pt-2 transition-colors"
+            >
+              Continue Browsing Gifts →
+            </Link>
+          </div>
+
+          <div className="mt-10 p-4 bg-[#FAF4F0] rounded-xl border border-[#EDE2D8] text-xs text-[#6C5E61] space-y-1.5 text-left">
+            <p className="font-semibold text-[#221C1D] flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-[#C85250]" />
+              <span>What happens next?</span>
+            </p>
+            <p>1. Our coordinator will acknowledge your order on WhatsApp.</p>
+            <p>2. You can send your high-resolution photos directly in the chat.</p>
+            <p>3. We craft and dispatch your gift with express tracking!</p>
+          </div>
+        </div>
+      </SiteLayout>
+    );
+  }
+
+  // If cart is empty
   if (items.length === 0) {
     return (
       <SiteLayout>
@@ -179,10 +199,10 @@ export default function OrderPage() {
 
         <div className="pb-4 border-b border-[#EFE4DC] mb-8">
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D]">
-            Order Details & Delivery
+            Delivery Details
           </h1>
           <p className="text-xs sm:text-sm text-[#6C5E61] mt-1">
-            Provide your contact and address information. No online payment required now — our team will contact you to confirm customization.
+            Provide your name and delivery address. Your order will be sent directly via WhatsApp to our workshop team.
           </p>
         </div>
 
@@ -193,18 +213,18 @@ export default function OrderPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Form Fields Column */}
+        <form onSubmit={handleWhatsAppOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Form Fields: Name + Address (with Landmark) */}
           <div className="lg:col-span-7 space-y-6">
-            {/* Contact Information */}
-            <div className="bg-white rounded-2xl border border-[#EDE2DA] p-5 sm:p-6 shadow-2xs space-y-4">
+            <div className="bg-white rounded-2xl border border-[#EDE2DA] p-5 sm:p-6 shadow-2xs space-y-5">
               <h2 className="font-serif text-lg font-bold text-[#221C1D] pb-2 border-b border-[#F0E6DE]">
-                1. Contact Information
+                Customer & Delivery Information
               </h2>
 
+              {/* Full Name */}
               <div>
                 <label htmlFor="fullName" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                  Full Name <span className="text-[#C85250]">*</span>
+                  Your Full Name <span className="text-[#C85250]">*</span>
                 </label>
                 <input
                   id="fullName"
@@ -220,63 +240,18 @@ export default function OrderPage() {
                 {errors.fullName && <p className="text-xs text-[#E53E3E] mt-1">{errors.fullName}</p>}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="phoneNumber" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                    Phone Number (WhatsApp) <span className="text-[#C85250]">*</span>
-                  </label>
-                  <input
-                    id="phoneNumber"
-                    type="tel"
-                    required
-                    value={formData.phoneNumber}
-                    onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                    placeholder="e.g. 9876543210"
-                    className={`w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white ${
-                      errors.phoneNumber ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#C85250]"
-                    }`}
-                  />
-                  {errors.phoneNumber && (
-                    <p className="text-xs text-[#E53E3E] mt-1">{errors.phoneNumber}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                    Email Address <span className="text-[#8F8385] font-normal">(Optional)</span>
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="rahul@example.com"
-                    className={`w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white ${
-                      errors.email ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#C85250]"
-                    }`}
-                  />
-                  {errors.email && <p className="text-xs text-[#E53E3E] mt-1">{errors.email}</p>}
-                </div>
-              </div>
-            </div>
-
-            {/* Delivery Address */}
-            <div className="bg-white rounded-2xl border border-[#EDE2DA] p-5 sm:p-6 shadow-2xs space-y-4">
-              <h2 className="font-serif text-lg font-bold text-[#221C1D] pb-2 border-b border-[#F0E6DE]">
-                2. Delivery Address
-              </h2>
-
+              {/* Full Address */}
               <div>
                 <label htmlFor="address" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                  House / Flat / Street Address <span className="text-[#C85250]">*</span>
+                  Full Delivery Address (Flat, Street, City, State & PIN) <span className="text-[#C85250]">*</span>
                 </label>
                 <textarea
                   id="address"
                   required
-                  rows={2}
+                  rows={3}
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  placeholder="Flat 402, Sunshine Heights, Main Road..."
+                  placeholder="Flat 402, Sunshine Heights, 4th Main Road, Kadapa, Andhra Pradesh - 516001"
                   className={`w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white ${
                     errors.address ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#C85250]"
                   }`}
@@ -284,104 +259,36 @@ export default function OrderPage() {
                 {errors.address && <p className="text-xs text-[#E53E3E] mt-1">{errors.address}</p>}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label htmlFor="city" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                    City <span className="text-[#C85250]">*</span>
-                  </label>
-                  <input
-                    id="city"
-                    type="text"
-                    required
-                    value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    placeholder="e.g. Kadapa"
-                    className={`w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white ${
-                      errors.city ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#C85250]"
-                    }`}
-                  />
-                  {errors.city && <p className="text-xs text-[#E53E3E] mt-1">{errors.city}</p>}
-                </div>
-
-                <div>
-                  <label htmlFor="state" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                    State <span className="text-[#C85250]">*</span>
-                  </label>
-                  <input
-                    id="state"
-                    type="text"
-                    required
-                    value={formData.state}
-                    onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                    placeholder="Andhra Pradesh"
-                    className={`w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white ${
-                      errors.state ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#C85250]"
-                    }`}
-                  />
-                  {errors.state && <p className="text-xs text-[#E53E3E] mt-1">{errors.state}</p>}
-                </div>
-
-                <div>
-                  <label htmlFor="pincode" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                    PIN Code <span className="text-[#C85250]">*</span>
-                  </label>
-                  <input
-                    id="pincode"
-                    type="text"
-                    required
-                    maxLength={6}
-                    value={formData.pincode}
-                    onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
-                    placeholder="516001"
-                    className={`w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white ${
-                      errors.pincode ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#C85250]"
-                    }`}
-                  />
-                  {errors.pincode && <p className="text-xs text-[#E53E3E] mt-1">{errors.pincode}</p>}
-                </div>
+              {/* Landmark moved here */}
+              <div>
+                <label htmlFor="landmark" className="block text-xs font-semibold text-[#3C3234] mb-1 flex items-center gap-1">
+                  <MapPin className="w-3.5 h-3.5 text-[#C85250]" />
+                  <span>Landmark / Nearby Location (Optional)</span>
+                </label>
+                <input
+                  id="landmark"
+                  type="text"
+                  value={formData.landmark}
+                  onChange={(e) => setFormData({ ...formData, landmark: e.target.value })}
+                  placeholder="e.g. Opposite Post Office, Near City Hospital"
+                  className="w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#C85250] focus:bg-white outline-none"
+                />
               </div>
             </div>
 
-            {/* Customization & Order Notes */}
-            <div className="bg-white rounded-2xl border border-[#EDE2DA] p-5 sm:p-6 shadow-2xs space-y-4">
-              <h2 className="font-serif text-lg font-bold text-[#221C1D] pb-2 border-b border-[#F0E6DE]">
-                3. Customization & Order Notes
-              </h2>
-
-              <div>
-                <label htmlFor="customizationNotes" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                  Names, Dates, or Text to print on your gifts
-                </label>
-                <textarea
-                  id="customizationNotes"
-                  rows={2}
-                  value={formData.customizationNotes}
-                  onChange={(e) => setFormData({ ...formData, customizationNotes: e.target.value })}
-                  placeholder="e.g. For Couple Frame: Rahul & Priya, Anniversary 14 Feb 2023..."
-                  className="w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#C85250] focus:bg-white outline-none"
-                />
-                <p className="text-[11px] text-[#7A6D70] mt-1">
-                  * You don&apos;t have to worry about uploading large photos now. Our design coordinator will connect with you on WhatsApp to collect high-resolution photos!
-                </p>
-              </div>
-
-              <div>
-                <label htmlFor="orderNotes" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                  Delivery instructions or Landmark (Optional)
-                </label>
-                <input
-                  id="orderNotes"
-                  type="text"
-                  value={formData.orderNotes}
-                  onChange={(e) => setFormData({ ...formData, orderNotes: e.target.value })}
-                  placeholder="Near Hanuman Temple, Call before arriving..."
-                  className="w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#C85250] focus:bg-white outline-none"
-                />
-              </div>
+            {/* Photo upload notice */}
+            <div className="bg-[#FAF4F0] p-4 rounded-2xl border border-[#EDE2D8] text-xs text-[#6C5E61] space-y-1">
+              <p className="font-semibold text-[#221C1D] flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-[#C85250]" />
+                <span>Zero hassle WhatsApp ordering</span>
+              </p>
+              <p>
+                No payment gateway or account signup needed. You will send this order directly to our WhatsApp where our design coordinator will connect with you to review photo uploads and share digital proofs!
+              </p>
             </div>
           </div>
 
-          {/* Review & Submit Sidebar */}
+          {/* Review & WhatsApp Submit Sidebar */}
           <div className="lg:col-span-5 space-y-4 sticky top-28">
             <div className="bg-white rounded-2xl border border-[#EDE2DA] p-6 shadow-sm space-y-4">
               <h2 className="font-serif text-lg font-bold text-[#221C1D] pb-3 border-b border-[#EFE4DC]">
@@ -405,6 +312,11 @@ export default function OrderPage() {
                       <p className="text-[11px] text-[#7A6D70]">
                         Qty: {item.quantity} {item.selectedSize && `· ${item.selectedSize}`}
                       </p>
+                      {item.customizationText && (
+                        <p className="text-[10px] text-[#C85250] truncate">
+                          Custom: &ldquo;{item.customizationText}&rdquo;
+                        </p>
+                      )}
                     </div>
                     <span className="font-bold text-[#221C1D]">
                       ₹{(item.price * item.quantity).toLocaleString("en-IN")}
@@ -430,34 +342,14 @@ export default function OrderPage() {
                 </div>
               </div>
 
-              {/* Submit Button */}
+              {/* Submit to WhatsApp Button */}
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-[#C85250] hover:bg-[#B14140] disabled:bg-[#DE9391] text-white py-3.5 px-6 rounded-xl font-semibold text-sm sm:text-base transition-transform active:scale-[0.98] shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full bg-[#128C7E] hover:bg-[#075E54] text-white py-3.5 px-6 rounded-xl font-semibold text-sm sm:text-base transition-transform active:scale-[0.98] shadow-md flex items-center justify-center gap-2 cursor-pointer"
               >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Placing Your Order...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Confirm & Place Order</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
+                <MessageCircle className="w-5 h-5" />
+                <span>Confirm & Order on WhatsApp</span>
               </button>
-
-              <div className="bg-[#FAF4F0] p-3 rounded-xl border border-[#EDE2D8] text-[11px] text-[#6C5E61] space-y-1">
-                <p className="font-semibold text-[#221C1D] flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#C85250]" />
-                  <span>No payment gateway required</span>
-                </p>
-                <p>
-                  We verify your photo customizations on WhatsApp before crafting. You will receive an immediate confirmation with your Order ID.
-                </p>
-              </div>
 
               <div className="flex items-center justify-center gap-2 text-xs text-[#7A6D70] pt-1">
                 <Truck className="w-3.5 h-3.5 text-[#C85250]" />

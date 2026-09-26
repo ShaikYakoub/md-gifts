@@ -304,22 +304,22 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/shipping" className="hover:text-[#C85250] transition-colors">
-                  Shipping Policy
+                <Link href="/policies#shipping" className="hover:text-[#C85250] transition-colors">
+                  Shipping & Delivery
                 </Link>
               </li>
               <li>
-                <Link href="/refunds" className="hover:text-[#C85250] transition-colors">
+                <Link href="/policies#refunds" className="hover:text-[#C85250] transition-colors">
                   Refund & Cancellation Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-[#C85250] transition-colors">
+                <Link href="/policies#terms" className="hover:text-[#C85250] transition-colors">
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-[#C85250] transition-colors">
+                <Link href="/policies#privacy" className="hover:text-[#C85250] transition-colors">
                   Privacy Policy
                 </Link>
               </li>
@@ -333,19 +333,19 @@ export function Footer() {
             © 2026 Giftly. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs text-[#6C5E61]">
-            <Link href="/privacy" className="hover:text-[#C85250] transition-colors">
+            <Link href="/policies#privacy" className="hover:text-[#C85250] transition-colors">
               Privacy Policy
             </Link>
             <span className="text-[#C5B7AF]">|</span>
-            <Link href="/terms" className="hover:text-[#C85250] transition-colors">
+            <Link href="/policies#terms" className="hover:text-[#C85250] transition-colors">
               Terms & Conditions
             </Link>
             <span className="text-[#C5B7AF]">|</span>
-            <Link href="/refunds" className="hover:text-[#C85250] transition-colors">
+            <Link href="/policies#refunds" className="hover:text-[#C85250] transition-colors">
               Refund Policy
             </Link>
             <span className="text-[#C5B7AF]">|</span>
-            <Link href="/shipping" className="hover:text-[#C85250] transition-colors">
+            <Link href="/policies#shipping" className="hover:text-[#C85250] transition-colors">
               Shipping Policy
             </Link>
           </div>

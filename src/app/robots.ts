@@ -1,5 +1,7 @@
 import { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = "https://giftly.in";
 
@@ -11,8 +13,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/cart",
           "/order",
-          "/order/*",
-          "/api/*",
           "/search",
         ],
       },

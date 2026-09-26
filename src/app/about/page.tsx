@@ -14,20 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  const navItems = [
-    { label: "About Us", href: "/about", isActive: true },
-    { label: "Contact Us", href: "/contact", isActive: false },
-    { label: "FAQ", href: "/faq", isActive: false },
-    { label: "Shipping Policy", href: "/shipping", isActive: false },
-    { label: "Refund Policy", href: "/refunds", isActive: false },
-  ];
-
   return (
     <InfoPageLayout
       title="About Us"
       subtitle="Thoughtful gifts for every occasion. Personalized with love, made to last."
       breadcrumbLabel="About Us"
-      navItems={navItems}
     >
       <div className="space-y-8">
         {/* Narrative & Visual matching screenshot */}

@@ -5,13 +5,8 @@ import { orderPlacementSchema } from "../src/types/order";
 describe("Order Placement Schema Validation", () => {
   const validOrder = {
     fullName: "Rahul Sharma",
-    phoneNumber: "9876543210",
-    email: "rahul@example.com",
-    address: "Flat 402, Sunshine Heights, Main Road",
-    city: "Kadapa",
-    state: "Andhra Pradesh",
-    pincode: "516001",
-    customizationNotes: "Print Rahul & Priya · 14.02.2023",
+    address: "Flat 402, Sunshine Heights, 4th Main Road, Kadapa, Andhra Pradesh - 516001",
+    landmark: "Near Hanuman Temple",
     items: [
       {
         productId: "p1",
@@ -19,13 +14,13 @@ describe("Order Placement Schema Validation", () => {
         selectedSize: '8" × 10"',
         selectedFrameColor: "Black",
         selectedMaterial: "Wood",
-        customizationText: "Rahul & Priya",
+        customizationText: "Rahul & Priya · 14 Feb 2023",
         quantity: 1,
       },
     ],
   };
 
-  test("Accepts valid order submission", () => {
+  test("Accepts valid order submission with name and address", () => {
     const result = orderPlacementSchema.safeParse(validOrder);
     assert.equal(result.success, true);
   });
@@ -39,21 +34,12 @@ describe("Order Placement Schema Validation", () => {
     }
   });
 
-  test("Rejects invalid phone number (less than 10 digits)", () => {
-    const invalid = { ...validOrder, phoneNumber: "12345" };
+  test("Rejects address shorter than 5 characters", () => {
+    const invalid = { ...validOrder, address: "Home" };
     const result = orderPlacementSchema.safeParse(invalid);
     assert.equal(result.success, false);
     if (!result.success) {
-      assert.ok(result.error.flatten().fieldErrors.phoneNumber);
-    }
-  });
-
-  test("Rejects invalid Indian PIN code (must be 6 digits)", () => {
-    const invalid = { ...validOrder, pincode: "516" };
-    const result = orderPlacementSchema.safeParse(invalid);
-    assert.equal(result.success, false);
-    if (!result.success) {
-      assert.ok(result.error.flatten().fieldErrors.pincode);
+      assert.ok(result.error.flatten().fieldErrors.address);
     }
   });
 
@@ -64,5 +50,15 @@ describe("Order Placement Schema Validation", () => {
     if (!result.success) {
       assert.ok(result.error.flatten().fieldErrors.items);
     }
+  });
+
+  test("Accepts order without landmark", () => {
+    const withoutLandmark = {
+      fullName: validOrder.fullName,
+      address: validOrder.address,
+      items: validOrder.items,
+    };
+    const result = orderPlacementSchema.safeParse(withoutLandmark);
+    assert.equal(result.success, true);
   });
 });

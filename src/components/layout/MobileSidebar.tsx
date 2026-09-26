@@ -18,11 +18,10 @@ import {
   TrendingUp,
   ChevronRight,
   ChevronDown,
-  Tag,
-  Lightbulb,
-  Truck,
   HelpCircle,
   Info,
+  FileText,
+  MessageCircle,
   User,
   Cake,
   Flame,
@@ -343,51 +342,15 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
 
           <div className="pt-2 pb-1 border-t border-[#F0E6DE] my-2" />
 
-          {/* Utilities matching input_file_1.png */}
-          <Link
-            href="/categories"
-            onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <Tag className="w-4 h-4 text-[#7A6E70]" />
-              <span>Offers & Deals</span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
-          </Link>
-
+          {/* Informational & Store Links */}
           <Link
             href="/shop"
             onClick={onClose}
             className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
           >
             <div className="flex items-center gap-3">
-              <Lightbulb className="w-4 h-4 text-[#7A6E70]" />
-              <span>Gift Guides</span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
-          </Link>
-
-          <Link
-            href="/order/track"
-            onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <Truck className="w-4 h-4 text-[#7A6E70]" />
-              <span>Track Your Order</span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
-          </Link>
-
-          <Link
-            href="/faq"
-            onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <HelpCircle className="w-4 h-4 text-[#7A6E70]" />
-              <span>Help & Support</span>
+              <Gift className="w-4 h-4 text-[#7A6E70]" />
+              <span>Browse All Gifts</span>
             </div>
             <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
           </Link>
@@ -403,31 +366,44 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
             </div>
             <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
           </Link>
+
+          <Link
+            href="/faq"
+            onClick={onClose}
+            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <HelpCircle className="w-4 h-4 text-[#7A6E70]" />
+              <span>Help & FAQ</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+          </Link>
+
+          <Link
+            href="/policies"
+            onClick={onClose}
+            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <FileText className="w-4 h-4 text-[#7A6E70]" />
+              <span>Terms & Policies</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+          </Link>
         </div>
 
-        {/* Drawer Bottom Actions matching input_file_1.png */}
+        {/* Drawer Bottom Actions: WhatsApp Order & Help */}
         <div className="p-4 border-t border-[#F0E6DE] space-y-2.5 bg-white shrink-0">
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              router.push("/order/track");
-            }}
-            className="w-full flex items-center justify-center gap-2 bg-[#C85250] hover:bg-[#B14140] text-white py-2.5 px-4 rounded-xl font-medium text-sm transition-colors shadow-xs cursor-pointer"
+          <a
+            href="https://wa.me/919876543210"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onClose}
+            className="w-full flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white py-3 px-4 rounded-xl font-medium text-sm transition-colors shadow-xs cursor-pointer"
           >
-            <User className="w-4 h-4" />
-            <span>Sign In</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              onClose();
-              router.push("/order/track");
-            }}
-            className="w-full flex items-center justify-center gap-2 bg-[#FAF5F2] hover:bg-[#FAF0EC] text-[#C85250] border border-[#F0D5C9] py-2.5 px-4 rounded-xl font-medium text-sm transition-colors cursor-pointer"
-          >
-            <span>Create an Account</span>
-          </button>
+            <MessageCircle className="w-4 h-4" />
+            <span>Order & Chat on WhatsApp</span>
+          </a>
         </div>
       </div>
     </div>
