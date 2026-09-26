@@ -8,6 +8,20 @@ import {
 } from "../src/lib/admin/validation";
 import { verifyAdminAuth } from "../src/lib/admin/auth";
 import { isAllowedRepoPath } from "../src/lib/admin/github";
+import { onRequestGet as meGet } from "../functions/api/admin/me";
+import {
+  onRequestGet as productsGet,
+  onRequestPost as productsPost,
+  onRequestPut as productsPut,
+  onRequestDelete as productsDelete,
+} from "../functions/api/admin/products";
+import {
+  onRequestGet as bannersGet,
+  onRequestPost as bannersPost,
+  onRequestPut as bannersPut,
+  onRequestDelete as bannersDelete,
+} from "../functions/api/admin/banners";
+import { onRequestPost as uploadPost } from "../functions/api/admin/upload";
 
 describe("Admin Authorization (Cloudflare Access)", () => {
   const env = {
@@ -166,5 +180,104 @@ describe("Path Validation & Repository Boundary Safety", () => {
     assert.ok(!sanitized.includes(" "));
     assert.ok(!sanitized.includes("?"));
     assert.ok(!sanitized.includes("!"));
+  });
+});
+
+describe("Direct /api/admin/* Endpoints Unauthenticated Rejection", () => {
+  const env = { ADMIN_EMAIL: "owner@mdgifts.in" };
+
+  test("GET /api/admin/me rejects direct unauthenticated requests with 401", async () => {
+    const res = await meGet({ request: new Request("https://mdgifts.in/api/admin/me"), env });
+    assert.equal(res.status, 401);
+    const body = (await res.json()) as { authenticated: boolean; error: string };
+    assert.equal(body.authenticated, false);
+    assert.ok(body.error.includes("Authentication required"));
+  });
+
+  test("GET /api/admin/products rejects direct unauthenticated requests with 401", async () => {
+    const res = await productsGet({ request: new Request("https://mdgifts.in/api/admin/products"), env });
+    assert.equal(res.status, 401);
+    const body = (await res.json()) as { error: string };
+    assert.ok(body.error.includes("Authentication required"));
+  });
+
+  test("POST /api/admin/products rejects direct unauthenticated requests with 401", async () => {
+    const res = await productsPost({
+      request: new Request("https://mdgifts.in/api/admin/products", {
+        method: "POST",
+        body: JSON.stringify({}),
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("PUT /api/admin/products rejects direct unauthenticated requests with 401", async () => {
+    const res = await productsPut({
+      request: new Request("https://mdgifts.in/api/admin/products", {
+        method: "PUT",
+        body: JSON.stringify({}),
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("DELETE /api/admin/products rejects direct unauthenticated requests with 401", async () => {
+    const res = await productsDelete({
+      request: new Request("https://mdgifts.in/api/admin/products?id=test", {
+        method: "DELETE",
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("GET /api/admin/banners rejects direct unauthenticated requests with 401", async () => {
+    const res = await bannersGet({ request: new Request("https://mdgifts.in/api/admin/banners"), env });
+    assert.equal(res.status, 401);
+  });
+
+  test("POST /api/admin/banners rejects direct unauthenticated requests with 401", async () => {
+    const res = await bannersPost({
+      request: new Request("https://mdgifts.in/api/admin/banners", {
+        method: "POST",
+        body: JSON.stringify({}),
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("PUT /api/admin/banners rejects direct unauthenticated requests with 401", async () => {
+    const res = await bannersPut({
+      request: new Request("https://mdgifts.in/api/admin/banners", {
+        method: "PUT",
+        body: JSON.stringify({}),
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("DELETE /api/admin/banners rejects direct unauthenticated requests with 401", async () => {
+    const res = await bannersDelete({
+      request: new Request("https://mdgifts.in/api/admin/banners?id=test", {
+        method: "DELETE",
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("POST /api/admin/upload rejects direct unauthenticated requests with 401", async () => {
+    const res = await uploadPost({
+      request: new Request("https://mdgifts.in/api/admin/upload", {
+        method: "POST",
+        body: new FormData(),
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
   });
 });

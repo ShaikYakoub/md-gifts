@@ -43,28 +43,48 @@ Updated Static Storefront (out/)
 
 ## 3. Cloudflare Access Setup (Step-by-Step)
 
-Configure Cloudflare Access in the Cloudflare Dashboard to protect `/admin`:
+To enforce an edge-level security boundary, Cloudflare Access must protect **both** the Admin UI (`/admin*`) and the Admin API (`/api/admin*`) for the same single client identity, while leaving the rest of `mdgifts.in` public.
 
-1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/).
-2. Navigate to **Zero Trust** → **Access** → **Applications**.
-3. Click **Add an application** and select **Self-hosted**.
-4. Configure **Application Configuration**:
-   - **Application name**: `MD Gifts Admin`
-   - **Session Duration**: `24 hours` (or desired session length)
-   - **Application domain**:
-     - Subdomain: *(leave empty or enter `www` if using www)*
-     - Domain: `mdgifts.in`
-     - Path: `admin*`
-5. Click **Next** to configure **Policies**:
-   - **Policy name**: `Allow Store Owner`
+### Step 1: Create Application for Admin UI
+1. In the [Cloudflare Dashboard](https://dash.cloudflare.com/), go to **Zero Trust** → **Access** → **Applications**.
+2. Click **Add an application** and select **Self-hosted**.
+3. **Application Configuration**:
+   - **Application name**: `MD Gifts Admin UI`
+   - **Application domain**: `mdgifts.in`
+   - **Path**: `admin*`
+   - **Session Duration**: `24 hours`
+4. **Access Policy**:
+   - **Policy name**: `Allow Client Email`
    - **Action**: `Allow`
-   - **Configure rules** → **Include**:
+   - **Include**:
      - Selector: `Emails`
-     - Value: `<client-email@example.com>` *(the client's exact email address)*
-6. Click **Next** through CORS/Cookie settings (defaults are suitable) and click **Save application**.
+     - Value: `<client-email@example.com>` (your client's exact email address)
+5. Save the application.
+
+### Step 2: Create Application for Admin API
+Protecting `/api/admin*` ensures that direct API requests (such as curl, scripts, or unauthorized browsers) are blocked at Cloudflare's edge before hitting Pages Functions:
+1. In **Zero Trust** → **Access** → **Applications**, click **Add an application** → **Self-hosted**.
+2. **Application Configuration**:
+   - **Application name**: `MD Gifts Admin API`
+   - **Application domain**: `mdgifts.in`
+   - **Path**: `api/admin*`
+   - **Session Duration**: `24 hours`
+3. **Access Policy**:
+   - **Policy name**: `Allow Client Email`
+   - **Action**: `Allow`
+   - **Include**:
+     - Selector: `Emails`
+     - Value: `<client-email@example.com>` (same exact email as Step 1)
+4. Save the application.
+
+> [!NOTE]
+> Because Cloudflare Access stores the authentication cookie (`CF_Authorization`) across `mdgifts.in`, when the client logs into `https://mdgifts.in/admin`, their browser automatically authenticates API requests to `/api/admin/*` seamlessly.
 
 > [!IMPORTANT]
-> Cloudflare Access operates on a **deny-by-default** model. Only the specified email address can authenticate and reach `/admin`. All other visitors are blocked before any request reaches the application.
+> **Dual-Layer Defense**:
+> 1. **Cloudflare Edge**: Cloudflare Access denies any unauthenticated requests to `/admin*` and `/api/admin*` before reaching the application.
+> 2. **Server-Side Verification**: Every `/api/admin/*` Pages Function independently inspects `Cf-Access-Authenticated-User-Email` and strictly rejects any request not matching `ADMIN_EMAIL` with `401 Unauthorized` or `403 Forbidden`.
+> 3. **Public Storefront Intact**: All other routes (`/`, `/shop`, `/product/*`, `/categories/*`, etc.) have no Access policy and remain 100% public and statically cached.
 
 ---
 
