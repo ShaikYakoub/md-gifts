@@ -41,6 +41,18 @@ export interface Product {
   isUnder499?: boolean;
   isNewArrival?: boolean;
   isBestSeller?: boolean;
+  enabled?: boolean;
+  displayOrder?: number;
+}
+
+export interface Banner {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+  link: string;
+  enabled: boolean;
+  displayOrder: number;
 }
 
 export interface CategoryInfo {

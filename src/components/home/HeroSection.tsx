@@ -5,6 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import rawBanners from "../../../content/banners.json";
+import { Banner } from "@/types/catalog";
+
 interface BannerSlide {
   id: string;
   image: string;
@@ -12,32 +15,15 @@ interface BannerSlide {
   link: string;
 }
 
-const HERO_SLIDES: BannerSlide[] = [
-  {
-    id: "anniversary-special",
-    image: "/images/banners/banner-1.png",
-    alt: "Happy Anniversary - Handcrafted personalized couple photo frames, roses and luxury gifts",
-    link: "/categories/couples",
-  },
-  {
-    id: "diwali-festive",
-    image: "/images/banners/banner-2.png",
-    alt: "Happy Diwali - Customized photo mugs, warm glowing diya lights and family portrait frames",
-    link: "/categories/festivals",
-  },
-  {
-    id: "birthday-bash",
-    image: "/images/banners/banner-3.png",
-    alt: "Happy Birthday - Photo wall collage prints, personalized mugs, cake and celebration hampers",
-    link: "/categories/birthdays",
-  },
-  {
-    id: "daughters-day",
-    image: "/images/banners/banner-4.png",
-    alt: "International Daughter's Day - Heart-collage framed memories, custom mugs and sweet gifts",
-    link: "/categories/personalized-gifts",
-  },
-];
+const HERO_SLIDES: BannerSlide[] = (rawBanners as Banner[])
+  .filter((b) => b.enabled !== false)
+  .sort((a, b) => (a.displayOrder ?? 9999) - (b.displayOrder ?? 9999))
+  .map((b) => ({
+    id: b.id,
+    image: b.image,
+    alt: `${b.title} - ${b.description}`,
+    link: b.link,
+  }));
 
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);

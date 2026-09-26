@@ -1,0 +1,38 @@
+[
+  {
+    "id": "anniversary-special",
+    "image": "/images/banners/banner-1.png",
+    "title": "Happy Anniversary",
+    "description": "Handcrafted personalized couple photo frames, roses and luxury gifts",
+    "link": "/categories/couples",
+    "enabled": true,
+    "displayOrder": 1
+  },
+  {
+    "id": "diwali-festive",
+    "image": "/images/banners/banner-2.png",
+    "title": "Happy Diwali",
+    "description": "Customized photo mugs, warm glowing diya lights and family portrait frames",
+    "link": "/categories/festivals",
+    "enabled": true,
+    "displayOrder": 2
+  },
+  {
+    "id": "birthday-bash",
+    "image": "/images/banners/banner-3.png",
+    "title": "Happy Birthday",
+    "description": "Photo wall collage prints, personalized mugs, cake and celebration hampers",
+    "link": "/categories/birthdays",
+    "enabled": true,
+    "displayOrder": 3
+  },
+  {
+    "id": "daughters-day",
+    "image": "/images/banners/banner-4.png",
+    "title": "International Daughter's Day",
+    "description": "Heart-collage framed memories, custom mugs and sweet gifts",
+    "link": "/categories/personalized-gifts",
+    "enabled": true,
+    "displayOrder": 4
+  }
+]
