@@ -76,7 +76,7 @@ export default function HomePage() {
       {/* 2. Shop by Occasion */}
       <ShopByOccasion />
 
-      {/* 3. Trending Gifts */}
+      {/* 3. Trending Gifts (Items 15-18: Subtitle removed, View all converted to pill button) */}
       <section className="py-5 sm:py-8 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -84,16 +84,13 @@ export default function HomePage() {
               <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
                 Trending Gifts
               </h2>
-              <p className="text-xs sm:text-sm text-[#7A6D70] mt-0.5">
-                Our most loved handcrafted personalized keepsakes
-              </p>
             </div>
             <Link
               href="/shop"
-              className="text-xs sm:text-sm font-medium text-[#C85250] hover:text-[#B14140] flex items-center gap-1 group"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#C85250]/40 hover:text-[#C85250] transition-colors shadow-2xs group"
             >
               <span>View all</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#C85250] transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 
@@ -110,7 +107,7 @@ export default function HomePage() {
       {/* 4. Shop by Recipient */}
       <ShopByRecipient />
 
-      {/* 5. Personalized Favourites */}
+      {/* 5. Personalized Favourites (Items 17-18: Pill button) */}
       <section className="py-5 sm:py-8 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -124,10 +121,10 @@ export default function HomePage() {
             </div>
             <Link
               href="/categories/personalized-gifts"
-              className="text-xs sm:text-sm font-medium text-[#C85250] hover:text-[#B14140] flex items-center gap-1 group"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#C85250]/40 hover:text-[#C85250] transition-colors shadow-2xs group"
             >
               <span>View all</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#C85250] transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 
@@ -141,7 +138,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. Under ₹499 Section */}
+      {/* 6. Under ₹499 Section (Items 17-18: Pill button) */}
       <section className="py-5 sm:py-8 bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -155,10 +152,10 @@ export default function HomePage() {
             </div>
             <Link
               href="/shop?maxPrice=499"
-              className="text-xs sm:text-sm font-medium text-[#C85250] hover:text-[#B14140] flex items-center gap-1 group"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#C85250]/40 hover:text-[#C85250] transition-colors shadow-2xs group"
             >
               <span>View all</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#C85250] transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 

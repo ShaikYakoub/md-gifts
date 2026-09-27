@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, LayoutGrid, Search, ShoppingCart } from "lucide-react";
+import { Home, ShoppingBag, Search, ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export function MobileBottomNav() {
@@ -13,10 +13,10 @@ export function MobileBottomNav() {
   const navItems = [
     { label: "Home", href: "/", icon: Home, isActive: pathname === "/" },
     {
-      label: "Categories",
-      href: "/categories",
-      icon: LayoutGrid,
-      isActive: pathname.startsWith("/categories"),
+      label: "Shop",
+      href: "/shop",
+      icon: ShoppingBag,
+      isActive: pathname.startsWith("/shop") || pathname.startsWith("/categories"),
     },
     {
       label: "Search",
@@ -46,7 +46,7 @@ export function MobileBottomNav() {
             <Link
               key={item.label}
               href={item.href}
-              className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-colors relative ${
+              className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-colors relative cursor-pointer ${
                 item.isActive ? "text-[#C85250] font-semibold" : "text-[#7A6E70] hover:text-[#221C1D]"
               }`}
             >

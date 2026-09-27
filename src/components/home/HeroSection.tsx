@@ -80,8 +80,8 @@ export function HeroSection() {
       aria-label="Promotional banner slider"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Banner Sliding Container - matches native 1920x720 aspect ratio */}
-        <div className="relative w-full aspect-[2.6/1] sm:aspect-[2.65/1] rounded-xl overflow-hidden border border-[#EDE2DA] shadow-md bg-[#FAF4F0]">
+        {/* Banner Sliding Container - slightly reduced height */}
+        <div className="relative w-full aspect-[2.85/1] sm:aspect-[3.05/1] rounded-xl overflow-hidden border border-[#EDE2DA] shadow-md bg-[#FAF4F0]">
           {/* Slides Track */}
           <div
             className="flex h-full w-full transition-transform duration-700 ease-out"

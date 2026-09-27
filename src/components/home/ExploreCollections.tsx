@@ -11,7 +11,7 @@ export function ExploreCollections() {
       slug: "birthdays",
       image: "/images/collections/birthdays.png",
       textColor: "text-[#2A181C]",
-      subtextColor: "text-[#5C3D45]",
+      subtextColor: "text-[#4D323A]",
       badgeBg: "bg-[#B84252] text-white",
     },
     {
@@ -20,7 +20,7 @@ export function ExploreCollections() {
       slug: "couples",
       image: "/images/collections/couples.png",
       textColor: "text-[#182635]",
-      subtextColor: "text-[#3D5268]",
+      subtextColor: "text-[#2F445A]",
       badgeBg: "bg-[#1E5676] text-white",
     },
     {
@@ -29,7 +29,7 @@ export function ExploreCollections() {
       slug: "festivals",
       image: "/images/collections/festivals.jpg",
       textColor: "text-[#2E2012]",
-      subtextColor: "text-[#5C452C]",
+      subtextColor: "text-[#4D3924]",
       badgeBg: "bg-[#8A561D] text-white",
     },
   ];
@@ -46,21 +46,23 @@ export function ExploreCollections() {
               Curated collections crafted for every magical milestone
             </p>
           </div>
+          {/* View All Pill-Shaped Button (Items 17-18) */}
           <Link
             href="/categories"
-            className="text-xs sm:text-sm font-medium text-[#C85250] hover:text-[#B14140] flex items-center gap-1 group"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#C85250]/40 hover:text-[#C85250] transition-colors shadow-2xs group"
           >
             <span>View all</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#C85250] transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
+        {/* Banners Grid: Reduced height, increased heading & text prominence, readable CTA buttons (Items 9-14) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {collections.map((col) => (
             <Link
               key={col.slug}
               href={`/categories/${col.slug}`}
-              className="group relative h-[210px] sm:h-[240px] rounded-xl overflow-hidden border border-[#E8DFD8] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block"
+              className="group relative h-[175px] sm:h-[205px] rounded-xl overflow-hidden border border-[#E8DFD8] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block"
             >
               {/* Background Image */}
               <Image
@@ -73,25 +75,28 @@ export function ExploreCollections() {
               />
 
               {/* Gradient Scrim Overlay for crisp text legibility */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent sm:w-[75%]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-transparent sm:w-[75%]" />
 
               {/* Content Box */}
-              <div className="relative z-10 h-full p-5 sm:p-6 flex flex-col justify-between max-w-[70%] sm:max-w-[65%]">
-                <div className="space-y-1 sm:space-y-1.5">
-                  <h3 className={`font-serif text-xl sm:text-2xl font-bold ${col.textColor} tracking-tight leading-tight`}>
+              <div className="relative z-10 h-full p-4 sm:p-5 flex flex-col justify-between max-w-[70%] sm:max-w-[65%]">
+                <div className="space-y-1">
+                  {/* Banner Heading: Increased size and prominence (Item 11) */}
+                  <h3 className={`font-serif text-2xl sm:text-[27px] font-extrabold ${col.textColor} tracking-tight leading-tight`}>
                     {col.title}
                   </h3>
-                  <p className={`text-xs sm:text-sm ${col.subtextColor} leading-snug line-clamp-2`}>
+                  {/* Banner Description: Increased readability & prominence (Item 12) */}
+                  <p className={`text-xs sm:text-[13.5px] font-medium ${col.subtextColor} leading-snug line-clamp-2`}>
                     {col.subtitle}
                   </p>
                 </div>
 
-                <div className="pt-2">
+                {/* Banner CTA Button: Proportionate, clearly readable (Item 13) */}
+                <div className="pt-1.5">
                   <span
-                    className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md shadow-xs ${col.badgeBg} transition-transform duration-200 group-hover:scale-105`}
+                    className={`inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-bold px-3.5 py-1.5 rounded-lg shadow-xs ${col.badgeBg} transition-transform duration-200 group-hover:scale-105`}
                   >
                     <span>Explore</span>
-                    <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </div>
               </div>
