@@ -76,6 +76,19 @@ export const bannerInputSchema = z.object({
 
 export type BannerInput = z.infer<typeof bannerInputSchema>;
 
+// Category Schema for validation
+export const categoryInputSchema = z.object({
+  slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must only contain lowercase letters, numbers, and hyphens"),
+  name: z.string().min(1, "Category name is required").max(100),
+  title: z.string().min(1, "Category title is required").max(200),
+  description: z.string().max(1000).default(""),
+  productCount: z.number().int().nonnegative().default(0),
+  image: z.string().min(1, "Category image is required"),
+  type: z.enum(["category", "occasion", "recipient"]).default("category"),
+});
+
+export type CategoryInput = z.infer<typeof categoryInputSchema>;
+
 // Strict File Path Validator for Security
 export function validateUploadPath(targetPath: string): { isValid: boolean; error?: string } {
   // Disallow null bytes, directory traversal
@@ -84,7 +97,11 @@ export function validateUploadPath(targetPath: string): { isValid: boolean; erro
   }
 
   // Enforce allowed upload directories
-  const allowedPrefixes = ["public/uploads/products/", "public/uploads/banners/"];
+  const allowedPrefixes = [
+    "public/uploads/products/",
+    "public/uploads/banners/",
+    "public/uploads/categories/",
+  ];
   const matchesPrefix = allowedPrefixes.some((prefix) => targetPath.startsWith(prefix));
 
   if (!matchesPrefix) {

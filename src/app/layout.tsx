@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import { CatalogProvider } from "@/context/CatalogContext";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -79,9 +80,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakarta.variable} ${playfair.variable} scroll-smooth`}>
       <body className="font-sans antialiased bg-[#FAF7F4] text-[#221C1D] min-h-screen flex flex-col selection:bg-[#FBE8E7] selection:text-[#C85250]">
-        <CartProvider>
-          {children}
-        </CartProvider>
+        <CatalogProvider>
+          <CartProvider>
+            {children}
+          </CartProvider>
+        </CatalogProvider>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   productInputSchema,
   bannerInputSchema,
+  categoryInputSchema,
   validateUploadPath,
   sanitizeFileName,
 } from "../src/lib/admin/validation";
@@ -21,52 +22,118 @@ import {
   onRequestPut as bannersPut,
   onRequestDelete as bannersDelete,
 } from "../functions/api/admin/banners";
+import {
+  onRequestGet as categoriesGet,
+  onRequestPost as categoriesPost,
+  onRequestPut as categoriesPut,
+  onRequestDelete as categoriesDelete,
+} from "../functions/api/admin/categories";
 import { onRequestPost as uploadPost } from "../functions/api/admin/upload";
 
-describe("Admin Authorization (Cloudflare Access)", () => {
+import { onRequestPost as loginPost } from "../functions/api/admin/login";
+import { onRequestPost as logoutPost } from "../functions/api/admin/logout";
+
+describe("Admin Authorization (Cloudflare Access & Password Auth)", () => {
   const env = {
     ADMIN_EMAIL: "owner@mdgifts.in, manager@mdgifts.in",
+    ADMIN_PASSWORD: "SuperSecretPassword123!",
   };
 
-  test("Rejects unauthenticated request with missing Cf-Access header (401)", () => {
+  test("Rejects unauthenticated request with missing credentials (401)", async () => {
     const req = new Request("https://mdgifts.in/api/admin/products");
-    const result = verifyAdminAuth(req, env);
+    const result = await verifyAdminAuth(req, env);
     assert.equal(result.authorized, false);
     assert.equal(result.status, 401);
   });
 
-  test("Rejects authenticated identity that is not in the allowed admin list (403)", () => {
+  test("Rejects authenticated identity that is not in the allowed admin list (403)", async () => {
     const req = new Request("https://mdgifts.in/api/admin/products", {
       headers: {
         "Cf-Access-Authenticated-User-Email": "hacker@example.com",
       },
     });
-    const result = verifyAdminAuth(req, env);
+    const result = await verifyAdminAuth(req, env);
     assert.equal(result.authorized, false);
     assert.equal(result.status, 403);
   });
 
-  test("Accepts valid configured admin email case-insensitively (200)", () => {
+  test("Accepts valid configured admin email case-insensitively (200)", async () => {
     const req = new Request("https://mdgifts.in/api/admin/products", {
       headers: {
         "Cf-Access-Authenticated-User-Email": "OWNER@mdgifts.in",
       },
     });
-    const result = verifyAdminAuth(req, env);
+    const result = await verifyAdminAuth(req, env);
     assert.equal(result.authorized, true);
     assert.equal(result.status, 200);
     assert.equal(result.email, "owner@mdgifts.in");
   });
 
-  test("Fails safely with 500 when ADMIN_EMAIL secret is missing", () => {
+  test("Fails safely with 500 when neither ADMIN_EMAIL nor ADMIN_PASSWORD is configured", async () => {
     const req = new Request("https://mdgifts.in/api/admin/products", {
       headers: {
         "Cf-Access-Authenticated-User-Email": "owner@mdgifts.in",
       },
     });
-    const result = verifyAdminAuth(req, {});
+    const result = await verifyAdminAuth(req, {});
     assert.equal(result.authorized, false);
     assert.equal(result.status, 500);
+  });
+
+  test("Password login generates valid session cookie that authorizes requests", async () => {
+    // 1. Attempt login with correct email and password
+    const loginRes = await loginPost({
+      request: new Request("https://mdgifts.in/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: "owner@mdgifts.in",
+          password: "SuperSecretPassword123!",
+        }),
+      }),
+      env,
+    });
+    assert.equal(loginRes.status, 200);
+    const setCookie = loginRes.headers.get("Set-Cookie");
+    assert.ok(setCookie?.includes("mdgifts_admin_session="));
+
+    // Extract cookie value
+    const cookieMatch = setCookie?.match(/mdgifts_admin_session=([^;]+)/);
+    assert.ok(cookieMatch);
+    const cookieValue = cookieMatch[1];
+
+    // 2. Make authenticated request using the session cookie
+    const authedReq = new Request("https://mdgifts.in/api/admin/products", {
+      headers: {
+        Cookie: `mdgifts_admin_session=${cookieValue}`,
+      },
+    });
+    const authResult = await verifyAdminAuth(authedReq, env);
+    assert.equal(authResult.authorized, true);
+    assert.equal(authResult.status, 200);
+    assert.equal(authResult.email, "owner@mdgifts.in");
+  });
+
+  test("Rejects login attempt with incorrect password (401)", async () => {
+    const loginRes = await loginPost({
+      request: new Request("https://mdgifts.in/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: "owner@mdgifts.in",
+          password: "WrongPassword!",
+        }),
+      }),
+      env,
+    });
+    assert.equal(loginRes.status, 401);
+  });
+
+  test("Logout clears session cookie", async () => {
+    const logoutRes = await logoutPost();
+    assert.equal(logoutRes.status, 200);
+    const setCookie = logoutRes.headers.get("Set-Cookie");
+    assert.ok(setCookie?.includes("Max-Age=0"));
   });
 });
 
@@ -136,6 +203,46 @@ describe("Admin Banner Validation", () => {
     assert.throws(
       () => bannerInputSchema.parse({ ...validBanner, link: "" }),
       /Destination link is required/
+    );
+  });
+});
+
+describe("Admin Category Validation", () => {
+  const validCategory = {
+    slug: "personalized-lamps",
+    name: "Custom Lamps",
+    title: "Personalized Night Lamps & 3D Illusions",
+    description: "Warm LED lights customized with photos",
+    productCount: 12,
+    image: "/uploads/categories/lamp.jpg",
+    type: "category" as const,
+  };
+
+  test("Valid category passes schema validation", () => {
+    const parsed = categoryInputSchema.parse(validCategory);
+    assert.equal(parsed.name, validCategory.name);
+    assert.equal(parsed.slug, "personalized-lamps");
+    assert.equal(parsed.type, "category");
+  });
+
+  test("Rejects category with missing name", () => {
+    assert.throws(
+      () => categoryInputSchema.parse({ ...validCategory, name: "" }),
+      /Category name is required/
+    );
+  });
+
+  test("Rejects category with invalid slug", () => {
+    assert.throws(
+      () => categoryInputSchema.parse({ ...validCategory, slug: "Invalid Slug!" }),
+      /Slug must only contain lowercase letters/
+    );
+  });
+
+  test("Rejects category with empty image", () => {
+    assert.throws(
+      () => categoryInputSchema.parse({ ...validCategory, image: "" }),
+      /Category image is required/
     );
   });
 });
@@ -275,6 +382,46 @@ describe("Direct /api/admin/* Endpoints Unauthenticated Rejection", () => {
       request: new Request("https://mdgifts.in/api/admin/upload", {
         method: "POST",
         body: new FormData(),
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("GET /api/admin/categories rejects direct unauthenticated requests with 401", async () => {
+    const res = await categoriesGet({
+      request: new Request("https://mdgifts.in/api/admin/categories"),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("POST /api/admin/categories rejects direct unauthenticated requests with 401", async () => {
+    const res = await categoriesPost({
+      request: new Request("https://mdgifts.in/api/admin/categories", {
+        method: "POST",
+        body: JSON.stringify({}),
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("PUT /api/admin/categories rejects direct unauthenticated requests with 401", async () => {
+    const res = await categoriesPut({
+      request: new Request("https://mdgifts.in/api/admin/categories", {
+        method: "PUT",
+        body: JSON.stringify({}),
+      }),
+      env,
+    });
+    assert.equal(res.status, 401);
+  });
+
+  test("DELETE /api/admin/categories rejects direct unauthenticated requests with 401", async () => {
+    const res = await categoriesDelete({
+      request: new Request("https://mdgifts.in/api/admin/categories?slug=test", {
+        method: "DELETE",
       }),
       env,
     });

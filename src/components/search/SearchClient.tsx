@@ -8,6 +8,7 @@ import { Product } from "@/types/catalog";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { CATEGORIES } from "@/data/categories";
+import { useLiveCatalog } from "@/context/CatalogContext";
 
 const POPULAR_SEARCHES = [
   "couple frame",
@@ -21,6 +22,10 @@ const POPULAR_SEARCHES = [
 ];
 
 export function SearchClient({ allProducts }: { allProducts: Product[] }) {
+  const { products: liveProducts, categories: liveCategories } = useLiveCatalog();
+  const productList = liveProducts && liveProducts.length > 0 ? liveProducts : allProducts;
+  const categoriesList = liveCategories && liveCategories.length > 0 ? liveCategories : CATEGORIES;
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
@@ -52,10 +57,10 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
   const matchedCategories = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
-    return CATEGORIES.filter(
+    return categoriesList.filter(
       (c) => c.name.toLowerCase().includes(q) || c.slug.includes(q)
     );
-  }, [query]);
+  }, [categoriesList, query]);
 
   // Filtered and sorted products
   const searchResults = useMemo(() => {
@@ -63,9 +68,9 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
 
     const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
 
-    return allProducts
+    return productList
       .filter((p) => {
-        const text = `${p.name} ${p.shortDescription} ${p.categorySlug} ${p.tags.join(" ")} ${p.occasionSlugs.join(" ")} ${p.recipientSlugs.join(" ")}`.toLowerCase();
+        const text = `${p.name} ${p.shortDescription} ${p.categorySlug} ${(p.tags || []).join(" ")} ${(p.occasionSlugs || []).join(" ")} ${(p.recipientSlugs || []).join(" ")}`.toLowerCase();
         return terms.every((term) => text.includes(term));
       })
       .sort((a, b) => {
@@ -74,7 +79,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
         if (sortBy === "rating") return b.rating - a.rating;
         return 0;
       });
-  }, [allProducts, query, sortBy]);
+  }, [productList, query, sortBy]);
 
   return (
     <div className="pt-6 pb-28 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

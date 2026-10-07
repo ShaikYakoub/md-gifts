@@ -35,6 +35,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             slug={product.slug}
             name={product.name}
             categorySlug={product.categorySlug}
+            image={product.images?.[0]}
             aspectRatio="wide"
             priority={priority}
             className="transition-transform duration-500 group-hover:scale-105"

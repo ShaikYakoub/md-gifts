@@ -2,7 +2,12 @@ import { verifyAdminAuth, AdminEnv } from "../../../src/lib/admin/auth";
 import { validateUploadPath, sanitizeFileName } from "../../../src/lib/admin/validation";
 import { commitRepoFile, GitHubEnv } from "../../../src/lib/admin/github";
 
-type CombinedEnv = AdminEnv & GitHubEnv;
+export interface R2Env {
+  R2_BUCKET?: R2Bucket;
+  R2_PUBLIC_URL?: string;
+}
+
+type CombinedEnv = AdminEnv & GitHubEnv & R2Env;
 
 const ALLOWED_MIME_TYPES = new Set([
   "image/png",
@@ -27,10 +32,10 @@ function jsonResponse(data: unknown, status = 200): Response {
 
 /**
  * POST /api/admin/upload
- * Handles authenticated image uploads to public/uploads/products or public/uploads/banners
+ * Handles authenticated image uploads to R2 storage or repository public/uploads
  */
 export async function onRequestPost(context: { request: Request; env: CombinedEnv }): Promise<Response> {
-  const auth = verifyAdminAuth(context.request, context.env);
+  const auth = await verifyAdminAuth(context.request, context.env);
   if (!auth.authorized) {
     return jsonResponse({ error: auth.error }, auth.status);
   }
@@ -44,10 +49,10 @@ export async function onRequestPost(context: { request: Request; env: CombinedEn
       return jsonResponse({ error: "No image file provided in upload" }, 400);
     }
 
-    // Only allow products or banners subfolder
+    // Only allow products, banners, or categories subfolder
     const folder = typeof rawFolder === "string" ? rawFolder.trim().toLowerCase() : "products";
-    if (folder !== "products" && folder !== "banners") {
-      return jsonResponse({ error: 'Folder must be either "products" or "banners"' }, 400);
+    if (folder !== "products" && folder !== "banners" && folder !== "categories") {
+      return jsonResponse({ error: 'Folder must be "products", "banners", or "categories"' }, 400);
     }
 
     // File size check
@@ -72,9 +77,33 @@ export async function onRequestPost(context: { request: Request; env: CombinedEn
 
     // Read bytes
     const arrayBuffer = await file.arrayBuffer();
-    const fileBytes = new Uint8Array(arrayBuffer);
 
-    // Commit file directly to GitHub
+    // 1. Direct R2 Bucket Storage (Fast, instant, no git commit delay)
+    if (context.env.R2_BUCKET) {
+      const r2Key = `uploads/${folder}/${sanitizedFileName}`;
+      await context.env.R2_BUCKET.put(r2Key, arrayBuffer, {
+        httpMetadata: {
+          contentType: file.type,
+        },
+      });
+
+      const publicBase = context.env.R2_PUBLIC_URL?.replace(/\/$/, "");
+      const publicUrl = publicBase
+        ? `${publicBase}/${r2Key}`
+        : `/uploads/${folder}/${sanitizedFileName}`;
+
+      return jsonResponse({
+        success: true,
+        url: publicUrl,
+        storage: "r2",
+        key: r2Key,
+        filename: sanitizedFileName,
+        message: "Image uploaded to R2 storage instantly.",
+      });
+    }
+
+    // 2. Fallback: Commit file directly to GitHub
+    const fileBytes = new Uint8Array(arrayBuffer);
     const commitResult = await commitRepoFile(
       targetPath,
       fileBytes,

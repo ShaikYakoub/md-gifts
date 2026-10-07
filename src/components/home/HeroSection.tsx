@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import { useLiveCatalog } from "@/context/CatalogContext";
 import rawBanners from "../../../content/banners.json";
 import { Banner } from "@/types/catalog";
 
@@ -15,28 +15,43 @@ interface BannerSlide {
   link: string;
 }
 
-const HERO_SLIDES: BannerSlide[] = (rawBanners as Banner[])
-  .filter((b) => b.enabled !== false)
-  .sort((a, b) => (a.displayOrder ?? 9999) - (b.displayOrder ?? 9999))
-  .map((b) => ({
-    id: b.id,
-    image: b.image,
-    alt: `${b.title} - ${b.description}`,
-    link: b.link,
-  }));
+const BASE_BANNERS = rawBanners as Banner[];
 
 export function HeroSection() {
+  const { banners } = useLiveCatalog();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
+  const slides: BannerSlide[] = useMemo(() => {
+    const list = banners && banners.length > 0 ? banners : BASE_BANNERS;
+    return list
+      .filter((b) => b.enabled !== false)
+      .sort((a, b) => (a.displayOrder ?? 9999) - (b.displayOrder ?? 9999))
+      .map((b) => ({
+        id: b.id,
+        image: b.image,
+        alt: `${b.title} - ${b.description}`,
+        link: b.link,
+      }));
+  }, [banners]);
+
+  // Ensure currentSlide is within bounds if banners change
+  useEffect(() => {
+    if (slides.length > 0 && currentSlide >= slides.length) {
+      setCurrentSlide(0);
+    }
+  }, [slides.length, currentSlide]);
+
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-  }, []);
+    if (slides.length <= 1) return;
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  }, []);
+    if (slides.length <= 1) return;
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
@@ -44,12 +59,12 @@ export function HeroSection() {
 
   // Auto-advance banner every 5.5 seconds unless user hovers
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || slides.length <= 1) return;
     const timer = setInterval(() => {
       nextSlide();
     }, 5500);
     return () => clearInterval(timer);
-  }, [isPaused, nextSlide]);
+  }, [isPaused, nextSlide, slides.length]);
 
   // Touch handlers for mobile swipe
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -70,6 +85,10 @@ export function HeroSection() {
     setTouchStart(null);
   };
 
+  if (!slides || slides.length === 0) {
+    return null;
+  }
+
   return (
     <section
       className="relative overflow-hidden bg-transparent py-3 sm:py-5"
@@ -89,7 +108,7 @@ export function HeroSection() {
               transform: `translateX(-${currentSlide * 100}%)`,
             }}
           >
-            {HERO_SLIDES.map((slide, idx) => (
+            {slides.map((slide, idx) => (
               <Link
                 key={slide.id}
                 href={slide.link}
@@ -138,7 +157,7 @@ export function HeroSection() {
 
           {/* Slide Indicator Dots / Progress Pills */}
           <div className="absolute bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-xs px-2.5 py-1 rounded-full">
-            {HERO_SLIDES.map((slide, idx) => (
+            {slides.map((slide, idx) => (
               <button
                 key={slide.id}
                 type="button"

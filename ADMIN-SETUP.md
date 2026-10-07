@@ -100,9 +100,14 @@ In your Cloudflare Pages project settings, configure the following server-side e
 |---|---|---|
 | `NODE_VERSION` | Plaintext | `22.16.0` |
 | `ADMIN_EMAIL` | Encrypted Secret / Plaintext | The client's exact email (e.g. `owner@mdgifts.in`). Comma-separated for multiple. |
+| `ADMIN_PASSWORD` | **Encrypted Secret** | Your secret password for logging into `https://mdgifts.in/admin`. You can change this anytime here in Cloudflare settings. |
 | `GITHUB_APP_ID` | Plaintext | `5077719` |
 | `GITHUB_INSTALLATION_ID` | Plaintext | `164922482` |
 | `GITHUB_PRIVATE_KEY` | **Encrypted Secret** | Your GitHub App `.pem` private key content (including `-----BEGIN RSA PRIVATE KEY-----` and `-----END RSA PRIVATE KEY-----`). |
+| `R2_PUBLIC_URL` | Plaintext (Optional) | Public domain for R2 storage: `https://images.mdgifts.in`. |
+
+> [!NOTE]
+> **R2 Bucket Binding**: The `md-gifts` R2 storage bucket is bound as `R2_BUCKET` via [wrangler.jsonc](file:///c:/dev/md-gifts/wrangler.jsonc). Image uploads made from the admin dashboard are stored instantly into R2 with zero GitHub commit lag.
 
 > [!CAUTION]
 > Never commit the `.pem` file to Git or expose `GITHUB_PRIVATE_KEY` as a `NEXT_PUBLIC_` variable. It must exist only as an encrypted secret in Cloudflare Pages.
@@ -148,13 +153,25 @@ To test the admin interface locally:
 4. The system automatically commits the update to `content/products.json` in GitHub.
 5. Cloudflare Pages detects the commit, initiates a static build, and deploys the updated storefront in ~1–2 minutes.
 
-### Editing Banners
+### Editing Categories
+1. On the **Categories** tab:
+   - Click **Add Category** to create a new category, occasion, or recipient badge.
+   - Click **Edit** on any existing category to modify its display name, page title, slug URL path, description, category type, product count, or upload a custom cover image.
+   - To remove a category, click the trash icon.
+   - Click **Save Category**.
+2. Category changes are reflected **instantly** (0ms) across all header menus, the `/categories` taxonomy page, occasion badges, and search dropdowns.
+
+### Editing Banners (Top Scrolling Images)
 1. On the **Banners** tab:
    - Click **Add Banner** or **Edit** on an existing banner.
-   - Change the banner title, description, destination link, or upload a new banner image.
-   - Toggle **Active on Storefront** to activate or pause the banner.
+   - Change the banner title, description, destination link, or upload a high-resolution banner image.
+   - Adjust the display order or toggle **Active on Storefront** to activate or pause the banner.
    - Click **Save Banner**.
-2. Cloudflare Pages rebuilds and updates the hero banner slider automatically.
+2. The homepage top scrolling carousel updates immediately with the new images and promotion links.
+
+### Instant Preview & Resetting Overrides
+- **Hybrid Overlay**: All edits made in the admin portal take effect immediately in the browser session and across open tabs with zero delay via the dynamic client manifest.
+- **Reset Defaults**: If you ever want to revert all local browser overrides back to the original baseline seed data, click the **Reset Defaults** button in the admin navbar.
 
 ---
 

@@ -1,5 +1,11 @@
 {
   "name": "md-gifts",
   "compatibility_date": "2025-02-01",
-  "pages_build_output_dir": "out"
+  "pages_build_output_dir": "out",
+  "r2_buckets": [
+    {
+      "binding": "R2_BUCKET",
+      "bucket_name": "md-gifts"
+    }
+  ]
 }

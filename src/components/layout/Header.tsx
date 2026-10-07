@@ -7,6 +7,7 @@ import { Search, ShoppingCart, Menu, ChevronDown, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { useCart } from "@/context/CartContext";
 import { CATEGORIES, OCCASIONS, RECIPIENTS } from "@/data/categories";
+import { useLiveCatalog } from "@/context/CatalogContext";
 
 interface HeaderProps {
   onOpenSidebar: () => void;
@@ -15,6 +16,12 @@ interface HeaderProps {
 export function Header({ onOpenSidebar }: HeaderProps) {
   const router = useRouter();
   const { totalQuantity } = useCart();
+  const { categories: liveCategories, occasions: liveOccasions, recipients: liveRecipients } = useLiveCatalog();
+
+  const categoriesList = liveCategories && liveCategories.length > 0 ? liveCategories : CATEGORIES;
+  const occasionsList = liveOccasions && liveOccasions.length > 0 ? liveOccasions : OCCASIONS;
+  const recipientsList = liveRecipients && liveRecipients.length > 0 ? liveRecipients : RECIPIENTS;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -94,7 +101,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
 
             {activeDropdown === "occasions" && (
               <div className="absolute top-full left-0 w-72 mt-2 p-3 bg-white rounded-xl shadow-xl border border-[#EDE2DA] grid grid-cols-2 gap-1 animate-fade-in z-50">
-                {OCCASIONS.map((item) => (
+                {occasionsList.map((item) => (
                   <Link
                     key={item.slug}
                     href={`/categories/${item.slug}`}
@@ -129,7 +136,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
 
             {activeDropdown === "recipients" && (
               <div className="absolute top-full left-0 w-64 mt-2 p-3 bg-white rounded-xl shadow-xl border border-[#EDE2DA] flex flex-col gap-1 animate-fade-in z-50">
-                {RECIPIENTS.map((item) => (
+                {recipientsList.map((item) => (
                   <Link
                     key={item.slug}
                     href={`/categories/${item.slug}`}
@@ -171,7 +178,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
                 >
                   All Categories Overview →
                 </Link>
-                {CATEGORIES.map((item) => (
+                {categoriesList.map((item) => (
                   <Link
                     key={item.slug}
                     href={`/categories/${item.slug}`}

@@ -22,7 +22,7 @@ function jsonResponse(data: unknown, status = 200): Response {
  * Returns all banners for admin dashboard
  */
 export async function onRequestGet(context: { request: Request; env: CombinedEnv }): Promise<Response> {
-  const auth = verifyAdminAuth(context.request, context.env);
+  const auth = await verifyAdminAuth(context.request, context.env);
   if (!auth.authorized) {
     return jsonResponse({ error: auth.error }, auth.status);
   }
@@ -50,7 +50,7 @@ export async function onRequestGet(context: { request: Request; env: CombinedEnv
  * Creates a new banner
  */
 export async function onRequestPost(context: { request: Request; env: CombinedEnv }): Promise<Response> {
-  const auth = verifyAdminAuth(context.request, context.env);
+  const auth = await verifyAdminAuth(context.request, context.env);
   if (!auth.authorized) {
     return jsonResponse({ error: auth.error }, auth.status);
   }
@@ -99,7 +99,7 @@ export async function onRequestPost(context: { request: Request; env: CombinedEn
  * Updates an existing banner
  */
 export async function onRequestPut(context: { request: Request; env: CombinedEnv }): Promise<Response> {
-  const auth = verifyAdminAuth(context.request, context.env);
+  const auth = await verifyAdminAuth(context.request, context.env);
   if (!auth.authorized) {
     return jsonResponse({ error: auth.error }, auth.status);
   }
@@ -153,7 +153,7 @@ export async function onRequestPut(context: { request: Request; env: CombinedEnv
  * Deletes a banner
  */
 export async function onRequestDelete(context: { request: Request; env: CombinedEnv }): Promise<Response> {
-  const auth = verifyAdminAuth(context.request, context.env);
+  const auth = await verifyAdminAuth(context.request, context.env);
   if (!auth.authorized) {
     return jsonResponse({ error: auth.error }, auth.status);
   }

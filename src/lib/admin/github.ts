@@ -23,11 +23,19 @@ export function isAllowedRepoPath(path: string): boolean {
 
   const normalized = path.replace(/^\/+/, "");
 
-  if (normalized === "content/products.json" || normalized === "content/banners.json") {
+  if (
+    normalized === "content/products.json" ||
+    normalized === "content/banners.json" ||
+    normalized === "content/categories.json"
+  ) {
     return true;
   }
 
-  if (normalized.startsWith("public/uploads/products/") || normalized.startsWith("public/uploads/banners/")) {
+  if (
+    normalized.startsWith("public/uploads/products/") ||
+    normalized.startsWith("public/uploads/banners/") ||
+    normalized.startsWith("public/uploads/categories/")
+  ) {
     return validateUploadPath(normalized).isValid;
   }
 

@@ -6,12 +6,15 @@ import { ChevronRight, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { Product, FilterState } from "@/types/catalog";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { FilterSidebar } from "@/components/catalog/FilterSidebar";
+import { useLiveCatalog } from "@/context/CatalogContext";
 
 interface CategoryViewProps {
   title: string;
   description: string;
   breadcrumbLabel: string;
   initialProducts: Product[];
+  categorySlug?: string;
+  taxonomyType?: "category" | "occasion" | "recipient";
 }
 
 export function CategoryView({
@@ -19,7 +22,16 @@ export function CategoryView({
   description,
   breadcrumbLabel,
   initialProducts,
+  categorySlug,
+  taxonomyType = "category",
 }: CategoryViewProps) {
+  const {
+    products: liveProducts,
+    getProductsByCategory,
+    getProductsByOccasion,
+    getProductsByRecipient,
+  } = useLiveCatalog();
+
   const [isFilterOpenMobile, setIsFilterOpenMobile] = useState(false);
   const [filterState, setFilterState] = useState<FilterState>({
     minPrice: 0,
@@ -31,9 +43,31 @@ export function CategoryView({
     sort: "featured",
   });
 
+  const baseProductList = useMemo(() => {
+    if (!liveProducts || liveProducts.length === 0) return initialProducts;
+    if (categorySlug) {
+      if (taxonomyType === "occasion") return getProductsByOccasion(categorySlug);
+      if (taxonomyType === "recipient") return getProductsByRecipient(categorySlug);
+      return getProductsByCategory(categorySlug);
+    }
+    if (breadcrumbLabel === "All Gifts") {
+      return liveProducts;
+    }
+    return initialProducts;
+  }, [
+    liveProducts,
+    categorySlug,
+    taxonomyType,
+    breadcrumbLabel,
+    initialProducts,
+    getProductsByCategory,
+    getProductsByOccasion,
+    getProductsByRecipient,
+  ]);
+
   // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
-    return initialProducts
+    return baseProductList
       .filter((p) => {
         // Price filter
         if (filterState.maxPrice && p.price > filterState.maxPrice) {

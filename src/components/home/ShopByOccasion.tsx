@@ -1,58 +1,15 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-
-interface OccasionVisual {
-  slug: string;
-  name: string;
-  image: string;
-}
-
-const OCCASIONS_DATA: OccasionVisual[] = [
-  {
-    slug: "couples",
-    name: "Couples",
-    image: "/images/occasions/couples.png",
-  },
-  {
-    slug: "birthdays",
-    name: "Birthdays",
-    image: "/images/occasions/birthdays.png",
-  },
-  {
-    slug: "anniversaries",
-    name: "Anniversaries",
-    image: "/images/occasions/anniversaries.png",
-  },
-  {
-    slug: "families",
-    name: "Families",
-    image: "/images/occasions/families.png",
-  },
-  {
-    slug: "festivals",
-    name: "Festivals",
-    image: "/images/occasions/festivals.png",
-  },
-  {
-    slug: "friends",
-    name: "Friends",
-    image: "/images/occasions/friends.png",
-  },
-  {
-    slug: "new-baby",
-    name: "New Baby",
-    image: "/images/occasions/new-baby.png",
-  },
-  {
-    slug: "housewarming",
-    name: "Housewarming",
-    image: "/images/occasions/housewarming.png",
-  },
-];
+import { useLiveCatalog } from "@/context/CatalogContext";
 
 export function ShopByOccasion() {
+  const { occasions } = useLiveCatalog();
+  const displayOccasions = occasions.slice(0, 8);
+
   return (
     <section className="py-5 sm:py-8 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,7 +29,7 @@ export function ShopByOccasion() {
 
         {/* Occasion Cards - 4 columns on mobile, 8 on desktop */}
         <div className="grid grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3 lg:gap-3.5">
-          {OCCASIONS_DATA.map((occ) => (
+          {displayOccasions.map((occ) => (
             <Link
               key={occ.slug}
               href={`/categories/${occ.slug}`}

@@ -121,6 +121,8 @@ export default async function CategoryPage({ params }: PageProps) {
         description={taxonomy.description}
         breadcrumbLabel={taxonomy.name}
         initialProducts={products}
+        categorySlug={taxonomy.slug}
+        taxonomyType={taxonomy.type}
       />
     </SiteLayout>
   );

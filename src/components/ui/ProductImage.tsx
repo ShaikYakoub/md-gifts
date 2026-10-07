@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import Image from "next/image";
 
 interface ProductImageProps {
   slug?: string;
   name?: string;
   categorySlug?: string;
+  image?: string;
   className?: string;
   aspectRatio?: "square" | "portrait" | "wide";
   priority?: boolean;
@@ -13,15 +15,38 @@ export function ProductImage({
   slug = "",
   name = "",
   categorySlug = "frames",
+  image = "",
   className = "",
   aspectRatio = "portrait",
+  priority = false,
 }: ProductImageProps) {
+  const [hasImageError, setHasImageError] = useState(false);
+
   const ratioClasses =
     aspectRatio === "square"
       ? "aspect-square"
       : aspectRatio === "wide"
       ? "aspect-[4/3]"
       : "aspect-[4/5]";
+
+  // If real image URL is provided, display high-fidelity Next.js Image
+  if (image && !hasImageError) {
+    return (
+      <div
+        className={`relative w-full overflow-hidden bg-[#FAF5F0] flex items-center justify-center select-none ${ratioClasses} ${className}`}
+      >
+        <Image
+          src={image}
+          alt={name || slug || "Product visual"}
+          fill
+          priority={priority}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover object-center transition-transform duration-300"
+          onError={() => setHasImageError(true)}
+        />
+      </div>
+    );
+  }
 
   // Match visual styles based on slug or name
   const isLed = slug.includes("led") || name.toLowerCase().includes("led");

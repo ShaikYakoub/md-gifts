@@ -1,7 +1,7 @@
 import { verifyAdminAuth, AdminEnv } from "../../../src/lib/admin/auth";
 
 export async function onRequestGet(context: { request: Request; env: AdminEnv }): Promise<Response> {
-  const auth = verifyAdminAuth(context.request, context.env);
+  const auth = await verifyAdminAuth(context.request, context.env);
 
   if (!auth.authorized) {
     return new Response(JSON.stringify({ authenticated: false, error: auth.error }), {
