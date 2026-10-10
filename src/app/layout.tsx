@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { CatalogProvider } from "@/context/CatalogContext";
@@ -8,12 +8,14 @@ const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-serif",
+const outfit = Outfit({
+  variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
+  weight: ["500", "600", "700", "800"],
 });
 
 export const viewport: Viewport = {
@@ -78,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakarta.variable} ${playfair.variable} scroll-smooth`}>
+    <html lang="en" className={`${plusJakarta.variable} ${outfit.variable} scroll-smooth`}>
       <body className="font-sans antialiased bg-[#FAF7F4] text-[#221C1D] min-h-screen flex flex-col selection:bg-[#FBE8E7] selection:text-[#C85250]">
         <CatalogProvider>
           <CartProvider>

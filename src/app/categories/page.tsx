@@ -29,7 +29,7 @@ export default function CategoriesPage() {
 
         {/* Header */}
         <div className="mb-10 text-center max-w-xl mx-auto">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#221C1D]">
+          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#221C1D] tracking-tight">
             All Categories
           </h1>
           <p className="mt-2 text-xs sm:text-sm text-[#6C5E61]">

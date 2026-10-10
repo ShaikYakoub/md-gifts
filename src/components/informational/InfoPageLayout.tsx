@@ -59,7 +59,7 @@ export function InfoPageLayout({
 
             <div className="lg:col-span-9 bg-white p-6 sm:p-10 rounded-2xl border border-[#EDE2DA] shadow-xs">
               <div className="pb-6 border-b border-[#EFE4DC] mb-6">
-                <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D]">
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#221C1D] tracking-tight">
                   {title}
                 </h1>
                 {subtitle && (
@@ -75,7 +75,7 @@ export function InfoPageLayout({
         ) : (
           <div className="bg-white p-6 sm:p-10 rounded-2xl border border-[#EDE2DA] shadow-xs">
             <div className="pb-6 border-b border-[#EFE4DC] mb-6">
-              <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D]">
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#221C1D] tracking-tight">
                 {title}
               </h1>
               {subtitle && (

@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, ShoppingCart, Menu, ChevronDown, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { useCart } from "@/context/CartContext";
 import { CATEGORIES, OCCASIONS, RECIPIENTS } from "@/data/categories";
 import { useLiveCatalog } from "@/context/CatalogContext";
+import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
 interface HeaderProps {
   onOpenSidebar: () => void;
@@ -15,6 +17,7 @@ interface HeaderProps {
 
 export function Header({ onOpenSidebar }: HeaderProps) {
   const router = useRouter();
+  const whatsappUrl = getGeneralWhatsAppUrl();
   const { totalQuantity } = useCart();
   const { categories: liveCategories, occasions: liveOccasions, recipients: liveRecipients } = useLiveCatalog();
 
@@ -52,7 +55,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
         {/* Mobile Hamburger on LEFT (Items 1, 4) */}
-        <div className="flex md:hidden items-center w-10 shrink-0">
+        <div className="flex md:hidden items-center w-20 shrink-0">
           <button
             type="button"
             onClick={onOpenSidebar}
@@ -67,9 +70,6 @@ export function Header({ onOpenSidebar }: HeaderProps) {
         <div className="flex-1 md:flex-initial flex items-center justify-center md:justify-start shrink-0">
           <Logo />
         </div>
-
-        {/* Mobile balancing spacer to keep logo visually dead-center */}
-        <div className="w-10 md:hidden shrink-0" aria-hidden="true" />
 
         {/* Desktop Navigation Links with Dropdowns */}
         <nav className="hidden md:flex items-center gap-1 lg:gap-2 text-[15px] font-medium text-[#4A3E40]">
@@ -218,11 +218,23 @@ export function Header({ onOpenSidebar }: HeaderProps) {
           )}
         </form>
 
-        {/* Desktop-only Right Actions: Cart (Item 3: hidden on mobile) */}
-        <div className="hidden md:flex items-center gap-2 shrink-0">
+        {/* Right Actions: Contact Button (WhatsApp) + Desktop Cart */}
+        <div className="flex items-center justify-end w-20 md:w-auto gap-2 sm:gap-3 shrink-0">
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20BA5C] text-white px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 shrink-0"
+            aria-label="Contact us on WhatsApp"
+          >
+            <WhatsAppIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white shrink-0" />
+            <span>Contact</span>
+          </a>
+
+          {/* Desktop-only Right Actions: Cart */}
           <Link
             href="/cart"
-            className="relative p-2 text-[#4A3E40] hover:text-[#C85250] hover:bg-[#FAF2EE] rounded-full transition-colors flex items-center justify-center cursor-pointer"
+            className="hidden md:flex relative p-2 text-[#4A3E40] hover:text-[#C85250] hover:bg-[#FAF2EE] rounded-full transition-colors items-center justify-center cursor-pointer"
             aria-label={`Shopping cart with ${totalQuantity} items`}
           >
             <ShoppingCart className="w-5.5 h-5.5 stroke-[1.8]" />

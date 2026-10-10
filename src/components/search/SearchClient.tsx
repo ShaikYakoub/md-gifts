@@ -141,7 +141,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#EFE4DC] mb-6">
             <div>
-              <h1 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+              <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
                 Search Results for &ldquo;{query}&rdquo;
               </h1>
               <p className="text-xs sm:text-sm text-[#7A6D70] mt-0.5">
@@ -272,7 +272,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
       ) : (
         /* Empty Query State: Suggested Discoveries */
         <div className="py-8">
-          <h2 className="font-serif text-lg sm:text-xl font-bold text-[#221C1D] mb-4">
+          <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D] tracking-tight mb-4">
             Trending Searches You Might Like
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-6">

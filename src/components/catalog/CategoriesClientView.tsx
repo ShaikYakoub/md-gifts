@@ -43,7 +43,7 @@ export function CategoriesClientView() {
       {/* Shop by Occasion Section */}
       <div className="mb-16">
         <div className="flex items-center justify-between mb-6 pb-2 border-b border-[#EFE4DC]">
-          <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
             Shop by Occasion
           </h2>
         </div>
@@ -85,7 +85,7 @@ export function CategoriesClientView() {
       {/* Shop by Recipient Section */}
       <div>
         <div className="flex items-center justify-between mb-6 pb-2 border-b border-[#EFE4DC]">
-          <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
             Shop by Recipient
           </h2>
         </div>

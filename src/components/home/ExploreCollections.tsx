@@ -39,12 +39,9 @@ export function ExploreCollections() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div>
-            <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
               Explore Collections
             </h2>
-            <p className="text-xs sm:text-sm text-[#736366] mt-0.5">
-              Curated collections crafted for every magical milestone
-            </p>
           </div>
           {/* View All Pill-Shaped Button (Items 17-18) */}
           <Link

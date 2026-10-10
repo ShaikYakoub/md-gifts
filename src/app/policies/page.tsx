@@ -27,7 +27,7 @@ export default function PoliciesPage() {
 
         {/* Page Header */}
         <div className="pb-6 border-b border-[#EFE4DC] mb-8">
-          <h1 className="font-serif text-2xl sm:text-4xl font-bold text-[#221C1D]">
+          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#221C1D] tracking-tight">
             Terms & Policies
           </h1>
           <p className="text-xs sm:text-sm text-[#7A6D70] mt-2 max-w-2xl leading-relaxed">
@@ -76,7 +76,7 @@ export default function PoliciesPage() {
                 <FileText className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
                   Terms & Conditions
                 </h2>
                 <p className="text-xs text-[#8C7D80]">Official order & service guidelines</p>
@@ -128,7 +128,7 @@ export default function PoliciesPage() {
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
                   Privacy Policy
                 </h2>
                 <p className="text-xs text-[#8C7D80]">Confidentiality & image protection guarantee</p>
@@ -173,7 +173,7 @@ export default function PoliciesPage() {
                 <Truck className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
                   Shipping & Delivery Policy
                 </h2>
                 <p className="text-xs text-[#8C7D80]">Timelines, courier partners & rates across India</p>
@@ -230,7 +230,7 @@ export default function PoliciesPage() {
                 <RefreshCw className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
                   Refund & Cancellation Policy
                 </h2>
                 <p className="text-xs text-[#8C7D80]">100% free replacement guarantee for transit damage</p>

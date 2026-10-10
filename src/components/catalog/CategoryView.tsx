@@ -132,14 +132,14 @@ export function CategoryView({
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#EFE4DC] mb-8">
         <div>
           <div className="flex items-baseline gap-3">
-            <h1 className="font-serif text-2xl sm:text-4xl font-bold text-[#221C1D]">
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#221C1D] tracking-tight">
               {title}
             </h1>
             <span className="text-xs sm:text-sm font-medium text-[#7A6D70]">
               ({filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"})
             </span>
           </div>
-          <p className="mt-1.5 text-xs sm:text-sm text-[#6C5E61] max-w-2xl">
+          <p className="mt-1 text-xs text-[#7A6D70] max-w-xl leading-relaxed">
             {description}
           </p>
         </div>

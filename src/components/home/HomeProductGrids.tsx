@@ -52,7 +52,7 @@ export function HomeProductGrids({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
                 Trending Gifts
               </h2>
             </div>
@@ -67,7 +67,7 @@ export function HomeProductGrids({
 
           <div className="flex sm:grid sm:grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-6 overflow-x-auto pb-3 sm:pb-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
             {trendingProducts.map((product, idx) => (
-              <div key={product.id} className="w-[68vw] xs:w-[54vw] sm:w-auto shrink-0 flex flex-col">
+              <div key={product.id} className="w-[calc(50vw-23px)] sm:w-auto shrink-0 flex flex-col">
                 <ProductCard product={product} priority={idx < 4} />
               </div>
             ))}
@@ -83,12 +83,9 @@ export function HomeProductGrids({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
                 Personalized Favourites
               </h2>
-              <p className="text-xs sm:text-sm text-[#7A6D70] mt-0.5">
-                Custom engraved portraits & glowing night lights
-              </p>
             </div>
             <Link
               href="/categories/personalized-gifts"
@@ -101,7 +98,7 @@ export function HomeProductGrids({
 
           <div className="flex sm:grid sm:grid-cols-3 gap-3.5 sm:gap-6 overflow-x-auto pb-3 sm:pb-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
             {personalizedFavourites.map((product) => (
-              <div key={product.id} className="w-[68vw] xs:w-[54vw] sm:w-auto shrink-0 flex flex-col">
+              <div key={product.id} className="w-[calc(50vw-23px)] sm:w-auto shrink-0 flex flex-col">
                 <ProductCard product={product} />
               </div>
             ))}
@@ -114,12 +111,9 @@ export function HomeProductGrids({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
                 Under ₹499
               </h2>
-              <p className="text-xs sm:text-sm text-[#7A6D70] mt-0.5">
-                Thoughtful and budget-friendly custom keepsakes
-              </p>
             </div>
             <Link
               href="/shop?maxPrice=499"
@@ -132,7 +126,7 @@ export function HomeProductGrids({
 
           <div className="flex sm:grid sm:grid-cols-3 gap-3.5 sm:gap-6 overflow-x-auto pb-3 sm:pb-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
             {under499Products.map((product) => (
-              <div key={product.id} className="w-[68vw] xs:w-[54vw] sm:w-auto shrink-0 flex flex-col">
+              <div key={product.id} className="w-[calc(50vw-23px)] sm:w-auto shrink-0 flex flex-col">
                 <ProductCard product={product} />
               </div>
             ))}

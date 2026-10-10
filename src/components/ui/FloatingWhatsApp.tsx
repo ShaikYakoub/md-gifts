@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MessageCircle } from "lucide-react";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { usePathname } from "next/navigation";
 import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -26,7 +26,7 @@ export function FloatingWhatsApp() {
         aria-label="Chat with us on WhatsApp"
         className={`fixed right-4 ${bottomClass} z-40 bg-[#25D366] hover:bg-[#20BA5C] text-white p-3 sm:p-3.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 flex items-center justify-center group`}
       >
-        <MessageCircle className="w-6 h-6 stroke-[2.2] fill-current" />
+        <WhatsAppIcon className="w-7 h-7 sm:w-8 sm:h-8 fill-white" />
         <span className="sr-only">Chat on WhatsApp</span>
       </a>
     </aside>

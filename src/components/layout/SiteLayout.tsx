@@ -6,7 +6,6 @@ import { Header } from "@/components/layout/Header";
 import { MobileSidebar } from "@/components/layout/MobileSidebar";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
-import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 
 interface SiteLayoutProps {
   children: React.ReactNode;
@@ -27,7 +26,6 @@ export function SiteLayout({ children, showFooter = true }: SiteLayoutProps) {
       <MobileSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <main className="flex-1">{children}</main>
       {shouldRenderFooter && <Footer />}
-      <FloatingWhatsApp />
       <MobileBottomNav />
     </div>
   );

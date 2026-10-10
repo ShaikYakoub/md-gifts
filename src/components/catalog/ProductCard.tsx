@@ -57,16 +57,16 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           {/* Horizontal divider kept (Item 26) */}
           <div className="w-full h-px bg-[#ECE2DA] mb-2.5" />
 
-          {/* Pricing order: MRP (strikethrough) -> Discount % -> Selling Price (Items 27-29) */}
-          <div className="flex items-center gap-2 flex-wrap">
+          {/* Pricing order: Marked off price (left) -> Real price -> Discount tag */}
+          <div className="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
             <span className="text-xs text-[#8C7D80] line-through font-normal">
               ₹{mrp.toLocaleString("en-IN")}
             </span>
+            <span className="text-sm sm:text-base font-bold text-[#221C1D]">
+              ₹{product.price.toLocaleString("en-IN")}
+            </span>
             <span className="text-[11px] font-bold text-[#1E7238] bg-[#EBF7EE] px-1.5 py-0.5 rounded">
               {discountPercent}% OFF
-            </span>
-            <span className="text-sm sm:text-base font-bold text-[#221C1D] ml-auto">
-              ₹{product.price.toLocaleString("en-IN")}
             </span>
           </div>
         </div>

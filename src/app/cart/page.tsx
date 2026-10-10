@@ -16,6 +16,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { useCart } from "@/context/CartContext";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { AutoExpandingTextarea } from "@/components/ui/AutoExpandingTextarea";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { buildOrderWhatsAppUrl } from "@/lib/whatsapp";
 
 interface FormErrors {
@@ -86,7 +87,7 @@ export default function CartPage() {
             <CheckCircle2 className="w-8 h-8" />
           </div>
 
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D]">
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#221C1D] tracking-tight">
             Order Ready on WhatsApp!
           </h1>
           <p className="text-sm text-[#5C4F51] mt-3 leading-relaxed">
@@ -100,7 +101,7 @@ export default function CartPage() {
               rel="noopener noreferrer"
               className="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5C] text-white py-3.5 px-6 rounded-xl font-semibold text-base transition-colors shadow-md cursor-pointer"
             >
-              <MessageCircle className="w-5 h-5 fill-current" />
+              <WhatsAppIcon className="w-5 h-5 fill-white" />
               <span>Send Order on WhatsApp</span>
             </a>
 
@@ -122,7 +123,7 @@ export default function CartPage() {
         {/* Cart Header */}
         <div className="flex items-center justify-between pb-4 border-b border-[#EFE4DC] mb-6">
           <div className="flex items-baseline gap-2">
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D]">
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#221C1D] tracking-tight">
               Your Cart
             </h1>
             <span className="text-sm font-medium text-[#7A6D70]">
@@ -327,7 +328,7 @@ export default function CartPage() {
             <div className="w-16 h-16 rounded-full bg-[#FAF0EC] text-[#C85250] flex items-center justify-center mx-auto mb-4">
               <ShoppingBag className="w-8 h-8 stroke-[1.8]" />
             </div>
-            <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#221C1D]">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
               Your Cart is Empty
             </h2>
             <p className="text-xs sm:text-sm text-[#7A6D70] mt-1.5 mb-6 max-w-xs mx-auto">

@@ -8,10 +8,16 @@ import {
   Users,
   Info,
   HelpCircle,
+  Phone,
 } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { WhatsAppLogo } from "@/components/ui/WhatsAppLogo";
+import { GmailLogo } from "@/components/ui/GmailLogo";
+import { InstagramLogo } from "@/components/ui/InstagramLogo";
+import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
 export function Footer() {
+  const whatsappUrl = getGeneralWhatsAppUrl();
   const shopLinks = [
     { label: "All Gifts", href: "/shop" },
     { label: "Photo Frames", href: "/categories/frames" },
@@ -56,8 +62,8 @@ export function Footer() {
   return (
     <footer className="bg-[#FAF4F0] border-t border-[#EDE1D7] text-[#4A3E40] pt-12 pb-32 md:pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Brand & Instagram Only (Requirements 119-124) */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between pb-8 border-b border-[#E8DDD4] gap-6">
+        {/* Brand & Contact Section (Phone, Email, WhatsApp, Instagram) */}
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between pb-8 border-b border-[#E8DDD4] gap-6">
           <div>
             <Logo size="lg" />
             <p className="mt-2 text-sm text-[#6C5F61] max-w-sm">
@@ -65,20 +71,56 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Rectangular Instagram Button with Icon + Label (Requirements 121, 122) */}
-          <div>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-[#E8DDD4] text-[#4A3E40] hover:text-[#C85250] hover:border-[#C85250] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
-              aria-label="Follow us on Instagram"
-            >
-              <svg className="w-4 h-4 fill-current text-[#E1306C]" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-              </svg>
-              <span>Instagram</span>
-            </a>
+          {/* Contact Section */}
+          <div className="w-full lg:w-auto">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#8A7B7E] mb-2.5">
+              Contact & Connect
+            </h4>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+              {/* WhatsApp */}
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 h-9 sm:h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#1FA34D] hover:border-[#25D366] hover:bg-[#F4FAF5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
+                aria-label="Chat with us on WhatsApp"
+              >
+                <WhatsAppLogo className="w-4.5 h-4.5 shrink-0" />
+                <span className="leading-none">WhatsApp</span>
+              </a>
+
+              {/* Gmail (replacing raw email address) */}
+              <a
+                href="mailto:support@giftly.in"
+                className="group inline-flex items-center gap-2 h-9 sm:h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#EA4335] hover:border-[#EA4335] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
+                aria-label="Email support@giftly.in via Gmail"
+              >
+                <GmailLogo className="w-4.5 h-4.5 shrink-0" />
+                <span className="leading-none">Gmail</span>
+              </a>
+
+              {/* Instagram */}
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 h-9 sm:h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#E1306C] hover:border-[#E1306C] hover:bg-[#FDF7FA] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
+                aria-label="Follow us on Instagram"
+              >
+                <InstagramLogo className="w-4.5 h-4.5 shrink-0" />
+                <span className="leading-none">Instagram</span>
+              </a>
+
+              {/* Phone */}
+              <a
+                href="tel:+919876543210"
+                className="group inline-flex items-center gap-2 h-9 sm:h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#C85250] hover:border-[#C85250] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
+                aria-label="Call +91 98765 43210"
+              >
+                <Phone className="w-4 h-4 text-[#C85250] shrink-0" />
+                <span className="leading-none">+91 98765 43210</span>
+              </a>
+            </div>
           </div>
         </div>
 

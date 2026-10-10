@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   X,
   Search,
@@ -21,7 +21,6 @@ import {
   HelpCircle,
   Info,
   FileText,
-  MessageCircle,
   User,
   Cake,
   Flame,
@@ -36,6 +35,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { OCCASIONS, RECIPIENTS } from "@/data/categories";
 
 interface MobileSidebarProps {
@@ -69,10 +69,47 @@ const RECIPIENT_ICONS: Record<string, React.ElementType> = {
 
 export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
   const [isOccasionsOpen, setIsOccasionsOpen] = useState(true);
   const [isRecipientsOpen, setIsRecipientsOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-expand accordion if current page is inside it
+  useEffect(() => {
+    if (OCCASIONS.some((occ) => pathname === `/categories/${occ.slug}`)) {
+      setIsOccasionsOpen(true);
+    }
+    if (RECIPIENTS.some((rec) => pathname === `/categories/${rec.slug}`)) {
+      setIsRecipientsOpen(true);
+    }
+  }, [pathname]);
+
+  const isLinkActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href;
+  };
+
+  const getLinkClasses = (href: string) => {
+    const active = isLinkActive(href);
+    return `flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
+      active
+        ? "bg-[#FAF0EC] text-[#C85250] font-medium"
+        : "text-[#3E3335] hover:bg-[#FAF4F0] hover:text-[#C85250]"
+    }`;
+  };
+
+  const getIconClass = (href: string) => {
+    return `w-4 h-4 transition-colors ${
+      isLinkActive(href) ? "text-[#C85250]" : "text-[#7A6E70]"
+    }`;
+  };
+
+  const getChevronClass = (href: string) => {
+    return `w-4 h-4 transition-colors ${
+      isLinkActive(href) ? "text-[#C85250]" : "text-[#BDB2B4]"
+    }`;
+  };
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -158,118 +195,122 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
           <Link
             href="/"
             onClick={onClose}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#FAF0EC] text-[#C85250] font-medium"
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
+              pathname === "/"
+                ? "bg-[#FAF0EC] text-[#C85250] font-medium"
+                : "text-[#3E3335] hover:bg-[#FAF4F0] hover:text-[#C85250]"
+            }`}
           >
-            <Home className="w-4 h-4 text-[#C85250]" />
+            <Home className={`w-4 h-4 transition-colors ${pathname === "/" ? "text-[#C85250]" : "text-[#7A6E70]"}`} />
             <span>Home</span>
           </Link>
 
           <Link
             href="/shop"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/shop")}
           >
             <div className="flex items-center gap-3">
-              <LayoutGrid className="w-4 h-4 text-[#7A6E70]" />
+              <LayoutGrid className={getIconClass("/shop")} />
               <span>All Gifts</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/shop")} />
           </Link>
 
           <Link
             href="/categories/personalized-gifts"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/categories/personalized-gifts")}
           >
             <div className="flex items-center gap-3">
-              <PenLine className="w-4 h-4 text-[#7A6E70]" />
+              <PenLine className={getIconClass("/categories/personalized-gifts")} />
               <span>Personalized Gifts</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/categories/personalized-gifts")} />
           </Link>
 
           <Link
             href="/categories/frames"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/categories/frames")}
           >
             <div className="flex items-center gap-3">
-              <ImageIcon className="w-4 h-4 text-[#7A6E70]" />
+              <ImageIcon className={getIconClass("/categories/frames")} />
               <span>Frames</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/categories/frames")} />
           </Link>
 
           <Link
             href="/categories/mugs"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/categories/mugs")}
           >
             <div className="flex items-center gap-3">
-              <Coffee className="w-4 h-4 text-[#7A6E70]" />
+              <Coffee className={getIconClass("/categories/mugs")} />
               <span>Mugs</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/categories/mugs")} />
           </Link>
 
           <Link
             href="/categories/keychains"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/categories/keychains")}
           >
             <div className="flex items-center gap-3">
-              <Key className="w-4 h-4 text-[#7A6E70]" />
+              <Key className={getIconClass("/categories/keychains")} />
               <span>Keychains</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/categories/keychains")} />
           </Link>
 
           <Link
             href="/categories/home-decor"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/categories/home-decor")}
           >
             <div className="flex items-center gap-3">
-              <DecorIcon className="w-4 h-4 text-[#7A6E70]" />
+              <DecorIcon className={getIconClass("/categories/home-decor")} />
               <span>Home Decor</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/categories/home-decor")} />
           </Link>
 
           <Link
             href="/categories/gift-boxes"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/categories/gift-boxes")}
           >
             <div className="flex items-center gap-3">
-              <Gift className="w-4 h-4 text-[#7A6E70]" />
+              <Gift className={getIconClass("/categories/gift-boxes")} />
               <span>Gift Boxes</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/categories/gift-boxes")} />
           </Link>
 
           <Link
             href="/shop?filter=new"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/shop?filter=new")}
           >
             <div className="flex items-center gap-3">
-              <Star className="w-4 h-4 text-[#7A6E70]" />
+              <Star className={getIconClass("/shop?filter=new")} />
               <span>New Arrivals</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/shop?filter=new")} />
           </Link>
 
           <Link
             href="/shop?filter=trending"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/shop?filter=trending")}
           >
             <div className="flex items-center gap-3">
-              <TrendingUp className="w-4 h-4 text-[#7A6E70]" />
+              <TrendingUp className={getIconClass("/shop?filter=trending")} />
               <span>Best Sellers</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/shop?filter=trending")} />
           </Link>
 
           <div className="pt-2 pb-1 border-t border-[#F0E6DE] my-2" />
@@ -291,14 +332,19 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
               <div className="pl-2 pr-1 py-1 space-y-0.5">
                 {OCCASIONS.map((occ) => {
                   const OccIcon = OCCASION_ICONS[occ.slug] || Sparkles;
+                  const active = pathname === `/categories/${occ.slug}`;
                   return (
                     <Link
                       key={occ.slug}
                       href={`/categories/${occ.slug}`}
                       onClick={onClose}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[#5C4F51] hover:text-[#C85250] hover:bg-[#FAF4F0] transition-colors"
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer ${
+                        active
+                          ? "bg-[#FAF0EC] text-[#C85250] font-medium"
+                          : "text-[#5C4F51] hover:text-[#C85250] hover:bg-[#FAF4F0]"
+                      }`}
                     >
-                      <OccIcon className="w-4 h-4 text-[#C85250]/80 shrink-0" />
+                      <OccIcon className={`w-4 h-4 shrink-0 ${active ? "text-[#C85250]" : "text-[#C85250]/80"}`} />
                       <span>{occ.name}</span>
                     </Link>
                   );
@@ -324,14 +370,19 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
               <div className="pl-2 pr-1 py-1 space-y-0.5">
                 {RECIPIENTS.map((rec) => {
                   const RecIcon = RECIPIENT_ICONS[rec.slug] || Gift;
+                  const active = pathname === `/categories/${rec.slug}`;
                   return (
                     <Link
                       key={rec.slug}
                       href={`/categories/${rec.slug}`}
                       onClick={onClose}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-[#5C4F51] hover:text-[#C85250] hover:bg-[#FAF4F0] transition-colors"
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer ${
+                        active
+                          ? "bg-[#FAF0EC] text-[#C85250] font-medium"
+                          : "text-[#5C4F51] hover:text-[#C85250] hover:bg-[#FAF4F0]"
+                      }`}
                     >
-                      <RecIcon className="w-4 h-4 text-[#C85250]/80 shrink-0" />
+                      <RecIcon className={`w-4 h-4 shrink-0 ${active ? "text-[#C85250]" : "text-[#C85250]/80"}`} />
                       <span>{rec.name}</span>
                     </Link>
                   );
@@ -346,49 +397,49 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
           <Link
             href="/shop"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/shop")}
           >
             <div className="flex items-center gap-3">
-              <Gift className="w-4 h-4 text-[#7A6E70]" />
+              <Gift className={getIconClass("/shop")} />
               <span>Browse All Gifts</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/shop")} />
           </Link>
 
           <Link
             href="/about"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/about")}
           >
             <div className="flex items-center gap-3">
-              <Info className="w-4 h-4 text-[#7A6E70]" />
+              <Info className={getIconClass("/about")} />
               <span>About Us</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/about")} />
           </Link>
 
           <Link
             href="/faq"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/faq")}
           >
             <div className="flex items-center gap-3">
-              <HelpCircle className="w-4 h-4 text-[#7A6E70]" />
+              <HelpCircle className={getIconClass("/faq")} />
               <span>Help & FAQ</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/faq")} />
           </Link>
 
           <Link
             href="/policies"
             onClick={onClose}
-            className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#FAF4F0] hover:text-[#C85250] transition-colors"
+            className={getLinkClasses("/policies")}
           >
             <div className="flex items-center gap-3">
-              <FileText className="w-4 h-4 text-[#7A6E70]" />
+              <FileText className={getIconClass("/policies")} />
               <span>Terms & Policies</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-[#BDB2B4]" />
+            <ChevronRight className={getChevronClass("/policies")} />
           </Link>
         </div>
 
@@ -399,9 +450,9 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClose}
-            className="w-full flex items-center justify-center gap-2 bg-[#128C7E] hover:bg-[#075E54] text-white py-3 px-4 rounded-xl font-medium text-sm transition-colors shadow-xs cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5C] text-white py-3 px-4 rounded-xl font-medium text-sm transition-colors shadow-xs cursor-pointer"
           >
-            <MessageCircle className="w-4 h-4" />
+            <WhatsAppIcon className="w-4.5 h-4.5 fill-white" />
             <span>Order & Chat on WhatsApp</span>
           </a>
         </div>
