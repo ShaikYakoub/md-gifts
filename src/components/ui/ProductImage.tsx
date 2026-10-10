@@ -29,8 +29,14 @@ export function ProductImage({
       ? "aspect-[4/3]"
       : "aspect-[4/5]";
 
+  // Check if image is a real uploaded or external image (not non-existent mock /images/products/ paths)
+  const isRealImage =
+    Boolean(image) &&
+    !image.startsWith("/images/products/") &&
+    !hasImageError;
+
   // If real image URL is provided, display high-fidelity Next.js Image
-  if (image && !hasImageError) {
+  if (isRealImage) {
     return (
       <div
         className={`relative w-full overflow-hidden bg-[#FAF5F0] flex items-center justify-center select-none ${ratioClasses} ${className}`}

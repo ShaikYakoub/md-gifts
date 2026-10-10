@@ -3,19 +3,24 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ShoppingBag, Search, ShoppingCart } from "lucide-react";
+import { Home, Compass, Search, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export function MobileBottomNav() {
   const pathname = usePathname();
   const { totalQuantity } = useCart();
 
+  // On product detail pages, the bottom area is dedicated to the Product Action Bar (Buy Now + Add To Cart)
+  if (pathname.startsWith("/product/")) {
+    return null;
+  }
+
   const navItems = [
     { label: "Home", href: "/", icon: Home, isActive: pathname === "/" },
     {
       label: "Shop",
       href: "/shop",
-      icon: ShoppingBag,
+      icon: Compass,
       isActive: pathname.startsWith("/shop") || pathname.startsWith("/categories"),
     },
     {
@@ -27,7 +32,7 @@ export function MobileBottomNav() {
     {
       label: "Cart",
       href: "/cart",
-      icon: ShoppingCart,
+      icon: ShoppingBag,
       isActive: pathname === "/cart",
       badge: totalQuantity,
     },
@@ -35,30 +40,47 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#EFE4DC] px-2 pt-1.5 shadow-[0_-2px_10px_rgba(0,0,0,0.04)]"
-      style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom, 0px))" }}
+      className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40 select-none pointer-events-auto"
+      style={{
+        paddingBottom: "env(safe-area-inset-bottom, 0px)",
+      }}
       aria-label="Mobile Bottom Navigation"
     >
-      <div className="flex items-center justify-around">
+      <div className="flex items-center gap-1 bg-[#18181B]/95 backdrop-blur-xl border border-white/10 shadow-[0_12px_36px_rgba(0,0,0,0.35)] rounded-full p-1.5 transition-all">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
             <Link
               key={item.label}
               href={item.href}
-              className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-colors relative cursor-pointer ${
-                item.isActive ? "text-[#C85250] font-semibold" : "text-[#7A6E70] hover:text-[#221C1D]"
+              className={`relative flex items-center transition-all duration-300 rounded-full cursor-pointer ${
+                item.isActive
+                  ? "bg-gradient-to-r from-[#C85250] to-[#E26D68] text-white px-3.5 py-2 shadow-xs gap-1.5"
+                  : "text-white/60 hover:text-white p-2.5 hover:bg-white/5"
               }`}
             >
-              <div className="relative">
-                <Icon className={`w-5 h-5 ${item.isActive ? "stroke-[2.2]" : "stroke-[1.7]"}`} />
-                {Boolean(item.badge && item.badge > 0) && (
-                  <span className="absolute -top-1.5 -right-2 bg-[#C85250] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              <div className="relative flex items-center justify-center">
+                <Icon
+                  className={`w-4.5 h-4.5 ${
+                    item.isActive ? "stroke-[2.4]" : "stroke-[1.8]"
+                  }`}
+                />
+                {!item.isActive && Boolean(item.badge && item.badge > 0) && (
+                  <span className="absolute -top-1.5 -right-2 bg-[#C85250] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-[#18181B]">
                     {item.badge}
                   </span>
                 )}
               </div>
-              <span className="text-[11px] mt-1 tracking-tight">{item.label}</span>
+              {item.isActive ? (
+                <span className="text-xs font-semibold tracking-tight whitespace-nowrap">
+                  {item.label}
+                  {Boolean(item.badge && item.badge > 0) && (
+                    <span className="ml-1.5 bg-white/20 text-white text-[10px] px-1.5 py-0.2 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </span>
+              ) : null}
             </Link>
           );
         })}

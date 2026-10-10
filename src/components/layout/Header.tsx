@@ -2,8 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Search, ShoppingCart, Menu, ChevronDown, X } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import { Search, ShoppingCart, Menu, ChevronDown, X, SlidersHorizontal } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { useCart } from "@/context/CartContext";
@@ -17,6 +17,8 @@ interface HeaderProps {
 
 export function Header({ onOpenSidebar }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const isProductPage = pathname.startsWith("/product/");
   const whatsappUrl = getGeneralWhatsAppUrl();
   const { totalQuantity } = useCart();
   const { categories: liveCategories, occasions: liveOccasions, recipients: liveRecipients } = useLiveCatalog();
@@ -50,7 +52,9 @@ export function Header({ onOpenSidebar }: HeaderProps) {
 
   return (
     <header
-      className="sticky top-0 z-40 bg-white border-b border-[#EFE4DC] shadow-[0_2px_8px_rgba(0,0,0,0.03)]"
+      className={`sticky top-0 z-40 bg-white border-b border-[#EFE4DC] shadow-[0_2px_8px_rgba(0,0,0,0.03)] ${
+        isProductPage ? "hidden md:block" : ""
+      }`}
       ref={dropdownRef}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
@@ -246,6 +250,43 @@ export function Header({ onOpenSidebar }: HeaderProps) {
           </Link>
         </div>
       </div>
+
+      {/* Mobile Search Bar with Filter Slider (Reference Mockup Style) */}
+      {!isProductPage && pathname !== "/search" && (
+        <div className="md:hidden px-4 pb-2.5 pt-0.5">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="relative flex items-center"
+          >
+          <Search className="w-4 h-4 text-[#8C7D80] absolute left-3.5 pointer-events-none" />
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search gifts, frames, occasions..."
+            className="w-full bg-[#FAF5F1] hover:bg-[#F5ECE5] focus:bg-white text-xs sm:text-sm text-[#221C1D] placeholder-[#8C7D80] pl-10 pr-10 py-2 rounded-full border border-[#EDE0D6] focus:border-[#C85250] outline-none transition-all shadow-2xs"
+          />
+          {searchQuery ? (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2.5 text-[#8C7D80] hover:text-[#221C1D]"
+              aria-label="Clear search"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          ) : (
+            <Link
+              href="/categories"
+              className="absolute right-2 w-6.5 h-6.5 rounded-full bg-white border border-[#E8DDD4] text-[#6C5E61] hover:text-[#C85250] flex items-center justify-center shadow-2xs"
+              aria-label="Filter categories"
+            >
+              <SlidersHorizontal className="w-3 h-3" />
+            </Link>
+          )}
+        </form>
+      </div>
+      )}
     </header>
   );
 }

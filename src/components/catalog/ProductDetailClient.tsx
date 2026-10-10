@@ -9,12 +9,15 @@ import {
   ChevronRight,
   ChevronLeft,
   ShoppingBag,
+  ArrowLeft,
+  Heart,
 } from "lucide-react";
 import { Product } from "@/types/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { useCart } from "@/context/CartContext";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { AutoExpandingTextarea } from "@/components/ui/AutoExpandingTextarea";
+import { WhatsAppLogo } from "@/components/ui/WhatsAppLogo";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -28,6 +31,8 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
   const [selectedColor, setSelectedColor] = useState<string>(product.frameColors[0]?.name || "Black");
   const [selectedMaterial, setSelectedMaterial] = useState<string>(product.materials[0] || "Wood");
   const [customizationText, setCustomizationText] = useState<string>("");
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
@@ -105,15 +110,49 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
     });
   };
 
+  const handleWhatsAppOrder = () => {
+    const text = encodeURIComponent(
+      `Hello Giftly! I would like to order:\n\n*${product.name}*\n• Size: ${selectedSize}\n• Frame Color: ${selectedColor}\n• Material: ${selectedMaterial}\n${customizationText ? `• Customization: ${customizationText}\n` : ""}• Price: ₹${currentPrice.toLocaleString("en-IN")}\n\nPlease let me know how to proceed with the photo and payment!`
+    );
+    window.open(`https://wa.me/919876543210?text=${text}`, "_blank");
+  };
+
   // Concise reduced description (smaller size & smaller text)
   const displayDescription =
     product.shortDescription ||
     (product.description ? product.description.split(/(?<=[.!?])\s+/)[0] : "");
 
   return (
-    <div className="pt-4 pb-44 sm:py-10 max-w-7xl mx-auto">
-      {/* Header Info: Title on top with smaller size & reduced description */}
-      <div className="px-4 sm:px-6 lg:px-8 mb-4 sm:mb-6 space-y-1">
+    <div className="pt-0 sm:pt-4 pb-32 sm:py-10 max-w-7xl mx-auto">
+      {/* Mobile App Navigation Header (Back Arrow, Title, Wishlist Heart - Mockup Style) */}
+      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 py-3 mb-3 border-b border-[#F0E6DE] flex sm:hidden items-center justify-between">
+        <button
+          type="button"
+          onClick={() => window.history.back()}
+          className="w-9 h-9 rounded-full bg-[#FAF5F0] border border-[#E8DDD4] text-[#3C3234] hover:text-[#C85250] flex items-center justify-center shadow-2xs active:scale-90 transition-all cursor-pointer"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+        <span className="font-sans text-sm font-bold text-[#221C1D] tracking-tight">
+          Product Details
+        </span>
+        <button
+          type="button"
+          onClick={() => setIsWishlisted(!isWishlisted)}
+          className={`w-9 h-9 rounded-full border flex items-center justify-center shadow-2xs active:scale-90 transition-all cursor-pointer ${
+            isWishlisted
+              ? "bg-[#C85250] border-[#C85250] text-white"
+              : "bg-[#FAF5F0] border-[#E8DDD4] text-[#6C5E61] hover:text-[#C85250]"
+          }`}
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart className={`w-4 h-4 ${isWishlisted ? "fill-white" : ""}`} />
+        </button>
+      </div>
+
+      {/* Header Info for Desktop */}
+      <div className="hidden sm:block px-6 lg:px-8 mb-6 space-y-1">
         <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#221C1D] tracking-tight">
           {product.name}
         </h1>
@@ -124,9 +163,9 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
       {/* Main Product Showcase */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start sm:px-6 lg:px-8">
-        {/* Left Column: Horizontally Scrollable / Swipeable Main Product Image Area (Full-bleed on mobile) */}
-        <div className="lg:col-span-7">
-          <div className="relative aspect-square w-full rounded-none sm:rounded-3xl overflow-hidden bg-[#FAF3EE] border-y sm:border border-[#EDE2DA] select-none">
+        {/* Left Column: Main Product Image Area & Gallery Thumbnails */}
+        <div className="lg:col-span-7 px-4 sm:px-0">
+          <div className="relative aspect-square w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FAF5F0] border border-[#EDE2DA] select-none shadow-xs">
             {/* Scrollable / Swipeable Track - Strictly Horizontal */}
             <div
               ref={carouselRef}
@@ -190,10 +229,48 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               {activeImageIndex + 1} / {slides.length}
             </div>
           </div>
+
+          {/* Alternate View Gallery Thumbnails (Mockup Style) */}
+          {slides.length > 1 && (
+            <div className="flex items-center gap-3 mt-3.5">
+              {slides.slice(0, 3).map((slide, idx) => (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() => scrollToSlide(idx)}
+                  className={`flex-1 aspect-square rounded-2xl overflow-hidden border-2 transition-all p-1 flex items-center justify-center bg-[#FAF5F0] cursor-pointer ${
+                    activeImageIndex === idx
+                      ? "border-[#C85250] shadow-2xs"
+                      : "border-[#EDE2DA] opacity-75 hover:opacity-100"
+                  }`}
+                  aria-label={`View ${slide.label}`}
+                >
+                  <ProductImage
+                    slug={product.slug}
+                    name={product.name}
+                    categorySlug={product.categorySlug}
+                    image={slide.image}
+                    aspectRatio="square"
+                    className="w-full h-full object-contain"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Right Column: Selections, Price & Actions (Unboxed, full-width) */}
-        <div className="lg:col-span-5 px-4 sm:px-0 space-y-6 pt-2 sm:pt-0">
+        {/* Right Column: Selections, Price & Actions */}
+        <div className="lg:col-span-5 px-4 sm:px-0 space-y-5 pt-2 sm:pt-0">
+          {/* Mobile-only Title and Category Header (Mockup Style) */}
+          <div className="sm:hidden space-y-0.5 pb-1">
+            <h1 className="font-serif text-2xl font-bold text-[#221C1D] tracking-tight">
+              {product.name}
+            </h1>
+            <p className="text-xs text-[#8A7B7E] font-medium capitalize">
+              {product.categorySlug?.replace(/-/g, " ") || "Personalized Gift"}
+            </p>
+          </div>
+
           {/* Prominent Price & Discount Header (Above Size) */}
           <div className="pb-3 border-b border-[#EFE4DC]">
             <div className="flex items-baseline gap-2">
@@ -340,6 +417,27 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 📸 High-resolution photos are collected on WhatsApp after placing your order.
               </p>
             </div>
+
+            {/* Description Section (Mockup App-Style with ... Learn More toggle) */}
+            {product.description && (
+              <div className="pt-2 border-t border-[#F0E6DE] space-y-1">
+                <span className="text-xs font-bold text-[#221C1D] uppercase tracking-wider block">
+                  Description
+                </span>
+                <p className="text-xs sm:text-sm text-[#6C5E61] leading-relaxed">
+                  {showFullDescription ? product.description : displayDescription}
+                  {product.description.length > (displayDescription?.length || 0) && (
+                    <button
+                      type="button"
+                      onClick={() => setShowFullDescription((prev) => !prev)}
+                      className="ml-1 font-semibold text-[#C85250] hover:underline cursor-pointer"
+                    >
+                      {showFullDescription ? " Show Less" : " ... Learn More"}
+                    </button>
+                  )}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* In-page action button for desktop */}
@@ -382,52 +480,64 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
         </div>
       </div>
 
-      {/* COMBINED ADD-TO-CART + QUANTITY FIXED BOTTOM ACTION SECTION (Requirements 54-63, 139) */}
-      <div className="fixed bottom-[56px] md:bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-[#EFE4DC] py-3 px-4 shadow-[0_-4px_16px_rgba(0,0,0,0.06)]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      {/* COMBINED DUAL-ACTION FIXED BOTTOM BAR (Mockup Style: Order on WhatsApp + Add to Cart) */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-[#EFE4DC] py-2.5 px-4 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
+        style={{ paddingBottom: "max(0.625rem, env(safe-area-inset-bottom, 0px))" }}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-6">
           {/* Price information summary */}
-          <div className="flex flex-col">
-            <span className="text-[11px] text-[#7A6D70] uppercase tracking-wider font-semibold">Total</span>
-            <span className="text-lg sm:text-xl font-bold text-[#221C1D]">
+          <div className="flex flex-col shrink-0">
+            <span className="text-[10px] text-[#7A6D70] uppercase tracking-wider font-semibold">Total</span>
+            <span className="text-base sm:text-xl font-bold text-[#221C1D] leading-none mt-0.5">
               ₹{((cartItem ? cartItem.price * cartItem.quantity : currentPrice)).toLocaleString("en-IN")}
             </span>
           </div>
 
-          {/* Action Controller */}
-          <div className="flex-1 max-w-sm flex items-center justify-end gap-3">
+          {/* Action Controller: Dual Pills */}
+          <div className="flex-1 flex items-center justify-end gap-2 sm:gap-3 max-w-md">
+            {/* 1. Order on WhatsApp (Primary Gradient Pill) */}
+            <button
+              type="button"
+              onClick={handleWhatsAppOrder}
+              className="flex-1 bg-gradient-to-r from-[#25D366] to-[#1EBE5D] hover:opacity-95 text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-full font-bold text-xs sm:text-sm transition-transform active:scale-95 shadow-xs flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
+            >
+              <WhatsAppLogo className="w-4 h-4 shrink-0" />
+              <span>Order on WhatsApp</span>
+            </button>
+
+            {/* 2. Add to Cart / Quantity Controller (Secondary Pill) */}
             {quantityInCart === 0 ? (
-              /* Initial State: Add to Cart button (Item 55) */
               <button
                 type="button"
                 onClick={handleInitialAddToCart}
-                className="w-full bg-[#C85250] hover:bg-[#B14140] text-white py-3 px-6 rounded-xl font-bold text-sm sm:text-base transition-transform active:scale-[0.98] shadow-md shadow-[#C85250]/20 flex items-center justify-center gap-2 cursor-pointer"
+                className="flex-1 bg-white hover:bg-[#FAF4F0] text-[#C85250] border-2 border-[#C85250] py-2.5 sm:py-3 px-3 sm:px-4 rounded-full font-bold text-xs sm:text-sm transition-transform active:scale-95 shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
               >
-                <ShoppingBag className="w-4 h-4" />
+                <Plus className="w-4 h-4 stroke-[2.4]" />
                 <span>Add to Cart</span>
               </button>
             ) : (
-              /* Added State: Combined Quantity Controller without tick mark, no borders/bg, bigger buttons */
-              <div className="w-full flex items-center justify-between bg-[#FDF2F0] border border-[#F5C2BC] rounded-xl px-2 py-1">
+              <div className="flex-1 flex items-center justify-between bg-[#FDF2F0] border border-[#F5C2BC] rounded-full px-2 py-1">
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, -1)}
-                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#4A3E40] hover:text-[#C85250] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#4A3E40] hover:text-[#C85250] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
                   aria-label="Decrease quantity"
                 >
-                  <Minus className="w-6 h-6 stroke-[2.5]" />
+                  <Minus className="w-4 h-4 stroke-[2.5]" />
                 </button>
 
-                <span className="font-bold text-sm sm:text-base text-[#221C1D]">
+                <span className="font-bold text-xs sm:text-sm text-[#221C1D]">
                   {quantityInCart} in Cart
                 </span>
 
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, 1)}
-                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#4A3E40] hover:text-[#C85250] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#4A3E40] hover:text-[#C85250] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
                   aria-label="Increase quantity"
                 >
-                  <Plus className="w-6 h-6 stroke-[2.5]" />
+                  <Plus className="w-4 h-4 stroke-[2.5]" />
                 </button>
               </div>
             )}
