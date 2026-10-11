@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Heart, Plus, Check } from "lucide-react";
+import { Plus, Check } from "lucide-react";
 import { Product } from "@/types/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { useCart } from "@/context/CartContext";
@@ -13,7 +13,6 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
   const { addItem } = useCart();
 
@@ -27,12 +26,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     5,
     Math.round(((mrp - product.price) / mrp) * 100)
   );
-
-  const toggleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsWishlisted((prev) => !prev);
-  };
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -56,7 +49,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       aria-label={`View and customize ${product.name}`}
     >
       <div>
-        {/* 1. Image Container with Floating Wishlist Heart */}
+        {/* 1. Image Container */}
         <div className="relative w-full aspect-square rounded-xl sm:rounded-2xl bg-[#FAF5F0] overflow-hidden flex items-center justify-center">
           <ProductImage
             slug={product.slug}
@@ -67,24 +60,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             priority={priority}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-
-          {/* Floating Wishlist Heart Button (App-Style) */}
-          <button
-            type="button"
-            onClick={toggleWishlist}
-            className={`absolute top-1.5 right-1.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all active:scale-85 ${
-              isWishlisted
-                ? "bg-[#C85250] text-white shadow-xs"
-                : "bg-white/80 hover:bg-white text-[#6C5E61] hover:text-[#C85250] shadow-2xs"
-            }`}
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            <Heart
-              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                isWishlisted ? "fill-white stroke-white" : "stroke-[2]"
-              }`}
-            />
-          </button>
         </div>
 
         {/* 2. Text Content Area */}

@@ -10,7 +10,6 @@ import {
   ChevronLeft,
   ShoppingBag,
   ArrowLeft,
-  Heart,
 } from "lucide-react";
 import { Product } from "@/types/catalog";
 import { ProductImage } from "@/components/ui/ProductImage";
@@ -31,7 +30,6 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
   const [selectedColor, setSelectedColor] = useState<string>(product.frameColors[0]?.name || "Black");
   const [selectedMaterial, setSelectedMaterial] = useState<string>(product.materials[0] || "Wood");
   const [customizationText, setCustomizationText] = useState<string>("");
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -137,18 +135,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
         <span className="font-sans text-sm font-bold text-[#221C1D] tracking-tight">
           Product Details
         </span>
-        <button
-          type="button"
-          onClick={() => setIsWishlisted(!isWishlisted)}
-          className={`w-9 h-9 rounded-full border flex items-center justify-center shadow-2xs active:scale-90 transition-all cursor-pointer ${
-            isWishlisted
-              ? "bg-[#C85250] border-[#C85250] text-white"
-              : "bg-[#FAF5F0] border-[#E8DDD4] text-[#6C5E61] hover:text-[#C85250]"
-          }`}
-          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-        >
-          <Heart className={`w-4 h-4 ${isWishlisted ? "fill-white" : ""}`} />
-        </button>
+        <div className="w-9 h-9" />
       </div>
 
       {/* Header Info for Desktop */}
