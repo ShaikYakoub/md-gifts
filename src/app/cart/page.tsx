@@ -204,13 +204,14 @@ export default function CartPage() {
                           >
                             <Minus className="w-3.5 h-3.5" />
                           </button>
-                          <span className="px-2.5 text-xs font-semibold text-[#221C1D]">
+                          <span className="w-7 text-center text-xs font-semibold text-[#221C1D] tabular-nums inline-flex items-center justify-center shrink-0">
                             {item.quantity}
                           </span>
                           <button
                             type="button"
+                            disabled={item.quantity >= 99}
                             onClick={() => updateQuantity(item.id, 1)}
-                            className="p-1 text-[#5C4F51] hover:bg-[#FAF4F0] transition-colors cursor-pointer"
+                            className="p-1 text-[#5C4F51] hover:bg-[#FAF4F0] transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                             aria-label="Increase quantity"
                           >
                             <Plus className="w-3.5 h-3.5" />

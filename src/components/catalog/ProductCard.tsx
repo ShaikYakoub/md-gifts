@@ -55,6 +55,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const handleIncrease = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (totalInCart >= 99) return;
     if (primaryCartItem) {
       updateQuantity(primaryCartItem.id, 1);
     } else {
@@ -125,23 +126,24 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               e.preventDefault();
               e.stopPropagation();
             }}
-            className="inline-flex items-center bg-[#FDF2F0] border border-[#F5C2BC] rounded-full p-0.5 shadow-2xs shrink-0 select-none"
+            className="w-[76px] sm:w-[88px] inline-flex items-center justify-between bg-[#FDF2F0] border border-[#F5C2BC] rounded-full p-0.5 shadow-2xs shrink-0 select-none"
           >
             <button
               type="button"
               onClick={handleDecrease}
-              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#C85250] hover:bg-[#C85250] hover:text-white transition-all cursor-pointer active:scale-90"
+              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#C85250] hover:bg-[#C85250] hover:text-white transition-all cursor-pointer active:scale-90 shrink-0"
               aria-label="Decrease quantity"
             >
               <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
             </button>
-            <span className="px-1.5 sm:px-2 text-xs sm:text-sm font-bold text-[#221C1D] min-w-4 sm:min-w-5 text-center leading-none">
+            <span className="w-5.5 sm:w-6.5 text-center font-bold tabular-nums text-xs sm:text-sm text-[#221C1D] inline-flex items-center justify-center shrink-0 leading-none">
               {totalInCart}
             </span>
             <button
               type="button"
               onClick={handleIncrease}
-              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#C85250] hover:bg-[#C85250] hover:text-white transition-all cursor-pointer active:scale-90"
+              disabled={totalInCart >= 99}
+              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#C85250] hover:bg-[#C85250] hover:text-white transition-all cursor-pointer active:scale-90 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Increase quantity"
             >
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />

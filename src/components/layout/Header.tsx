@@ -10,10 +10,6 @@ import { useCart } from "@/context/CartContext";
 import { CATEGORIES, OCCASIONS, RECIPIENTS } from "@/data/categories";
 import { useLiveCatalog } from "@/context/CatalogContext";
 
-interface HeaderProps {
-  onOpenSidebar?: () => void;
-}
-
 export function Header() {
   const router = useRouter();
   const pathname = usePathname();

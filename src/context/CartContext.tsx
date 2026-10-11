@@ -47,10 +47,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const existingIdx = prev.findIndex((i) => i.id === id);
       if (existingIdx > -1) {
         const updated = [...prev];
-        updated[existingIdx].quantity += newItem.quantity;
+        updated[existingIdx].quantity = Math.min(99, updated[existingIdx].quantity + newItem.quantity);
         return updated;
       }
-      return [...prev, { ...newItem, id }];
+      return [...prev, { ...newItem, id, quantity: Math.min(99, newItem.quantity) }];
     });
   };
 
@@ -63,7 +63,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return prev
         .map((item) => {
           if (item.id === id) {
-            const newQty = item.quantity + delta;
+            const newQty = Math.min(99, item.quantity + delta);
             return newQty > 0 ? { ...item, quantity: newQty } : null;
           }
           return item;
