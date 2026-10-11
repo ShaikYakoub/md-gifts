@@ -84,7 +84,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
         {/* 2. Text Content Area */}
         <div className="pt-1.5 sm:pt-2 px-1 sm:px-1.5">
-          <h3 className="font-sans text-xs sm:text-sm font-bold text-[#1E191A] tracking-tight group-hover:text-[#C85250] transition-colors leading-snug line-clamp-2">
+          <h3
+            className="font-sans text-xs sm:text-sm font-bold text-[#1E191A] tracking-tight group-hover:text-[#C85250] transition-colors leading-snug truncate w-full"
+            title={product.name}
+          >
             {product.name}
           </h3>
         </div>
