@@ -13,7 +13,7 @@ interface HeaderProps {
   onOpenSidebar?: () => void;
 }
 
-export function Header({ onOpenSidebar }: HeaderProps = {}) {
+export function Header(_props: HeaderProps = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const isProductPage = pathname.startsWith("/product/");

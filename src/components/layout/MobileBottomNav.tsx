@@ -1,19 +1,29 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Compass, Search, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
+const getTabGeometry = (index: number, hasCartBadge: boolean) => {
+  switch (index) {
+    case 0:
+      return { left: 6, width: 88 };
+    case 1:
+      return { left: 44, width: 84 };
+    case 2:
+      return { left: 82, width: 93 };
+    case 3:
+      return { left: 120, width: hasCartBadge ? 98 : 78 };
+    default:
+      return { left: 6, width: 88 };
+  }
+};
+
 export function MobileBottomNav() {
   const pathname = usePathname();
   const { totalQuantity } = useCart();
-
-  // On product detail pages, the bottom area is dedicated to the Product Action Bar (Buy Now + Add To Cart)
-  if (pathname.startsWith("/product/")) {
-    return null;
-  }
 
   const navItems = [
     { label: "Home", href: "/", icon: Home },
@@ -39,45 +49,13 @@ export function MobileBottomNav() {
     setOptimisticIndex(activeIndex);
   }, [activeIndex]);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  // On product detail pages, the bottom area is dedicated to the Product Action Bar (Buy Now + Add To Cart)
+  if (pathname.startsWith("/product/")) {
+    return null;
+  }
 
-  const [indicator, setIndicator] = useState<{
-    left: number;
-    width: number;
-    height: number;
-    top: number;
-    ready: boolean;
-  }>({ left: 6, width: 88, height: 36, top: 6, ready: true });
-
-  useEffect(() => {
-    const updatePosition = () => {
-      if (!containerRef.current) return;
-      const links = containerRef.current.querySelectorAll("a");
-      const activeEl = links[optimisticIndex] as HTMLElement | undefined;
-      if (activeEl && activeEl.offsetWidth > 0) {
-        setIndicator({
-          left: activeEl.offsetLeft,
-          width: activeEl.offsetWidth,
-          top: activeEl.offsetTop,
-          height: activeEl.offsetHeight,
-          ready: true,
-        });
-      }
-    };
-
-    updatePosition();
-    const frameId = requestAnimationFrame(updatePosition);
-    const timer1 = setTimeout(updatePosition, 30);
-    const timer2 = setTimeout(updatePosition, 100);
-
-    window.addEventListener("resize", updatePosition);
-    return () => {
-      cancelAnimationFrame(frameId);
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      window.removeEventListener("resize", updatePosition);
-    };
-  }, [optimisticIndex, pathname]);
+  const hasBadge = Boolean(totalQuantity && totalQuantity > 0);
+  const currentGeometry = getTabGeometry(optimisticIndex, hasBadge);
 
   return (
     <nav
@@ -87,19 +65,14 @@ export function MobileBottomNav() {
       }}
       aria-label="Mobile Bottom Navigation"
     >
-      <div
-        ref={containerRef}
-        className="relative flex items-center bg-[#18181B]/95 backdrop-blur-xl border border-white/10 shadow-[0_12px_36px_rgba(0,0,0,0.35)] rounded-full p-1.5 transition-all"
-      >
+      <div className="relative flex items-center bg-[#18181B]/95 backdrop-blur-xl border border-white/10 shadow-[0_12px_36px_rgba(0,0,0,0.35)] rounded-full p-1.5">
         {/* Smooth Gliding Capsule Pill Indicator */}
         <div
-          className={`absolute rounded-full bg-gradient-to-r from-[#C85250] to-[#E26D68] shadow-xs pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-            indicator.ready ? "opacity-100" : "opacity-0"
-          }`}
+          className="absolute rounded-full bg-gradient-to-r from-[#C85250] to-[#E26D68] shadow-xs pointer-events-none transition-[transform,width] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]"
           style={{
-            transform: `translate3d(${indicator.left}px, ${indicator.top}px, 0)`,
-            width: `${indicator.width}px`,
-            height: `${indicator.height}px`,
+            transform: `translate3d(${currentGeometry.left}px, 6px, 0)`,
+            width: `${currentGeometry.width}px`,
+            height: "34px",
             top: 0,
             left: 0,
           }}
