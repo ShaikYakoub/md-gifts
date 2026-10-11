@@ -65,7 +65,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group relative bg-white rounded-2xl sm:rounded-3xl border border-[#EDE2DA] p-1 pb-2.5 sm:p-1.5 sm:pb-3 shadow-2xs hover:shadow-lg hover:border-[#D9C4B7] transition-all duration-300 cursor-pointer flex flex-col justify-between h-full select-none"
+      className="group relative bg-white rounded-2xl sm:rounded-3xl border border-[#EDE2DA] p-1 pb-2 sm:p-1.5 sm:pb-2.5 shadow-2xs hover:shadow-lg hover:border-[#D9C4B7] transition-all duration-300 cursor-pointer flex flex-col select-none"
       aria-label={`View and customize ${product.name}`}
     >
       <div>
@@ -83,7 +83,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </div>
 
         {/* 2. Text Content Area */}
-        <div className="pt-2 sm:pt-2.5 px-1 sm:px-1.5">
+        <div className="pt-1.5 sm:pt-2 px-1 sm:px-1.5">
           <h3 className="font-sans text-xs sm:text-sm font-bold text-[#1E191A] tracking-tight group-hover:text-[#C85250] transition-colors leading-snug line-clamp-2">
             {product.name}
           </h3>
@@ -91,7 +91,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       </div>
 
       {/* 3. Bottom Row: Price & Circular Action Button / Adder-Reducer Pill */}
-      <div className="mt-2 sm:mt-2.5 px-1 sm:px-1.5 pb-0.5 flex items-center justify-between gap-1.5">
+      <div className="mt-1 sm:mt-1.5 px-1 sm:px-1.5 flex items-center justify-between gap-1.5">
         <div className="flex flex-col">
           <div className="flex items-baseline gap-1">
             <span className="text-xs sm:text-sm font-bold text-[#1E191A]">
