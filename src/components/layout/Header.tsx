@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { Search, ShoppingCart, Menu, ChevronDown, X } from "lucide-react";
+import { Search, ShoppingCart, ChevronDown, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { useCart } from "@/context/CartContext";
@@ -12,10 +12,10 @@ import { useLiveCatalog } from "@/context/CatalogContext";
 import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
 interface HeaderProps {
-  onOpenSidebar: () => void;
+  onOpenSidebar?: () => void;
 }
 
-export function Header({ onOpenSidebar }: HeaderProps) {
+export function Header({ onOpenSidebar }: HeaderProps = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const isProductPage = pathname.startsWith("/product/");
@@ -58,20 +58,8 @@ export function Header({ onOpenSidebar }: HeaderProps) {
       ref={dropdownRef}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
-        {/* Mobile Hamburger on LEFT (Items 1, 4) */}
-        <div className="flex md:hidden items-center w-20 shrink-0">
-          <button
-            type="button"
-            onClick={onOpenSidebar}
-            className="p-2 -ml-2 text-[#4A3E40] hover:text-[#C85250] hover:bg-[#FAF2EE] rounded-lg transition-colors cursor-pointer"
-            aria-label="Open navigation menu"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-        </div>
-
-        {/* Logo: Centered on mobile, Left on desktop (Item 4) */}
-        <div className="flex-1 md:flex-initial flex items-center justify-center md:justify-start shrink-0">
+        {/* Logo on LEFT */}
+        <div className="flex items-center justify-start shrink-0">
           <Logo />
         </div>
 
