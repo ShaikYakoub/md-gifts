@@ -88,13 +88,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </div>
 
         {/* 2. Text Content Area */}
-        <div className="pt-2.5 px-0.5">
+        <div className="pt-2 sm:pt-2.5 px-0.5">
           <h3 className="font-sans text-xs sm:text-sm font-bold text-[#1E191A] tracking-tight group-hover:text-[#C85250] transition-colors leading-snug line-clamp-2">
             {product.name}
           </h3>
-          <p className="text-[10px] sm:text-xs text-[#8A7B7E] font-medium mt-0.5 capitalize">
-            {product.categorySlug?.replace(/-/g, " ") || "Personalized Gift"}
-          </p>
         </div>
       </div>
 
