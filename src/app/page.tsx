@@ -3,14 +3,10 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { HeroSection } from "@/components/home/HeroSection";
 import { ShopByOccasion } from "@/components/home/ShopByOccasion";
 import { HomeProductGrids } from "@/components/home/HomeProductGrids";
-import {
-  getTrendingProducts,
-  getUnder499Products,
-} from "@/data/products";
+import { getTrendingProducts } from "@/data/products";
 
 export default function HomePage() {
   const trendingProducts = getTrendingProducts();
-  const under499Products = getUnder499Products();
 
   // Structured Data (JSON-LD) for Organization & WebSite
   const jsonLd = {
@@ -70,11 +66,8 @@ export default function HomePage() {
       {/* 2. Shop by Occasion */}
       <ShopByOccasion />
 
-      {/* 3-6. Reactive Product Card Grids (Trending, Under 499, Collections) */}
-      <HomeProductGrids
-        initialTrending={trendingProducts}
-        initialUnder499={under499Products}
-      />
+      {/* 3-5. Reactive Product Card Grids (Trending, Collections) */}
+      <HomeProductGrids initialTrending={trendingProducts} />
     </SiteLayout>
   );
 }
