@@ -3,13 +3,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { Search, ShoppingCart, ChevronDown, X } from "lucide-react";
+import { Search, ShoppingCart, ChevronDown, X, Phone } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
-import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { useCart } from "@/context/CartContext";
 import { CATEGORIES, OCCASIONS, RECIPIENTS } from "@/data/categories";
 import { useLiveCatalog } from "@/context/CatalogContext";
-import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
 interface HeaderProps {
   onOpenSidebar?: () => void;
@@ -19,7 +17,6 @@ export function Header({ onOpenSidebar }: HeaderProps = {}) {
   const router = useRouter();
   const pathname = usePathname();
   const isProductPage = pathname.startsWith("/product/");
-  const whatsappUrl = getGeneralWhatsAppUrl();
   const { totalQuantity } = useCart();
   const { categories: liveCategories, occasions: liveOccasions, recipients: liveRecipients } = useLiveCatalog();
 
@@ -210,18 +207,16 @@ export function Header({ onOpenSidebar }: HeaderProps = {}) {
           )}
         </form>
 
-        {/* Right Actions: Contact Button (WhatsApp) + Desktop Cart */}
-        <div className="flex items-center justify-end w-20 md:w-auto gap-2 sm:gap-3 shrink-0">
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20BA5C] text-white px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 shrink-0"
-            aria-label="Contact us on WhatsApp"
+        {/* Right Actions: Contact Button + Desktop Cart */}
+        <div className="flex items-center justify-end gap-2 sm:gap-3 shrink-0">
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-1.5 bg-[#FAF5F1] hover:bg-[#F2ECE6] text-[#221C1D] hover:text-[#C85250] border border-[#EDE0D6] hover:border-[#C85250]/40 px-3 sm:px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 shrink-0"
+            aria-label="Contact Us"
           >
-            <WhatsAppIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white shrink-0" />
+            <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C85250] stroke-[2.2] shrink-0" />
             <span>Contact</span>
-          </a>
+          </Link>
 
           {/* Desktop-only Right Actions: Cart */}
           <Link
