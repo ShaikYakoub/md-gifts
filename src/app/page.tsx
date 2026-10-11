@@ -5,13 +5,11 @@ import { ShopByOccasion } from "@/components/home/ShopByOccasion";
 import { HomeProductGrids } from "@/components/home/HomeProductGrids";
 import {
   getTrendingProducts,
-  getPersonalizedFavourites,
   getUnder499Products,
 } from "@/data/products";
 
 export default function HomePage() {
   const trendingProducts = getTrendingProducts();
-  const personalizedFavourites = getPersonalizedFavourites();
   const under499Products = getUnder499Products();
 
   // Structured Data (JSON-LD) for Organization & WebSite
@@ -72,10 +70,9 @@ export default function HomePage() {
       {/* 2. Shop by Occasion */}
       <ShopByOccasion />
 
-      {/* 3-7. Reactive Product Card Grids (Trending, Favourites, Under 499, Collections) */}
+      {/* 3-6. Reactive Product Card Grids (Trending, Under 499, Collections) */}
       <HomeProductGrids
         initialTrending={trendingProducts}
-        initialFavourites={personalizedFavourites}
         initialUnder499={under499Products}
       />
     </SiteLayout>
