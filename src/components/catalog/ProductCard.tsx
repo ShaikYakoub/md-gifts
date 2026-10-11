@@ -52,7 +52,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group relative bg-white rounded-2xl sm:rounded-3xl border border-[#EDE2DA] p-2.5 sm:p-3 shadow-2xs hover:shadow-lg hover:border-[#D9C4B7] transition-all duration-300 cursor-pointer flex flex-col justify-between h-full select-none"
+      className="group relative bg-white rounded-2xl sm:rounded-3xl border border-[#EDE2DA] p-1 pb-2.5 sm:p-1.5 sm:pb-3 shadow-2xs hover:shadow-lg hover:border-[#D9C4B7] transition-all duration-300 cursor-pointer flex flex-col justify-between h-full select-none"
       aria-label={`View and customize ${product.name}`}
     >
       <div>
@@ -72,7 +72,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <button
             type="button"
             onClick={toggleWishlist}
-            className={`absolute top-2 right-2 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all active:scale-85 ${
+            className={`absolute top-1.5 right-1.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all active:scale-85 ${
               isWishlisted
                 ? "bg-[#C85250] text-white shadow-xs"
                 : "bg-white/80 hover:bg-white text-[#6C5E61] hover:text-[#C85250] shadow-2xs"
@@ -88,7 +88,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         </div>
 
         {/* 2. Text Content Area */}
-        <div className="pt-2 sm:pt-2.5 px-0.5">
+        <div className="pt-2 sm:pt-2.5 px-1 sm:px-1.5">
           <h3 className="font-sans text-xs sm:text-sm font-bold text-[#1E191A] tracking-tight group-hover:text-[#C85250] transition-colors leading-snug line-clamp-2">
             {product.name}
           </h3>
@@ -96,7 +96,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       </div>
 
       {/* 3. Bottom Row: Price & Circular Action Button (No line divider, matching mockup) */}
-      <div className="mt-2.5 flex items-center justify-between gap-1.5">
+      <div className="mt-2 sm:mt-2.5 px-1 sm:px-1.5 pb-0.5 flex items-center justify-between gap-1.5">
         <div className="flex flex-col">
           <div className="flex items-baseline gap-1">
             <span className="text-xs sm:text-sm font-bold text-[#1E191A]">
