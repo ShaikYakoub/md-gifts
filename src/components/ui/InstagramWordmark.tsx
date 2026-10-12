@@ -7,7 +7,7 @@ interface InstagramWordmarkProps {
 }
 
 export function InstagramWordmark({
-  className = "h-3.5 w-auto",
+  className = "h-3.5 w-auto translate-y-0.5",
   height,
   width,
 }: InstagramWordmarkProps) {

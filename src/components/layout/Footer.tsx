@@ -62,7 +62,7 @@ export function Footer() {
                 aria-label="Follow us on Instagram"
               >
                 <InstagramLogo className="w-4.5 h-4.5 shrink-0" />
-                <InstagramWordmark className="h-3.5 w-auto" />
+                <InstagramWordmark className="h-3.5 w-auto translate-y-0.5" />
               </a>
 
               {/* Call */}
