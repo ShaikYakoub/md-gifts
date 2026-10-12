@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { Phone } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { WhatsAppLogo } from "@/components/ui/WhatsAppLogo";
 import { WhatsAppWordmark } from "@/components/ui/WhatsAppWordmark";
@@ -10,6 +9,7 @@ import { GmailLogo } from "@/components/ui/GmailLogo";
 import { GmailWordmark } from "@/components/ui/GmailWordmark";
 import { InstagramLogo } from "@/components/ui/InstagramLogo";
 import { InstagramWordmark } from "@/components/ui/InstagramWordmark";
+import { GoogleCallLogo } from "@/components/ui/GoogleCallLogo";
 import { CallWordmark } from "@/components/ui/CallWordmark";
 import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -49,7 +49,7 @@ export function Footer() {
               {/* Gmail (replacing raw email address) */}
               <a
                 href="mailto:support@giftly.in"
-                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#EA4335] hover:border-[#EA4335] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#5F6368] hover:text-[#EA4335] hover:border-[#EA4335] hover:bg-[#FDF7F5] transition-all shadow-2xs text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
                 aria-label="Email support@giftly.in via Gmail"
               >
                 <GmailLogo className="w-4.5 h-4.5 shrink-0" />
@@ -68,14 +68,14 @@ export function Footer() {
                 <InstagramWordmark className="h-3.5 w-auto translate-y-0.5" />
               </a>
 
-              {/* Call */}
+              {/* Google Call */}
               <a
                 href="tel:+919876543210"
-                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#C85250] hover:border-[#C85250] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
-                aria-label="Call us"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#5F6368] hover:text-[#4285F4] hover:border-[#4285F4] hover:bg-[#F8FAFD] transition-all shadow-2xs text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
+                aria-label="Call us via Google Call"
               >
-                <Phone className="w-4 h-4 text-[#C85250] shrink-0" />
-                <CallWordmark className="h-3.5 w-auto" />
+                <GoogleCallLogo className="w-4.5 h-4.5 shrink-0" />
+                <CallWordmark className="h-3.5 w-auto" variant="google-call" />
               </a>
             </div>
           </div>
