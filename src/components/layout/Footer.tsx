@@ -36,20 +36,20 @@ export function Footer() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#1FA34D] hover:border-[#25D366] hover:bg-[#F4FAF5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-2.5 sm:px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#1FA34D] hover:border-[#25D366] hover:bg-[#F4FAF5] transition-all shadow-2xs font-bold text-sm sm:text-base cursor-pointer w-full sm:w-auto"
                 aria-label="Chat with us on WhatsApp"
               >
-                <WhatsAppLogo className="w-5 h-5 shrink-0" />
+                <WhatsAppLogo className="w-7 h-7 shrink-0" />
                 <span className="leading-none">WhatsApp</span>
               </a>
 
               {/* Gmail (replacing raw email address) */}
               <a
                 href="mailto:support@giftly.in"
-                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#EA4335] hover:border-[#EA4335] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-2.5 sm:px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#EA4335] hover:border-[#EA4335] hover:bg-[#FDF7F5] transition-all shadow-2xs font-bold text-sm sm:text-base cursor-pointer w-full sm:w-auto"
                 aria-label="Email support@giftly.in via Gmail"
               >
-                <GmailLogo className="w-5 h-5 shrink-0" />
+                <GmailLogo className="w-7 h-7 shrink-0" />
                 <span className="leading-none">Gmail</span>
               </a>
 
@@ -68,10 +68,10 @@ export function Footer() {
               {/* Call */}
               <a
                 href="tel:+919876543210"
-                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#C85250] hover:border-[#C85250] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-2.5 sm:px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#C85250] hover:border-[#C85250] hover:bg-[#FDF7F5] transition-all shadow-2xs font-bold text-sm sm:text-base cursor-pointer w-full sm:w-auto"
                 aria-label="Call us"
               >
-                <Phone className="w-4.5 h-4.5 text-[#C85250] shrink-0" />
+                <Phone className="w-6 h-6 text-[#C85250] shrink-0" />
                 <span className="leading-none">Call</span>
               </a>
             </div>
