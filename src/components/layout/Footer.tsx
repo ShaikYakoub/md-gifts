@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Phone } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { WhatsAppLogo } from "@/components/ui/WhatsAppLogo";
+import { WhatsAppWordmark } from "@/components/ui/WhatsAppWordmark";
 import { GmailLogo } from "@/components/ui/GmailLogo";
+import { GmailWordmark } from "@/components/ui/GmailWordmark";
 import { InstagramLogo } from "@/components/ui/InstagramLogo";
 import { InstagramWordmark } from "@/components/ui/InstagramWordmark";
+import { CallWordmark } from "@/components/ui/CallWordmark";
 import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
 export function Footer() {
@@ -40,7 +43,7 @@ export function Footer() {
                 aria-label="Chat with us on WhatsApp"
               >
                 <WhatsAppLogo className="w-4.5 h-4.5 shrink-0" />
-                <span className="leading-none">WhatsApp</span>
+                <WhatsAppWordmark className="h-3.5 w-auto" />
               </a>
 
               {/* Gmail (replacing raw email address) */}
@@ -50,7 +53,7 @@ export function Footer() {
                 aria-label="Email support@giftly.in via Gmail"
               >
                 <GmailLogo className="w-4.5 h-4.5 shrink-0" />
-                <span className="leading-none">Gmail</span>
+                <GmailWordmark className="h-3.5 w-auto" />
               </a>
 
               {/* Instagram */}
@@ -72,7 +75,7 @@ export function Footer() {
                 aria-label="Call us"
               >
                 <Phone className="w-4 h-4 text-[#C85250] shrink-0" />
-                <span className="leading-none">Call</span>
+                <CallWordmark className="h-3.5 w-auto" />
               </a>
             </div>
           </div>
