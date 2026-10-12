@@ -29,13 +29,13 @@ export function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-[#8A7B7E] mb-2.5">
               Contact & Connect
             </h4>
-            <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-2.5">
               {/* WhatsApp */}
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 h-9 sm:h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#1FA34D] hover:border-[#25D366] hover:bg-[#F4FAF5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#1FA34D] hover:border-[#25D366] hover:bg-[#F4FAF5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
                 aria-label="Chat with us on WhatsApp"
               >
                 <WhatsAppLogo className="w-4.5 h-4.5 shrink-0" />
@@ -45,7 +45,7 @@ export function Footer() {
               {/* Gmail (replacing raw email address) */}
               <a
                 href="mailto:support@giftly.in"
-                className="group inline-flex items-center gap-2 h-9 sm:h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#EA4335] hover:border-[#EA4335] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#EA4335] hover:border-[#EA4335] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
                 aria-label="Email support@giftly.in via Gmail"
               >
                 <GmailLogo className="w-4.5 h-4.5 shrink-0" />
@@ -57,21 +57,21 @@ export function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 h-9 sm:h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#E1306C] hover:border-[#E1306C] hover:bg-[#FDF7FA] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#E1306C] hover:border-[#E1306C] hover:bg-[#FDF7FA] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
                 aria-label="Follow us on Instagram"
               >
                 <InstagramLogo className="w-4.5 h-4.5 shrink-0" />
                 <span className="leading-none">Instagram</span>
               </a>
 
-              {/* Phone */}
+              {/* Call */}
               <a
                 href="tel:+919876543210"
-                className="group inline-flex items-center gap-2 h-9 sm:h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#C85250] hover:border-[#C85250] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer"
-                aria-label="Call +91 98765 43210"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#C85250] hover:border-[#C85250] hover:bg-[#FDF7F5] transition-all shadow-2xs font-semibold text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
+                aria-label="Call us"
               >
                 <Phone className="w-4 h-4 text-[#C85250] shrink-0" />
-                <span className="leading-none">+91 98765 43210</span>
+                <span className="leading-none">Call</span>
               </a>
             </div>
           </div>
