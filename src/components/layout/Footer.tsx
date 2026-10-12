@@ -7,6 +7,7 @@ import { Logo } from "@/components/ui/Logo";
 import { WhatsAppLogo } from "@/components/ui/WhatsAppLogo";
 import { GmailLogo } from "@/components/ui/GmailLogo";
 import { InstagramLogo } from "@/components/ui/InstagramLogo";
+import { InstagramWordmark } from "@/components/ui/InstagramWordmark";
 import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
 export function Footer() {
@@ -61,7 +62,7 @@ export function Footer() {
                 aria-label="Follow us on Instagram"
               >
                 <InstagramLogo className="w-4.5 h-4.5 shrink-0" />
-                <span className="leading-none">Instagram</span>
+                <InstagramWordmark className="h-3.5 w-auto" />
               </a>
 
               {/* Call */}
