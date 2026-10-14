@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   Plus,
@@ -30,6 +30,18 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
   const [selectedMaterial, setSelectedMaterial] = useState<string>(product.materials[0] || "Wood");
   const [customizationText, setCustomizationText] = useState<string>("");
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [hasDescOverflow, setHasDescOverflow] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      const isOverflowing =
+        descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight + 4;
+      setHasDescOverflow(
+        isOverflowing || (product.description ? product.description.length > 130 : false)
+      );
+    }
+  }, [product.description]);
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
@@ -362,24 +374,29 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               </p>
             </div>
 
-            {/* Description Section (Mockup App-Style with ... Learn More toggle) */}
+            {/* Description Section: 3-line clamp with Show More toggle */}
             {product.description && (
               <div className="pt-2 border-t border-[#F0E6DE] space-y-1">
                 <span className="text-xs font-bold text-[#221C1D] uppercase tracking-wider block">
                   Description
                 </span>
-                <p className="text-xs sm:text-sm text-[#6C5E61] leading-relaxed">
-                  {showFullDescription ? product.description : displayDescription}
-                  {product.description.length > (displayDescription?.length || 0) && (
-                    <button
-                      type="button"
-                      onClick={() => setShowFullDescription((prev) => !prev)}
-                      className="ml-1 font-semibold text-[#EC0B12] hover:underline cursor-pointer"
-                    >
-                      {showFullDescription ? " Show Less" : " ... Learn More"}
-                    </button>
-                  )}
+                <p
+                  ref={descriptionRef}
+                  className={`text-xs sm:text-sm text-[#6C5E61] leading-relaxed transition-all duration-200 ${
+                    !showFullDescription ? "line-clamp-3" : ""
+                  }`}
+                >
+                  {product.description}
                 </p>
+                {hasDescOverflow && (
+                  <button
+                    type="button"
+                    onClick={() => setShowFullDescription((prev) => !prev)}
+                    className="text-xs sm:text-sm font-semibold text-[#EC0B12] hover:underline cursor-pointer inline-flex items-center gap-1 pt-0.5"
+                  >
+                    {showFullDescription ? "Show Less" : "Show More"}
+                  </button>
+                )}
               </div>
             )}
           </div>
