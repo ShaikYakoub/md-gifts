@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
-import { FloatingContact } from "@/components/ui/FloatingContact";
 
 interface SiteLayoutProps {
   children: React.ReactNode;
@@ -24,7 +23,6 @@ export function SiteLayout({ children, showFooter = true }: SiteLayoutProps) {
       <Header />
       <main className="flex-1">{children}</main>
       {shouldRenderFooter && <Footer />}
-      <FloatingContact />
       <MobileBottomNav />
     </div>
   );
