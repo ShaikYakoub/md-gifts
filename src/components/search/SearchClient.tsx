@@ -3,12 +3,20 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search as SearchIcon, X, ChevronRight, ChevronDown } from "lucide-react";
+import { Search as SearchIcon, X, ChevronRight } from "lucide-react";
 import { Product } from "@/types/catalog";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { ProductImage } from "@/components/ui/ProductImage";
 import { CATEGORIES } from "@/data/categories";
 import { useLiveCatalog } from "@/context/CatalogContext";
+import { CustomSelect, SelectOption } from "@/components/ui/CustomSelect";
+
+const SEARCH_SORT_OPTIONS: SelectOption<"featured" | "price-asc" | "price-desc" | "rating">[] = [
+  { value: "featured", label: "Featured" },
+  { value: "price-asc", label: "Price: Low to High" },
+  { value: "price-desc", label: "Price: High to Low" },
+  { value: "rating", label: "Rating: High to Low" },
+];
 
 const POPULAR_SEARCHES = [
   "couple frame",
@@ -153,20 +161,12 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
             {activeTab === "products" && searchResults.length > 0 && (
               <div className="flex items-center gap-2 text-xs self-end sm:self-auto">
                 <span className="text-[#7A6D70] font-normal">Sort by:</span>
-                <div className="relative inline-flex items-center">
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                    aria-label="Sort search results by"
-                    className="appearance-none bg-white border border-[#DDCFC6] hover:border-[#BDB0A8] focus:border-[#BDB0A8] focus:ring-1 focus:ring-[#BDB0A8]/20 text-[#221C1D] rounded-full pl-3.5 pr-8 py-1.5 outline-none font-medium text-xs cursor-pointer shadow-2xs transition-colors"
-                  >
-                    <option value="featured">Featured</option>
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="rating">Rating</option>
-                  </select>
-                  <ChevronDown className="w-3.5 h-3.5 text-[#7A6D70] absolute right-2.5 pointer-events-none" />
-                </div>
+                <CustomSelect<"featured" | "price-asc" | "price-desc" | "rating">
+                  value={sortBy}
+                  onChange={(newSort) => setSortBy(newSort)}
+                  options={SEARCH_SORT_OPTIONS}
+                  ariaLabel="Sort search results by"
+                />
               </div>
             )}
           </div>

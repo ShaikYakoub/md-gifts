@@ -2,11 +2,19 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { ChevronRight, SlidersHorizontal, ChevronDown } from "lucide-react";
+import { ChevronRight, SlidersHorizontal } from "lucide-react";
 import { Product, FilterState } from "@/types/catalog";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { FilterSidebar } from "@/components/catalog/FilterSidebar";
 import { useLiveCatalog } from "@/context/CatalogContext";
+import { CustomSelect, SelectOption } from "@/components/ui/CustomSelect";
+
+const SORT_OPTIONS: SelectOption<FilterState["sort"]>[] = [
+  { value: "featured", label: "Featured" },
+  { value: "price-asc", label: "Price: Low to High" },
+  { value: "price-desc", label: "Price: High to Low" },
+  { value: "rating", label: "Rating: High to Low" },
+];
 
 interface CategoryViewProps {
   title: string;
@@ -159,25 +167,17 @@ export function CategoryView({
           {/* Sort Dropdown */}
           <div className="flex items-center gap-2 text-xs">
             <span className="text-[#7A6D70] hidden sm:inline font-normal">Sort by:</span>
-            <div className="relative inline-flex items-center">
-              <select
-                value={filterState.sort}
-                onChange={(e) =>
-                  setFilterState((prev) => ({
-                    ...prev,
-                    sort: e.target.value as FilterState["sort"],
-                  }))
-                }
-                aria-label="Sort products by"
-                className="appearance-none bg-white border border-[#DDCFC6] hover:border-[#BDB0A8] focus:border-[#BDB0A8] focus:ring-1 focus:ring-[#BDB0A8]/20 text-[#221C1D] rounded-full pl-3.5 pr-8 py-1.5 sm:py-2 outline-none font-medium text-xs cursor-pointer shadow-2xs transition-colors"
-              >
-                <option value="featured">Featured</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="rating">Rating: High to Low</option>
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 text-[#7A6D70] absolute right-2.5 pointer-events-none" />
-            </div>
+            <CustomSelect<FilterState["sort"]>
+              value={filterState.sort}
+              onChange={(newSort) =>
+                setFilterState((prev) => ({
+                  ...prev,
+                  sort: newSort,
+                }))
+              }
+              options={SORT_OPTIONS}
+              ariaLabel="Sort products by"
+            />
           </div>
         </div>
       </div>
