@@ -27,6 +27,32 @@ export function FilterSidebar({
     setLocalFilters(filterState);
   }, [filterState]);
 
+  // Lock body scroll when mobile filter drawer is open
+  React.useEffect(() => {
+    if (!isOpenMobile) {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onCloseMobile();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpenMobile, onCloseMobile]);
+
   const handlePriceChange = (val: number) => {
     const updated = { ...localFilters, maxPrice: val };
     setLocalFilters(updated);
@@ -244,37 +270,35 @@ export function FilterSidebar({
                   Filters
                 </h3>
               </div>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="text-xs font-semibold text-[#C85250] hover:underline"
-                >
-                  Reset
-                </button>
-                <button
-                  type="button"
-                  onClick={onCloseMobile}
-                  className="p-1.5 text-[#5C4F51] hover:text-[#C85250] rounded-full"
-                  aria-label="Close filters"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={onCloseMobile}
+                className="p-1.5 text-[#5C4F51] hover:text-[#C85250] rounded-full transition-colors cursor-pointer"
+                aria-label="Close filters"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto py-4">
+            <div className="flex-1 overflow-y-auto overscroll-contain py-4">
               {filterContent}
             </div>
 
             <div
-              className="pt-3 border-t border-[#EFE4DC]"
+              className="pt-3 border-t border-[#EFE4DC] flex items-center gap-2.5"
               style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom, 0px))" }}
             >
               <button
                 type="button"
+                onClick={handleReset}
+                className="px-4 py-3 rounded-xl border border-[#DDCFC6] hover:bg-[#FAF4F0] text-[#5C4F51] hover:text-[#C85250] font-semibold text-sm transition-colors cursor-pointer shrink-0"
+              >
+                Reset
+              </button>
+              <button
+                type="button"
                 onClick={onCloseMobile}
-                className="w-full bg-[#C85250] hover:bg-[#B14140] text-white py-3 rounded-xl font-semibold text-sm transition-transform active:scale-95 shadow-sm"
+                className="flex-1 bg-[#C85250] hover:bg-[#B14140] text-white py-3 px-4 rounded-xl font-semibold text-sm transition-transform active:scale-95 shadow-sm text-center cursor-pointer truncate"
               >
                 Apply Filters ({productCount} products)
               </button>
