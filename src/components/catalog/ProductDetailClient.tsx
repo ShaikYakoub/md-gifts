@@ -208,34 +208,6 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               {activeImageIndex + 1} / {slides.length}
             </div>
           </div>
-
-          {/* Alternate View Gallery Thumbnails (Mockup Style) */}
-          {slides.length > 1 && (
-            <div className="flex items-center gap-3 mt-3.5">
-              {slides.slice(0, 3).map((slide, idx) => (
-                <button
-                  key={slide.id}
-                  type="button"
-                  onClick={() => scrollToSlide(idx)}
-                  className={`flex-1 aspect-square rounded-2xl overflow-hidden border-2 transition-all p-1 flex items-center justify-center bg-[#FAF5F0] cursor-pointer ${
-                    activeImageIndex === idx
-                      ? "border-[#EC0B12] shadow-2xs"
-                      : "border-[#EDE2DA] opacity-75 hover:opacity-100"
-                  }`}
-                  aria-label={`View ${slide.label}`}
-                >
-                  <ProductImage
-                    slug={product.slug}
-                    name={product.name}
-                    categorySlug={product.categorySlug}
-                    image={slide.image}
-                    aspectRatio="square"
-                    className="w-full h-full object-contain"
-                  />
-                </button>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Right Column: Selections, Price & Actions */}
