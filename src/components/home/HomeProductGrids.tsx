@@ -47,9 +47,9 @@ export function HomeProductGrids({
             </Link>
           </div>
 
-          <div className="flex sm:grid sm:grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-6 overflow-x-auto pb-3 sm:pb-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex sm:grid sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-6 overflow-x-auto pb-3 sm:pb-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
             {trendingProducts.map((product, idx) => (
-              <div key={product.id} className="w-[calc(50vw-23px)] sm:w-auto shrink-0 flex flex-col">
+              <div key={product.id} className="w-[calc(50vw-20px)] sm:w-auto shrink-0 flex flex-col">
                 <ProductCard product={product} priority={idx < 4} />
               </div>
             ))}

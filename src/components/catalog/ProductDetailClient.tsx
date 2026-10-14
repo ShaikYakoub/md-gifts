@@ -547,7 +547,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-6">
             {relatedProducts.slice(0, 4).map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

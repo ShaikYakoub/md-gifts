@@ -192,7 +192,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
           {/* Tab 1: Products */}
           {activeTab === "products" && (
             searchResults.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-6">
                 {searchResults.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -219,7 +219,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
           {/* Tab 2: Categories */}
           {activeTab === "categories" && (
             matchedCategories.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 sm:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-6">
                 {matchedCategories.map((c) => (
                   <Link
                     key={c.slug}
