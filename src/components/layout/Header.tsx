@@ -37,11 +37,11 @@ export function Header() {
 
             <Link
               href="/contact"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FAF5F1] hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border border-[#EDE0D6] hover:border-[#EC0B12]/40 transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 shrink-0 text-xs font-semibold cursor-pointer"
+              className="inline-flex items-center gap-2 px-4.5 py-2.5 rounded-full bg-white hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border-2 border-[#D8CAC0] hover:border-[#EC0B12] transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 shrink-0 text-sm sm:text-base font-bold cursor-pointer"
               aria-label="Contact Us"
               title="Contact Us"
             >
-              <CustomerSupportIcon className="w-4 h-4 text-[#EC0B12] transition-colors" />
+              <CustomerSupportIcon className="w-5.5 h-5.5 text-[#EC0B12] transition-colors" />
               <span>Contact</span>
             </Link>
           </div>
@@ -106,11 +106,11 @@ export function Header() {
           {/* Contact Button on Right */}
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FAF5F1] hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border border-[#EDE0D6] hover:border-[#EC0B12]/40 transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 shrink-0 text-sm font-semibold cursor-pointer"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border-2 border-[#D8CAC0] hover:border-[#EC0B12] transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 shrink-0 text-base font-bold cursor-pointer"
             aria-label="Contact Us"
             title="Contact Us"
           >
-            <CustomerSupportIcon className="w-4.5 h-4.5 text-[#EC0B12] transition-colors" />
+            <CustomerSupportIcon className="w-6 h-6 text-[#EC0B12] transition-colors" />
             <span>Contact</span>
           </Link>
         </div>
