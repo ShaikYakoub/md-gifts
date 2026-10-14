@@ -13,30 +13,30 @@ export function Logo({ className = "", size = "md" }: LogoProps) {
     lg: "h-12 sm:h-14",
   };
 
-  const scriptSizeClasses = {
+  const mdMonogramSizeClasses = {
     sm: "h-7 sm:h-8",
-    md: "h-8 sm:h-10",
-    lg: "h-11 sm:h-13",
+    md: "h-9 sm:h-11",
+    lg: "h-12 sm:h-14",
   };
 
   return (
     <Link
       href="/"
-      className={`inline-flex items-center gap-2.5 sm:gap-3.5 group select-none transition-transform active:scale-95 ${className}`}
+      className={`inline-flex items-center gap-2 sm:gap-3 group select-none transition-transform active:scale-95 ${className}`}
       aria-label="MD Gifts Home"
     >
+      {/* Capital MD on the left side of logo */}
+      <img
+        src="/images/md-monogram.svg"
+        alt="MD"
+        className={`${mdMonogramSizeClasses[size]} w-auto object-contain select-none`}
+      />
+
       {/* Main Logo (Gift Box Emblem) */}
       <img
         src="/images/mdgifts-logo.svg"
-        alt="MD Gifts Emblem"
+        alt="MD Gifts"
         className={`${mainSizeClasses[size]} w-auto object-contain select-none`}
-      />
-
-      {/* Script Typographic Logo Beside Main Logo */}
-      <img
-        src="/images/mdgift-script-logo.svg"
-        alt="MDGift.com — Customized Gift Centre"
-        className={`${scriptSizeClasses[size]} w-auto object-contain select-none`}
       />
     </Link>
   );
