@@ -8,7 +8,7 @@ interface GoogleCallLogoProps {
 export function GoogleCallLogo({ className = "w-4.5 h-4.5 shrink-0", size }: GoogleCallLogoProps) {
   return (
     <svg
-      viewBox="0 0 14 15"
+      viewBox="0 5 242 245"
       width={size}
       height={size}
       className={className}
@@ -18,25 +18,29 @@ export function GoogleCallLogo({ className = "w-4.5 h-4.5 shrink-0", size }: Goo
     >
       {/* Red Earpiece (Top left capsule) */}
       <path
-        d="M2.5 0.5C3.8 0.5 4.9 1.4 5.3 2.7L5.7 4.1C6.0 5.1 5.5 6.2 4.5 6.7L3.4 7.2C2.8 7.5 2.1 7.3 1.6 6.8L0.9 5.8C0.4 4.9 0.5 3.7 1.3 2.9L2.5 0.5Z"
+        d="M85.7 88.4l5.5-5.3c6.5-6.5 6.5-17.2 0-23.7L45.9 14.1c-6.5-6.5-17.2-6.5-23.7 0l-1.6 1.1C10.1 25.7 3.8 39.3 1.2 54.6L60 113.3L85.7 88.4z"
         fill="#EA4335"
       />
 
       {/* Yellow Transition Crook */}
       <path
-        d="M0.9 5.8C0.6 6.4 0.7 7.1 1.2 7.7L1.9 8.4C2.5 9.0 3.3 9.1 3.9 8.7L3.4 7.2C2.8 7.5 2.1 7.3 1.6 6.8L0.9 5.8Z"
+        d="M1.2 54.6c-4.6 28 3.6 61.9 23.1 94.4l25-11.7L60 113.3L39 79L1.2 54.6z"
         fill="#FBBC04"
       />
 
-      {/* Blue Curved Handle */}
+      {/* Blue Curved Handle & Lower Neck */}
       <path
-        d="M1.2 7.7C0.8 8.6 1.4 9.6 2.3 10.6C3.6 12.1 5.3 13.3 7.3 13.9C8.6 14.3 9.9 14.3 10.8 13.8L9.9 12.3C9.2 12.6 8.3 12.6 7.4 12.3C5.8 11.8 4.4 10.8 3.3 9.5C2.7 8.8 2.3 8.1 2.2 7.5L1.2 7.7Z"
+        d="M24.4 149c8.8 14.6 20.5 29.3 33.8 42.6c13.3 13.3 28.3 25.2 42.9 34l35.7-35.6L60 113.3"
+        fill="#4285F4"
+      />
+      <path
+        d="M195.4 248.8c-28 4.6-61.9-3.7-94.4-23.1l10.9-24.3l24.7-11.4l38.7 22.1L195.4 248.8z"
         fill="#4285F4"
       />
 
-      {/* Green Mouthpiece */}
+      {/* Green Mouthpiece (Bottom right capsule) */}
       <path
-        d="M9.8 10.4C9.2 9.6 9.3 8.5 10.1 7.9L11.2 7.0C12.1 6.3 13.3 6.5 13.9 7.4L14.3 8.0C14.9 8.9 14.7 10.1 13.8 10.7L12.7 11.6C11.9 12.3 10.7 12.1 10.1 11.2L9.8 10.4Z"
+        d="M237.2 225.8c5.3-5.1 5.5-13.4 0.5-18.7l-48.2-51.4c-5.3-5-13.5-4.9-18.6 0.2L136.7 190l58.7 58.7c15.9-2.3 27.8-9.1 38.6-19.9L237.2 225.8z"
         fill="#34A853"
       />
     </svg>
