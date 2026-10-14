@@ -12,7 +12,7 @@ interface NavItem {
 interface InfoPageLayoutProps {
   title: string;
   subtitle?: string;
-  breadcrumbLabel: string;
+  breadcrumbLabel?: string;
   navItems?: NavItem[];
   children: React.ReactNode;
 }
@@ -29,14 +29,6 @@ export function InfoPageLayout({
   return (
     <SiteLayout>
       <div className={`pt-6 pb-28 sm:py-12 mx-auto px-4 sm:px-6 lg:px-8 ${hasNav ? "max-w-7xl" : "max-w-4xl"}`}>
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-[#7A6D70] mb-6" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-[#C85250] transition-colors">
-            Home
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-[#B8ACA9]" />
-          <span className="text-[#221C1D] font-medium">{breadcrumbLabel}</span>
-        </nav>
 
         {hasNav ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

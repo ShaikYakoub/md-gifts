@@ -1,7 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ChevronRight, ShieldCheck, Truck, RefreshCw, FileText, MessageCircle } from "lucide-react";
+import { ShieldCheck, Truck, RefreshCw, FileText, MessageCircle } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 
 export const metadata: Metadata = {
@@ -16,14 +15,6 @@ export default function PoliciesPage() {
   return (
     <SiteLayout>
       <div className="pt-6 pb-28 sm:py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-[#7A6D70] mb-6" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-[#C85250] transition-colors">
-            Home
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-[#B8ACA9]" />
-          <span className="text-[#221C1D] font-medium">Terms & Policies</span>
-        </nav>
 
         {/* Page Header */}
         <div className="pb-6 border-b border-[#EFE4DC] mb-8">

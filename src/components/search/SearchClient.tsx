@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search as SearchIcon, X, ChevronRight } from "lucide-react";
+import { Search as SearchIcon, X } from "lucide-react";
 import { Product } from "@/types/catalog";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { ProductImage } from "@/components/ui/ProductImage";
@@ -91,14 +91,6 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
 
   return (
     <div className="pt-6 pb-28 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-xs text-[#7A6D70] mb-4" aria-label="Breadcrumb">
-        <Link href="/" className="hover:text-[#C85250] transition-colors">
-          Home
-        </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-[#B8ACA9]" />
-        <span className="text-[#221C1D] font-medium">Search</span>
-      </nav>
 
       {/* Search Input Box */}
       <div className="max-w-2xl mx-auto mb-8">
