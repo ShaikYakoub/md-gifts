@@ -64,15 +64,15 @@ export function Footer() {
                 <span>Instagram</span>
               </a>
 
-              {/* Google Call */}
-              <a
-                href="tel:+919876543210"
+              {/* Contact */}
+              <Link
+                href="/contact"
                 className="group inline-flex items-center justify-center gap-2 h-10 px-3.5 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#4285F4] hover:border-[#4285F4] hover:bg-[#F8FAFD] transition-all shadow-2xs font-medium text-xs sm:text-sm cursor-pointer w-full sm:w-auto"
-                aria-label="Call us via Google Call"
+                aria-label="Contact us"
               >
                 <GoogleCallLogo className="w-4.5 h-4.5 shrink-0" />
-                <span>Google Call</span>
-              </a>
+                <span>Contact</span>
+              </Link>
             </div>
           </div>
         </div>

@@ -46,3 +46,5 @@ export function GoogleCallLogo({ className = "w-4.5 h-4.5 shrink-0", size }: Goo
     </svg>
   );
 }
+
+export const ContactLogo = GoogleCallLogo;
