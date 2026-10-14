@@ -212,14 +212,11 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
         {/* Right Column: Selections, Price & Actions */}
         <div className="lg:col-span-5 px-4 sm:px-0 space-y-5 pt-2 sm:pt-0">
-          {/* Mobile-only Title and Category Header (Mockup Style) */}
-          <div className="sm:hidden space-y-0.5 pb-1">
+          {/* Mobile-only Title Header */}
+          <div className="sm:hidden pb-1">
             <h1 className="font-serif text-2xl font-bold text-[#221C1D] tracking-tight">
               {product.name}
             </h1>
-            <p className="text-xs text-[#8A7B7E] font-medium capitalize">
-              {product.categorySlug?.replace(/-/g, " ") || "Personalized Gift"}
-            </p>
           </div>
 
           {/* Prominent Price & Discount Header (Above Size) */}
