@@ -3,8 +3,14 @@
 import React, { useState } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle2 } from "lucide-react";
 import { InfoPageLayout } from "@/components/informational/InfoPageLayout";
+import { WhatsAppLogo } from "@/components/ui/WhatsAppLogo";
+import { GmailLogo } from "@/components/ui/GmailLogo";
+import { InstagramLogo } from "@/components/ui/InstagramLogo";
+import { GoogleCallLogo } from "@/components/ui/GoogleCallLogo";
+import { getGeneralWhatsAppUrl } from "@/lib/whatsapp";
 
 export default function ContactPage() {
+  const whatsappUrl = getGeneralWhatsAppUrl();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -27,8 +33,60 @@ export default function ContactPage() {
       breadcrumbLabel="Contact Us"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        {/* Contact Info Cards (Left Column) */}
+        {/* Contact Info & Channels (Left Column) */}
         <div className="md:col-span-5 space-y-4">
+          {/* Quick Connect & Support Channels */}
+          <div className="p-4 bg-[#FAF5F1] rounded-2xl border border-[#EDE1D7]">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#8A7B7E] mb-3">
+              Contact & Support Channels
+            </h3>
+            <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
+              {/* WhatsApp */}
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#1FA34D] hover:border-[#25D366] hover:bg-[#F4FAF5] transition-all shadow-2xs font-medium text-xs sm:text-sm cursor-pointer"
+                aria-label="Chat with us on WhatsApp"
+              >
+                <WhatsAppLogo className="w-4.5 h-4.5 shrink-0" />
+                <span>WhatsApp</span>
+              </a>
+
+              {/* Gmail */}
+              <a
+                href="mailto:support@giftly.in"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#EA4335] hover:border-[#EA4335] hover:bg-[#FDF7F5] transition-all shadow-2xs font-medium text-xs sm:text-sm cursor-pointer"
+                aria-label="Email support@giftly.in via Gmail"
+              >
+                <GmailLogo className="w-4.5 h-4.5 shrink-0" />
+                <span>Gmail</span>
+              </a>
+
+              {/* Instagram */}
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#E1306C] hover:border-[#E1306C] hover:bg-[#FDF7FA] transition-all shadow-2xs font-medium text-xs sm:text-sm cursor-pointer"
+                aria-label="Follow us on Instagram"
+              >
+                <InstagramLogo className="w-4.5 h-4.5 shrink-0" />
+                <span>Instagram</span>
+              </a>
+
+              {/* Direct Call */}
+              <a
+                href="tel:+919876543210"
+                className="group inline-flex items-center justify-center gap-2 h-10 px-3 py-2 rounded-xl bg-white border border-[#E8DDD4] text-[#3C3234] hover:text-[#4285F4] hover:border-[#4285F4] hover:bg-[#F8FAFD] transition-all shadow-2xs font-medium text-xs sm:text-sm cursor-pointer"
+                aria-label="Call +91 98765 43210"
+              >
+                <GoogleCallLogo className="w-4.5 h-4.5 shrink-0" />
+                <span>Call Us</span>
+              </a>
+            </div>
+          </div>
+
           <div className="p-4 bg-[#FAF5F1] rounded-2xl border border-[#EDE1D7] flex items-start gap-3.5">
             <div className="w-10 h-10 rounded-full bg-[#FAF0EC] flex items-center justify-center shrink-0 text-[#C85250]">
               <Phone className="w-5 h-5" />
@@ -37,7 +95,7 @@ export default function ContactPage() {
               <h3 className="font-semibold text-sm text-[#221C1D]">+91 98765 43210</h3>
               <p className="text-xs text-[#7A6D70] mt-0.5">Mon – Sat, 10 AM – 7 PM</p>
               <a
-                href="https://wa.me/919876543210"
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-2 text-xs font-semibold text-[#C85250] hover:underline"
