@@ -126,22 +126,6 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
   return (
     <div className="relative pt-0 sm:pt-4 pb-32 sm:py-10 max-w-7xl mx-auto">
-      {/* Mobile Back Button (Absolute) */}
-      <button
-        type="button"
-        onClick={() => {
-          if (typeof window !== "undefined" && window.history.length > 1) {
-            window.history.back();
-          } else {
-            window.location.href = "/";
-          }
-        }}
-        className="absolute top-3 left-4 z-30 w-9 h-9 rounded-full bg-[#FAF5F0] border border-[#E8DDD4] text-[#3C3234] hover:text-[#EC0B12] flex sm:hidden items-center justify-center shadow-2xs active:scale-90 transition-all cursor-pointer"
-        aria-label="Go back"
-      >
-        <ArrowLeft className="w-4 h-4" />
-      </button>
-
       {/* Header Info for Desktop */}
       <div className="hidden sm:block px-6 lg:px-8 mb-6 space-y-1">
         <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#221C1D] tracking-tight">
@@ -154,9 +138,24 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
       {/* Main Product Showcase */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start sm:px-6 lg:px-8">
-        {/* Left Column: Main Product Image Area & Gallery Thumbnails */}
-        <div className="lg:col-span-7 px-4 pt-14 sm:px-0 sm:pt-0">
+        {/* Left Column: Main Product Image Area (Symmetric 16px padding on mobile: pt-4 px-4) */}
+        <div className="lg:col-span-7 px-4 pt-4 sm:px-0 sm:pt-0">
           <div className="relative aspect-square w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FAF5F0] border border-[#EDE2DA] select-none shadow-xs">
+            {/* Mobile Back Button (Floating on Top-Left of Image) */}
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined" && window.history.length > 1) {
+                  window.history.back();
+                } else {
+                  window.location.href = "/";
+                }
+              }}
+              className="absolute top-3.5 left-3.5 z-20 w-9 h-9 rounded-full bg-[#FAF5F0]/90 backdrop-blur-xs border border-[#E8DDD4] text-[#3C3234] hover:text-[#EC0B12] flex sm:hidden items-center justify-center shadow-2xs active:scale-90 transition-all cursor-pointer"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
             {/* Scrollable / Swipeable Track - Strictly Horizontal */}
             <div
               ref={carouselRef}
