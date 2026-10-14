@@ -447,7 +447,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
         {/* Drawer Bottom Actions: WhatsApp Order & Help */}
         <div className="p-4 border-t border-[#F0E6DE] space-y-2.5 bg-white shrink-0">
           <a
-            href={`https://wa.me/91${SITE_CONFIG.phoneClean}`}
+            href={`https://wa.me/${SITE_CONFIG.whatsappNumber}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClose}
