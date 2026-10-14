@@ -118,7 +118,7 @@ export function CategoryView({
         if (filterState.sort === "rating") return b.rating - a.rating;
         return 0; // featured/default
       });
-  }, [initialProducts, filterState]);
+  }, [baseProductList, filterState]);
 
   return (
     <div className="pt-6 pb-28 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -148,7 +148,7 @@ export function CategoryView({
             onClick={() => setIsFilterOpenMobile(true)}
             className="lg:hidden flex items-center gap-1.5 text-xs font-semibold px-3.5 py-1.5 sm:py-2 bg-white border border-[#DDCFC6] hover:border-[#BDB0A8] rounded-full text-[#3E3234] shadow-2xs cursor-pointer transition-colors"
           >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-[#C85250]" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#EC0B12]" />
             <span>Filter</span>
           </button>
 
@@ -210,7 +210,7 @@ export function CategoryView({
                     sort: "featured",
                   })
                 }
-                className="px-4 py-2 bg-[#C85250] text-white text-xs font-semibold rounded-xl hover:bg-[#B14140] transition-colors"
+                className="px-4 py-2 bg-[#EC0B12] text-white text-xs font-semibold rounded-xl hover:bg-[#D0080E] transition-colors"
               >
                 Reset All Filters
               </button>

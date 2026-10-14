@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { InfoPageLayout } from "@/components/informational/InfoPageLayout";
+import { SITE_CONFIG } from "@/lib/siteConfig";
 
 interface FAQItem {
   q: string;
@@ -12,28 +13,28 @@ interface FAQItem {
 
 const FAQ_ITEMS: FAQItem[] = [
   {
-    q: "How do I place an order?",
-    a: "Select your desired personalized gift, pick your preferred size, frame color, and material, and click 'Add to Cart'. Proceed to checkout, enter your contact & delivery address, and confirm. No online payment is needed at checkout — our design coordinator will connect with you on WhatsApp/Call to verify photos and details!",
+    q: "How do I place an order with MD Gifts?",
+    a: "Select your desired personalized gift, pick your preferred size, frame color, and material, and click 'Add to Cart'. Proceed to checkout, enter your contact & delivery address, and confirm. No upfront online payment is needed at checkout — our design coordinator from MD Gifts Kadapa will connect with you directly on WhatsApp (+91 7095253709) to collect and verify photos and customization notes!",
     category: "ordering",
   },
   {
-    q: "Can I request custom designs and photo previews?",
-    a: "Yes, absolutely! Once your order is received, our graphic artists create a digital 3D mockup of your frame or keepsake and send it to you via WhatsApp for approval before we proceed to printing and handcrafting.",
+    q: "Can I request custom designs and photo previews before printing?",
+    a: "Yes, 100%! Once your order is received, our graphic artists at MD Gifts create digital mockups of your frame or keepsake and send them to you via WhatsApp for approval before we proceed to printing and handcrafting.",
     category: "customization",
   },
   {
-    q: "What materials do you use?",
-    a: "We use museum-grade fade-resistant archival paper, seasoned natural teak and pine woods, diamond-polished cast acrylic, and high-strength neodymium magnets. All glass frames use shatterproof optical acrylic for 100% safe transit across India.",
+    q: "What materials do you use at MD Gifts?",
+    a: "We use museum-grade fade-resistant archival photo papers, seasoned natural teak and pine woods, diamond-polished cast acrylic, and high-strength neodymium magnets. All glass frames use shatterproof optical acrylic for 100% safe transit across India.",
     category: "products",
   },
   {
-    q: "How long will it take to deliver?",
-    a: "Customization and handcrafting take 1–2 business days. Express shipping across metro cities takes 2–4 days, while rest of India takes 4–6 days. You will receive real-time courier tracking details as soon as your package is dispatched.",
+    q: "Where is MD Gifts located and how long does delivery take?",
+    a: "MD Gifts is located at 3/511, Raja Reddy Street, Opp Krupa Church, Kadapa, Andhra Pradesh (PIN 516001). Customization and handcrafting take 1–2 business days. Express delivery in Andhra Pradesh and South India takes 1–3 days, while rest of India takes 3–5 days. You will receive real-time courier tracking details as soon as your package is dispatched.",
     category: "delivery",
   },
   {
     q: "Do you offer bulk orders for weddings, corporate events, or festivals?",
-    a: "Yes, we specialize in bulk personalized hampers, employee welcome kits, and wedding return gifts with custom branding. Please reach out to us at support@giftly.in or WhatsApp +91 98765 43210 for special corporate and bulk pricing.",
+    a: "Yes, we specialize in bulk personalized hampers, employee welcome kits, and wedding return gifts with custom branding. Please reach out to us at mdgift2020@gmail.com or WhatsApp +91 7095253709 for special bulk and corporate pricing.",
     category: "ordering",
   },
   {
@@ -43,12 +44,12 @@ const FAQ_ITEMS: FAQItem[] = [
   },
   {
     q: "What if I receive a damaged product?",
-    a: "We take extreme care in packaging with multi-layer bubble wrap, edge guards, and wooden crating for delicate items. In the rare event of transit damage, simply share an unboxing photo/video within 48 hours of delivery, and we will dispatch a free replacement immediately without questions asked.",
+    a: "We take extreme care in packaging with multi-layer bubble wrap, edge guards, and solid protective crating for delicate items. In the rare event of transit damage, simply share an unboxing photo or video within 48 hours of delivery, and MD Gifts will dispatch a free replacement immediately without questions asked.",
     category: "delivery",
   },
   {
-    q: "How can I contact your support team?",
-    a: "You can WhatsApp or call our team at +91 98765 43210 from Monday to Saturday between 10:00 AM and 7:00 PM IST, or email us anytime at support@giftly.in. We typically reply within a few hours!",
+    q: "How can I contact MD Gifts support team?",
+    a: "You can WhatsApp or call our team at +91 7095253709 from Monday to Saturday between 9:30 AM and 8:30 PM IST, or email us anytime at mdgift2020@gmail.com. You are also welcome to visit our studio at 3/511, Raja Reddy Street, Opp Krupa Church, Kadapa, Andhra Pradesh 516001!",
     category: "general",
   },
 ];
@@ -79,7 +80,7 @@ export default function FAQPage() {
   return (
     <InfoPageLayout
       title="Frequently Asked Questions"
-      subtitle="Find fast answers to common questions about ordering, customization proofs, materials, and delivery."
+      subtitle="Find fast answers to common questions about ordering, customization proofs, materials, and delivery from MD Gifts."
       breadcrumbLabel="FAQ"
     >
       <script
@@ -94,10 +95,10 @@ export default function FAQPage() {
             key={cat}
             type="button"
             onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-colors ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-colors cursor-pointer ${
               activeCategory === cat
-                ? "bg-[#C85250] text-white"
-                : "bg-[#FAF5F1] text-[#5C4F51] hover:bg-[#F2E8E2]"
+                ? "bg-[#EC0B12] text-white shadow-xs"
+                : "bg-[#FAF5F1] text-[#5C4F51] hover:bg-[#E6F7F9] hover:text-[#0194A3]"
             }`}
           >
             {cat}
@@ -117,12 +118,12 @@ export default function FAQPage() {
               <button
                 type="button"
                 onClick={() => setOpenIndex(isOpen ? null : idx)}
-                className="w-full p-4 sm:p-5 flex items-center justify-between text-left gap-4 font-semibold text-sm sm:text-base text-[#221C1D]"
+                className="w-full p-4 sm:p-5 flex items-center justify-between text-left gap-4 font-semibold text-sm sm:text-base text-[#221C1D] cursor-pointer"
               >
                 <span>{faq.q}</span>
                 <ChevronDown
                   className={`w-4 h-4 text-[#8C7D80] shrink-0 transition-transform ${
-                    isOpen ? "rotate-180 text-[#C85250]" : ""
+                    isOpen ? "rotate-180 text-[#EC0B12]" : ""
                   }`}
                 />
               </button>
@@ -137,7 +138,7 @@ export default function FAQPage() {
         })}
       </div>
 
-      <div className="mt-8 p-6 bg-[#FAF0EC] rounded-2xl border border-[#F2DDD5] text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="mt-8 p-6 bg-[#FEF2F2] rounded-2xl border border-[#FCD5D7] text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <h3 className="font-semibold text-sm sm:text-base text-[#221C1D]">
             Have a custom design inquiry?
@@ -147,10 +148,10 @@ export default function FAQPage() {
           </p>
         </div>
         <a
-          href="https://wa.me/919876543210"
+          href={`https://wa.me/${SITE_CONFIG.whatsappNumber}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="px-5 py-2.5 bg-[#C85250] hover:bg-[#B14140] text-white text-xs font-semibold rounded-xl transition-colors shrink-0"
+          className="px-5 py-2.5 bg-[#0194A3] hover:bg-[#017C8A] text-white text-xs font-semibold rounded-xl transition-colors shrink-0 shadow-xs cursor-pointer"
         >
           Message on WhatsApp
         </a>

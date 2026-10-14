@@ -68,7 +68,7 @@ export function MobileBottomNav() {
       <div className="relative flex items-center bg-[#18181B]/95 backdrop-blur-xl border border-white/10 shadow-[0_12px_36px_rgba(0,0,0,0.35)] rounded-full p-1.5">
         {/* Smooth Gliding Capsule Pill Indicator */}
         <div
-          className="absolute rounded-full bg-gradient-to-r from-[#C85250] to-[#E26D68] shadow-xs pointer-events-none transition-[transform,width] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]"
+          className="absolute rounded-full bg-gradient-to-r from-[#EC0B12] to-[#D0080E] shadow-xs pointer-events-none transition-[transform,width] duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]"
           style={{
             transform: `translate3d(${currentGeometry.left}px, 6px, 0)`,
             width: `${currentGeometry.width}px`,
@@ -98,7 +98,7 @@ export function MobileBottomNav() {
                   }`}
                 />
                 {!isActive && Boolean(item.badge && item.badge > 0) && (
-                  <span className="absolute -top-1.5 -right-2 bg-[#C85250] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-[#18181B]">
+                  <span className="absolute -top-1.5 -right-2 bg-[#EC0B12] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-[#18181B]">
                     {item.badge}
                   </span>
                 )}

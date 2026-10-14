@@ -110,9 +110,9 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
   const handleWhatsAppOrder = () => {
     const text = encodeURIComponent(
-      `Hello Giftly! I would like to order:\n\n*${product.name}*\n• Size: ${selectedSize}\n• Frame Color: ${selectedColor}\n• Material: ${selectedMaterial}\n${customizationText ? `• Customization: ${customizationText}\n` : ""}• Price: ₹${currentPrice.toLocaleString("en-IN")}\n\nPlease let me know how to proceed with the photo and payment!`
+      `Hello MD Gifts! I would like to order:\n\n*${product.name}*\n• Size: ${selectedSize}\n• Frame Color: ${selectedColor}\n• Material: ${selectedMaterial}\n${customizationText ? `• Customization: ${customizationText}\n` : ""}• Price: ₹${currentPrice.toLocaleString("en-IN")}\n\nPlease let me know how to proceed with the photo and payment!`
     );
-    window.open(`https://wa.me/919876543210?text=${text}`, "_blank");
+    window.open(`https://wa.me/917095253709?text=${text}`, "_blank");
   };
 
   // Concise reduced description (smaller size & smaller text)
@@ -127,7 +127,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
         <button
           type="button"
           onClick={() => window.history.back()}
-          className="w-9 h-9 rounded-full bg-[#FAF5F0] border border-[#E8DDD4] text-[#3C3234] hover:text-[#C85250] flex items-center justify-center shadow-2xs active:scale-90 transition-all cursor-pointer"
+          className="w-9 h-9 rounded-full bg-[#FAF5F0] border border-[#E8DDD4] text-[#3C3234] hover:text-[#EC0B12] flex items-center justify-center shadow-2xs active:scale-90 transition-all cursor-pointer"
           aria-label="Go back"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -182,7 +182,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             <button
               type="button"
               onClick={() => scrollToSlide((activeImageIndex - 1 + slides.length) % slides.length)}
-              className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#221C1D] hover:text-[#C85250] items-center justify-center shadow-md transition-all hover:scale-105 cursor-pointer"
+              className="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#221C1D] hover:text-[#EC0B12] items-center justify-center shadow-md transition-all hover:scale-105 cursor-pointer"
               aria-label="Previous image"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -190,7 +190,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             <button
               type="button"
               onClick={() => scrollToSlide((activeImageIndex + 1) % slides.length)}
-              className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#221C1D] hover:text-[#C85250] items-center justify-center shadow-md transition-all hover:scale-105 cursor-pointer"
+              className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#221C1D] hover:text-[#EC0B12] items-center justify-center shadow-md transition-all hover:scale-105 cursor-pointer"
               aria-label="Next image"
             >
               <ChevronRight className="w-5 h-5" />
@@ -227,7 +227,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                   onClick={() => scrollToSlide(idx)}
                   className={`flex-1 aspect-square rounded-2xl overflow-hidden border-2 transition-all p-1 flex items-center justify-center bg-[#FAF5F0] cursor-pointer ${
                     activeImageIndex === idx
-                      ? "border-[#C85250] shadow-2xs"
+                      ? "border-[#EC0B12] shadow-2xs"
                       : "border-[#EDE2DA] opacity-75 hover:opacity-100"
                   }`}
                   aria-label={`View ${slide.label}`}
@@ -302,8 +302,8 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                         onClick={() => setSelectedSize(size)}
                         className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors cursor-pointer border-2 ${
                           isSelected
-                            ? "bg-[#FDF2F0] text-[#C85250] border-[#C85250] font-semibold"
-                            : "bg-white text-[#4A3E40] border-[#E0D5CC] hover:border-[#C85250]"
+                            ? "bg-[#FEF2F2] text-[#EC0B12] border-[#EC0B12] font-semibold"
+                            : "bg-white text-[#4A3E40] border-[#E0D5CC] hover:border-[#EC0B12]"
                         }`}
                       >
                         {size}
@@ -330,7 +330,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                         onClick={() => setSelectedColor(color.name)}
                         className={`relative w-8 h-8 rounded-full transition-transform active:scale-95 flex items-center justify-center cursor-pointer ring-2 ring-offset-2 ${
                           isSelected
-                            ? "ring-[#C85250] shadow-xs"
+                            ? "ring-[#EC0B12] shadow-xs"
                             : "ring-transparent hover:ring-[#D1C5BD]"
                         } border border-black/15`}
                         style={{ backgroundColor: color.hex }}
@@ -374,8 +374,8 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                         onClick={() => setSelectedMaterial(mat)}
                         className={`px-3 py-2 rounded-xl text-xs font-medium transition-colors text-center cursor-pointer border-2 ${
                           isSelected
-                            ? "bg-[#FDF2F0] text-[#C85250] border-[#C85250] font-semibold"
-                            : "bg-white text-[#4A3E40] border-[#E0D5CC] hover:border-[#C85250]"
+                            ? "bg-[#FEF2F2] text-[#EC0B12] border-[#EC0B12] font-semibold"
+                            : "bg-white text-[#4A3E40] border-[#E0D5CC] hover:border-[#EC0B12]"
                         }`}
                       >
                         {mat}
@@ -398,7 +398,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 minHeight={64}
                 maxHeight={180}
                 placeholder="e.g. Names (Rahul & Priya), Anniversary date (14 Feb 2023), or custom quote..."
-                className="w-full bg-white text-xs sm:text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#C85250] focus:ring-1 focus:ring-[#C85250] shadow-2xs"
+                className="w-full bg-white text-xs sm:text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#EC0B12] focus:ring-1 focus:ring-[#EC0B12] shadow-2xs"
               />
               <p className="text-[11px] text-[#7A6D70]">
                 📸 High-resolution photos are collected on WhatsApp after placing your order.
@@ -417,7 +417,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                     <button
                       type="button"
                       onClick={() => setShowFullDescription((prev) => !prev)}
-                      className="ml-1 font-semibold text-[#C85250] hover:underline cursor-pointer"
+                      className="ml-1 font-semibold text-[#EC0B12] hover:underline cursor-pointer"
                     >
                       {showFullDescription ? " Show Less" : " ... Learn More"}
                     </button>
@@ -433,17 +433,17 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               <button
                 type="button"
                 onClick={handleInitialAddToCart}
-                className="w-full bg-[#C85250] hover:bg-[#B14140] text-white py-3.5 px-6 rounded-xl font-bold text-base transition-transform active:scale-[0.98] shadow-md shadow-[#C85250]/20 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full bg-[#EC0B12] hover:bg-[#D0080E] text-white py-3.5 px-6 rounded-xl font-bold text-base transition-transform active:scale-[0.98] shadow-md shadow-[#EC0B12]/20 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingBag className="w-5 h-5" />
                 <span>Add to Cart</span>
               </button>
             ) : (
-              <div className="w-full flex items-center justify-between bg-[#FDF2F0] border border-[#F5C2BC] rounded-xl px-3 py-1.5">
+              <div className="w-full flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-xl px-3 py-1.5">
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, -1)}
-                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#4A3E40] hover:text-[#C85250] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#4A3E40] hover:text-[#EC0B12] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="w-6 h-6 stroke-[2.5]" />
@@ -456,7 +456,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, 1)}
-                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#4A3E40] hover:text-[#C85250] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#4A3E40] hover:text-[#EC0B12] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
                   aria-label="Increase quantity"
                 >
                   <Plus className="w-6 h-6 stroke-[2.5]" />
@@ -498,17 +498,17 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               <button
                 type="button"
                 onClick={handleInitialAddToCart}
-                className="flex-1 bg-white hover:bg-[#FAF4F0] text-[#C85250] border-2 border-[#C85250] py-2.5 sm:py-3 px-3 sm:px-4 rounded-full font-bold text-xs sm:text-sm transition-transform active:scale-95 shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
+                className="flex-1 bg-white hover:bg-[#FEF2F2] text-[#EC0B12] border-2 border-[#EC0B12] py-2.5 sm:py-3 px-3 sm:px-4 rounded-full font-bold text-xs sm:text-sm transition-transform active:scale-95 shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
               >
                 <Plus className="w-4 h-4 stroke-[2.4]" />
                 <span>Add to Cart</span>
               </button>
             ) : (
-              <div className="flex-1 flex items-center justify-between bg-[#FDF2F0] border border-[#F5C2BC] rounded-full px-2 py-1">
+              <div className="flex-1 flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-full px-2 py-1">
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, -1)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#4A3E40] hover:text-[#C85250] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#4A3E40] hover:text-[#EC0B12] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="w-4 h-4 stroke-[2.5]" />
@@ -521,7 +521,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, 1)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#4A3E40] hover:text-[#C85250] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#4A3E40] hover:text-[#EC0B12] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
                   aria-label="Increase quantity"
                 >
                   <Plus className="w-4 h-4 stroke-[2.5]" />
@@ -541,7 +541,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </h2>
             <Link
               href={`/categories/${product.categorySlug}`}
-              className="text-xs sm:text-sm font-semibold text-[#C85250] hover:underline"
+              className="text-xs sm:text-sm font-semibold text-[#EC0B12] hover:underline"
             >
               View More →
             </Link>

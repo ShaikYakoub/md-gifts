@@ -22,10 +22,10 @@ export function ShopByOccasion() {
           </h2>
           <Link
             href="/categories"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#C85250]/40 hover:text-[#C85250] transition-colors shadow-2xs group"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#EC0B12]/40 hover:text-[#EC0B12] transition-colors shadow-2xs group"
           >
             <span>View all</span>
-            <ArrowRight className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#C85250] transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#EC0B12] transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
@@ -38,7 +38,7 @@ export function ShopByOccasion() {
               href={`/categories/${occ.slug}`}
               className="flex flex-col items-center group w-full"
             >
-              <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-[#FAF0EA] border border-[#EDE0D6] group-hover:border-[#E8C2B3] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5">
+              <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-[#FEF2F2] border border-[#EDE0D6] group-hover:border-[#E8C2B3] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5">
                 <Image
                   src={occ.image}
                   alt={occ.name}
@@ -48,7 +48,7 @@ export function ShopByOccasion() {
                 />
               </div>
               <span
-                className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#382E30] group-hover:text-[#C85250] transition-colors text-center truncate w-full px-0.5"
+                className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#382E30] group-hover:text-[#EC0B12] transition-colors text-center truncate w-full px-0.5"
                 title={occ.name}
               >
                 {occ.name}
@@ -62,12 +62,12 @@ export function ShopByOccasion() {
             className="flex flex-col items-center group w-full sm:hidden"
             aria-label="View all occasions"
           >
-            <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-gradient-to-br from-[#FAF0EA] to-[#F5E6DC] border border-[#EDE0D6] group-hover:border-[#C85250] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5 flex items-center justify-center">
-              <div className="w-8 h-8 rounded-full bg-white shadow-2xs border border-[#EDE0D6] flex items-center justify-center text-[#C85250] group-hover:bg-[#C85250] group-hover:text-white group-hover:border-[#C85250] transition-all duration-300 group-hover:scale-105">
+            <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-gradient-to-br from-[#FEF2F2] to-[#E6F7F9] border border-[#EDE0D6] group-hover:border-[#EC0B12] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-white shadow-2xs border border-[#EDE0D6] flex items-center justify-center text-[#EC0B12] group-hover:bg-[#EC0B12] group-hover:text-white group-hover:border-[#EC0B12] transition-all duration-300 group-hover:scale-105">
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </div>
             </div>
-            <span className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#C85250] group-hover:text-[#A83836] transition-colors text-center line-clamp-1 w-full px-0.5">
+            <span className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#EC0B12] group-hover:text-[#D0080E] transition-colors text-center line-clamp-1 w-full px-0.5">
               View all
             </span>
           </Link>
@@ -79,7 +79,7 @@ export function ShopByOccasion() {
               href={`/categories/${occ.slug}`}
               className="hidden sm:flex flex-col items-center group w-full"
             >
-              <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-[#FAF0EA] border border-[#EDE0D6] group-hover:border-[#E8C2B3] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5">
+              <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-[#FEF2F2] border border-[#EDE0D6] group-hover:border-[#E8C2B3] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5">
                 <Image
                   src={occ.image}
                   alt={occ.name}
@@ -89,7 +89,7 @@ export function ShopByOccasion() {
                 />
               </div>
               <span
-                className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#382E30] group-hover:text-[#C85250] transition-colors text-center truncate w-full px-0.5"
+                className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#382E30] group-hover:text-[#EC0B12] transition-colors text-center truncate w-full px-0.5"
                 title={occ.name}
               >
                 {occ.name}

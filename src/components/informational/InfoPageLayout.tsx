@@ -20,7 +20,7 @@ interface InfoPageLayoutProps {
 export function InfoPageLayout({
   title,
   subtitle,
-  breadcrumbLabel,
+  breadcrumbLabel: _breadcrumbLabel,
   navItems,
   children,
 }: InfoPageLayoutProps) {
@@ -39,12 +39,12 @@ export function InfoPageLayout({
                   href={item.href}
                   className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-colors ${
                     item.isActive
-                      ? "bg-[#FAF0EC] text-[#C85250] font-semibold"
-                      : "text-[#5C4F51] hover:bg-[#FAF4F0] hover:text-[#C85250]"
+                      ? "bg-[#FEF2F2] text-[#EC0B12] font-semibold"
+                      : "text-[#5C4F51] hover:bg-[#FEF2F2] hover:text-[#EC0B12]"
                   }`}
                 >
                   <span>{item.label}</span>
-                  <ChevronRight className={`w-3.5 h-3.5 ${item.isActive ? "text-[#C85250]" : "text-[#C2B5B0]"}`} />
+                  <ChevronRight className={`w-3.5 h-3.5 ${item.isActive ? "text-[#EC0B12]" : "text-[#C2B5B0]"}`} />
                 </Link>
               ))}
             </aside>

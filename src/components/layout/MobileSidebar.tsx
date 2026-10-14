@@ -37,6 +37,7 @@ import {
 import { Logo } from "@/components/ui/Logo";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { OCCASIONS, RECIPIENTS } from "@/data/categories";
+import { SITE_CONFIG } from "@/lib/siteConfig";
 
 interface MobileSidebarProps {
   isOpen: boolean;
@@ -94,20 +95,20 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
     const active = isLinkActive(href);
     return `flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
       active
-        ? "bg-[#FAF0EC] text-[#C85250] font-medium"
-        : "text-[#3E3335] hover:bg-[#FAF4F0] hover:text-[#C85250]"
+        ? "bg-[#FEF2F2] text-[#EC0B12] font-medium"
+        : "text-[#3E3335] hover:bg-[#FEF2F2] hover:text-[#EC0B12]"
     }`;
   };
 
   const getIconClass = (href: string) => {
     return `w-4 h-4 transition-colors ${
-      isLinkActive(href) ? "text-[#C85250]" : "text-[#7A6E70]"
+      isLinkActive(href) ? "text-[#EC0B12]" : "text-[#7A6E70]"
     }`;
   };
 
   const getChevronClass = (href: string) => {
     return `w-4 h-4 transition-colors ${
-      isLinkActive(href) ? "text-[#C85250]" : "text-[#BDB2B4]"
+      isLinkActive(href) ? "text-[#EC0B12]" : "text-[#BDB2B4]"
     }`;
   };
 
@@ -168,7 +169,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-[#5C4F51] hover:text-[#C85250] hover:bg-[#FAF2EE] rounded-full transition-colors cursor-pointer"
+            className="p-1.5 text-[#5C4F51] hover:text-[#EC0B12] hover:bg-[#FEF2F2] rounded-full transition-colors cursor-pointer"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -184,7 +185,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search for gifts, frames, occasions..."
-              className="w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#8C7D80] pl-10 pr-3 py-2.5 rounded-lg border border-[#EDE0D6] focus:border-[#C85250] outline-none"
+              className="w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#8C7D80] pl-10 pr-3 py-2.5 rounded-lg border border-[#EDE0D6] focus:border-[#EC0B12] outline-none"
             />
           </form>
         </div>
@@ -197,11 +198,11 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
             onClick={onClose}
             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
               pathname === "/"
-                ? "bg-[#FAF0EC] text-[#C85250] font-medium"
-                : "text-[#3E3335] hover:bg-[#FAF4F0] hover:text-[#C85250]"
+                ? "bg-[#FEF2F2] text-[#EC0B12] font-medium"
+                : "text-[#3E3335] hover:bg-[#FEF2F2] hover:text-[#EC0B12]"
             }`}
           >
-            <Home className={`w-4 h-4 transition-colors ${pathname === "/" ? "text-[#C85250]" : "text-[#7A6E70]"}`} />
+            <Home className={`w-4 h-4 transition-colors ${pathname === "/" ? "text-[#EC0B12]" : "text-[#7A6E70]"}`} />
             <span>Home</span>
           </Link>
 
@@ -320,11 +321,11 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
             <button
               type="button"
               onClick={() => setIsOccasionsOpen(!isOccasionsOpen)}
-              className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-[#221C1D] hover:text-[#C85250] rounded-lg transition-colors cursor-pointer"
+              className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-[#221C1D] hover:text-[#EC0B12] rounded-lg transition-colors cursor-pointer"
             >
               <span>Shop by Occasion</span>
               <ChevronDown
-                className={`w-4 h-4 text-[#8C7D80] transition-transform ${isOccasionsOpen ? "rotate-180 text-[#C85250]" : ""}`}
+                className={`w-4 h-4 text-[#8C7D80] transition-transform ${isOccasionsOpen ? "rotate-180 text-[#EC0B12]" : ""}`}
               />
             </button>
 
@@ -340,11 +341,11 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
                       onClick={onClose}
                       className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer ${
                         active
-                          ? "bg-[#FAF0EC] text-[#C85250] font-medium"
-                          : "text-[#5C4F51] hover:text-[#C85250] hover:bg-[#FAF4F0]"
+                          ? "bg-[#FEF2F2] text-[#EC0B12] font-medium"
+                          : "text-[#5C4F51] hover:text-[#EC0B12] hover:bg-[#FEF2F2]"
                       }`}
                     >
-                      <OccIcon className={`w-4 h-4 shrink-0 ${active ? "text-[#C85250]" : "text-[#C85250]/80"}`} />
+                      <OccIcon className={`w-4 h-4 shrink-0 ${active ? "text-[#EC0B12]" : "text-[#EC0B12]/80"}`} />
                       <span>{occ.name}</span>
                     </Link>
                   );
@@ -358,11 +359,11 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
             <button
               type="button"
               onClick={() => setIsRecipientsOpen(!isRecipientsOpen)}
-              className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-[#221C1D] hover:text-[#C85250] rounded-lg transition-colors cursor-pointer"
+              className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-[#221C1D] hover:text-[#EC0B12] rounded-lg transition-colors cursor-pointer"
             >
               <span>Shop by Recipient</span>
               <ChevronDown
-                className={`w-4 h-4 text-[#8C7D80] transition-transform ${isRecipientsOpen ? "rotate-180 text-[#C85250]" : ""}`}
+                className={`w-4 h-4 text-[#8C7D80] transition-transform ${isRecipientsOpen ? "rotate-180 text-[#EC0B12]" : ""}`}
               />
             </button>
 
@@ -378,11 +379,11 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
                       onClick={onClose}
                       className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer ${
                         active
-                          ? "bg-[#FAF0EC] text-[#C85250] font-medium"
-                          : "text-[#5C4F51] hover:text-[#C85250] hover:bg-[#FAF4F0]"
+                          ? "bg-[#FEF2F2] text-[#EC0B12] font-medium"
+                          : "text-[#5C4F51] hover:text-[#EC0B12] hover:bg-[#FEF2F2]"
                       }`}
                     >
-                      <RecIcon className={`w-4 h-4 shrink-0 ${active ? "text-[#C85250]" : "text-[#C85250]/80"}`} />
+                      <RecIcon className={`w-4 h-4 shrink-0 ${active ? "text-[#EC0B12]" : "text-[#EC0B12]/80"}`} />
                       <span>{rec.name}</span>
                     </Link>
                   );
@@ -446,7 +447,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
         {/* Drawer Bottom Actions: WhatsApp Order & Help */}
         <div className="p-4 border-t border-[#F0E6DE] space-y-2.5 bg-white shrink-0">
           <a
-            href="https://wa.me/919876543210"
+            href={`https://wa.me/91${SITE_CONFIG.phoneClean}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={onClose}

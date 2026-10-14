@@ -83,6 +83,7 @@ export default function AdminDashboardPage() {
   // Load initial data
   useEffect(() => {
     loadAllData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Auto clear toast after 7s
@@ -634,7 +635,7 @@ export default function AdminDashboardPage() {
       <div className="min-h-screen bg-[#FAF7F4] flex flex-col justify-center items-center p-4">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-stone-200 overflow-hidden">
           <div className="bg-[#FAF7F4] border-b border-stone-200 p-8 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-[#C85250] text-white flex items-center justify-center mx-auto mb-3 shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-[#EC0B12] text-white flex items-center justify-center mx-auto mb-3 shadow-md">
               <Lock className="w-6 h-6" />
             </div>
             <h1 className="text-xl font-bold text-stone-900 tracking-tight">MD Gifts Admin</h1>
@@ -657,7 +658,7 @@ export default function AdminDashboardPage() {
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 placeholder="e.g. owner@mdgifts.in"
-                className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
               />
             </div>
 
@@ -669,14 +670,14 @@ export default function AdminDashboardPage() {
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
               />
             </div>
 
             <button
               type="submit"
               disabled={loggingIn}
-              className="w-full mt-2 py-2.5 px-4 bg-[#C85250] hover:bg-[#B34341] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="w-full mt-2 py-2.5 px-4 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               {loggingIn ? (
                 <>
@@ -708,7 +709,7 @@ export default function AdminDashboardPage() {
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#C85250] flex items-center justify-center text-white shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-[#EC0B12] flex items-center justify-center text-white shadow-sm">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
@@ -767,7 +768,7 @@ export default function AdminDashboardPage() {
             onClick={() => setActiveTab("products")}
             className={`py-3 text-sm font-semibold flex items-center gap-2 border-b-2 transition-colors cursor-pointer ${
               activeTab === "products"
-                ? "border-[#C85250] text-[#C85250]"
+                ? "border-[#EC0B12] text-[#EC0B12]"
                 : "border-transparent text-stone-500 hover:text-stone-800"
             }`}
           >
@@ -781,7 +782,7 @@ export default function AdminDashboardPage() {
             onClick={() => setActiveTab("banners")}
             className={`py-3 text-sm font-semibold flex items-center gap-2 border-b-2 transition-colors cursor-pointer ${
               activeTab === "banners"
-                ? "border-[#C85250] text-[#C85250]"
+                ? "border-[#EC0B12] text-[#EC0B12]"
                 : "border-transparent text-stone-500 hover:text-stone-800"
             }`}
           >
@@ -795,7 +796,7 @@ export default function AdminDashboardPage() {
             onClick={() => setActiveTab("categories")}
             className={`py-3 text-sm font-semibold flex items-center gap-2 border-b-2 transition-colors cursor-pointer ${
               activeTab === "categories"
-                ? "border-[#C85250] text-[#C85250]"
+                ? "border-[#EC0B12] text-[#EC0B12]"
                 : "border-transparent text-stone-500 hover:text-stone-800"
             }`}
           >
@@ -837,7 +838,7 @@ export default function AdminDashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
         {loading ? (
           <div className="py-24 text-center">
-            <RefreshCw className="w-8 h-8 text-[#C85250] animate-spin mx-auto mb-3" />
+            <RefreshCw className="w-8 h-8 text-[#EC0B12] animate-spin mx-auto mb-3" />
             <p className="text-stone-600 font-medium">Loading store content...</p>
           </div>
         ) : activeTab === "products" ? (
@@ -853,13 +854,13 @@ export default function AdminDashboardPage() {
                     placeholder="Search products..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                    className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   />
                 </div>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2 text-sm bg-white border border-stone-200 rounded-lg text-stone-700 focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                  className="px-3 py-2 text-sm bg-white border border-stone-200 rounded-lg text-stone-700 focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                 >
                   <option value="all">All Categories</option>
                   {dynamicCategoryOptions.map((c) => (
@@ -871,7 +872,7 @@ export default function AdminDashboardPage() {
                 <select
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value as "all" | "published" | "draft")}
-                  className="px-3 py-2 text-sm bg-white border border-stone-200 rounded-lg text-stone-700 focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                  className="px-3 py-2 text-sm bg-white border border-stone-200 rounded-lg text-stone-700 focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                 >
                   <option value="all">All Statuses</option>
                   <option value="published">Published</option>
@@ -884,7 +885,7 @@ export default function AdminDashboardPage() {
                   setEditingProduct(createNewProductTemplate());
                   setIsNewProduct(true);
                 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#C85250] hover:bg-[#B34341] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Add Product
@@ -902,7 +903,7 @@ export default function AdminDashboardPage() {
                     setEditingProduct(createNewProductTemplate());
                     setIsNewProduct(true);
                   }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#C85250] text-white text-sm font-semibold rounded-lg"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#EC0B12] text-white text-sm font-semibold rounded-lg"
                 >
                   <Plus className="w-4 h-4" /> Add Product
                 </button>
@@ -1035,7 +1036,7 @@ export default function AdminDashboardPage() {
                   setEditingBanner(createNewBannerTemplate());
                   setIsNewBanner(true);
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#C85250] hover:bg-[#B34341] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Add Banner
@@ -1053,7 +1054,7 @@ export default function AdminDashboardPage() {
                     setEditingBanner(createNewBannerTemplate());
                     setIsNewBanner(true);
                   }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#C85250] text-white text-sm font-semibold rounded-lg"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#EC0B12] text-white text-sm font-semibold rounded-lg"
                 >
                   <Plus className="w-4 h-4" /> Add Banner
                 </button>
@@ -1149,7 +1150,7 @@ export default function AdminDashboardPage() {
                     placeholder="Search categories..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                    className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   />
                 </div>
                 <div className="inline-flex rounded-lg border border-stone-200 bg-white p-1 text-xs font-semibold">
@@ -1157,7 +1158,7 @@ export default function AdminDashboardPage() {
                     onClick={() => setSelectedCategoryType("all")}
                     className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
                       selectedCategoryType === "all"
-                        ? "bg-[#C85250] text-white"
+                        ? "bg-[#EC0B12] text-white"
                         : "text-stone-600 hover:text-stone-900"
                     }`}
                   >
@@ -1167,7 +1168,7 @@ export default function AdminDashboardPage() {
                     onClick={() => setSelectedCategoryType("category")}
                     className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
                       selectedCategoryType === "category"
-                        ? "bg-[#C85250] text-white"
+                        ? "bg-[#EC0B12] text-white"
                         : "text-stone-600 hover:text-stone-900"
                     }`}
                   >
@@ -1177,7 +1178,7 @@ export default function AdminDashboardPage() {
                     onClick={() => setSelectedCategoryType("occasion")}
                     className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
                       selectedCategoryType === "occasion"
-                        ? "bg-[#C85250] text-white"
+                        ? "bg-[#EC0B12] text-white"
                         : "text-stone-600 hover:text-stone-900"
                     }`}
                   >
@@ -1187,7 +1188,7 @@ export default function AdminDashboardPage() {
                     onClick={() => setSelectedCategoryType("recipient")}
                     className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
                       selectedCategoryType === "recipient"
-                        ? "bg-[#C85250] text-white"
+                        ? "bg-[#EC0B12] text-white"
                         : "text-stone-600 hover:text-stone-900"
                     }`}
                   >
@@ -1201,7 +1202,7 @@ export default function AdminDashboardPage() {
                   setEditingCategory(createNewCategoryTemplate());
                   setIsNewCategory(true);
                 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#C85250] hover:bg-[#B34341] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Add Category
@@ -1219,7 +1220,7 @@ export default function AdminDashboardPage() {
                     setEditingCategory(createNewCategoryTemplate());
                     setIsNewCategory(true);
                   }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#C85250] text-white text-sm font-semibold rounded-lg cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#EC0B12] text-white text-sm font-semibold rounded-lg cursor-pointer"
                 >
                   <Plus className="w-4 h-4" /> Add Category
                 </button>
@@ -1229,7 +1230,7 @@ export default function AdminDashboardPage() {
                 {filteredCategories.map((cat) => (
                   <div
                     key={cat.slug}
-                    className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col hover:border-[#C85250]/40 transition-all"
+                    className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col hover:border-[#EC0B12]/40 transition-all"
                   >
                     <div className="relative aspect-[16/9] w-full bg-stone-100 overflow-hidden">
                       {cat.image ? (
@@ -1381,7 +1382,7 @@ export default function AdminDashboardPage() {
                         setEditingProduct({ ...editingProduct, name, slug: slug || editingProduct.slug });
                       }}
                       placeholder="e.g. Personalized Wooden Photo Frame"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                     />
                   </div>
 
@@ -1391,7 +1392,7 @@ export default function AdminDashboardPage() {
                       <select
                         value={editingProduct.categorySlug}
                         onChange={(e) => setEditingProduct({ ...editingProduct, categorySlug: e.target.value })}
-                        className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                        className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                       >
                         {CATEGORY_OPTIONS.map((c) => (
                           <option key={c.slug} value={c.slug}>
@@ -1410,7 +1411,7 @@ export default function AdminDashboardPage() {
                         onChange={(e) =>
                           setEditingProduct({ ...editingProduct, displayOrder: parseInt(e.target.value) || 999 })
                         }
-                        className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                        className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                       />
                     </div>
                   </div>
@@ -1422,7 +1423,7 @@ export default function AdminDashboardPage() {
                       value={editingProduct.shortDescription}
                       onChange={(e) => setEditingProduct({ ...editingProduct, shortDescription: e.target.value })}
                       placeholder="Catchy one-line description"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                     />
                   </div>
 
@@ -1433,7 +1434,7 @@ export default function AdminDashboardPage() {
                       value={editingProduct.description}
                       onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
                       placeholder="Detailed product specifications, materials, and care notes"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                     />
                   </div>
                 </div>
@@ -1451,7 +1452,7 @@ export default function AdminDashboardPage() {
                     disabled={uploading}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-lg transition-colors"
                   >
-                    <UploadCloud className="w-3.5 h-3.5 text-[#C85250]" />
+                    <UploadCloud className="w-3.5 h-3.5 text-[#EC0B12]" />
                     {uploading ? "Uploading..." : "Upload Image"}
                   </button>
                 </div>
@@ -1482,7 +1483,7 @@ export default function AdminDashboardPage() {
                   {editingProduct.images.length === 0 && (
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-full border-2 border-dashed border-stone-200 rounded-xl p-6 text-center hover:border-[#C85250] cursor-pointer transition-colors"
+                      className="w-full border-2 border-dashed border-stone-200 rounded-xl p-6 text-center hover:border-[#EC0B12] cursor-pointer transition-colors"
                     >
                       <UploadCloud className="w-8 h-8 text-stone-400 mx-auto mb-2" />
                       <p className="text-xs font-semibold text-stone-700">Click to upload product image</p>
@@ -1508,7 +1509,7 @@ export default function AdminDashboardPage() {
                       onChange={(e) =>
                         setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })
                       }
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                     />
                   </div>
 
@@ -1525,7 +1526,7 @@ export default function AdminDashboardPage() {
                         })
                       }
                       placeholder="e.g. 799"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                     />
                   </div>
 
@@ -1536,7 +1537,7 @@ export default function AdminDashboardPage() {
                       value={editingProduct.offerTag || ""}
                       onChange={(e) => setEditingProduct({ ...editingProduct, offerTag: e.target.value })}
                       placeholder="e.g. 20% OFF or Best Seller"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                     />
                   </div>
                 </div>
@@ -1565,7 +1566,7 @@ export default function AdminDashboardPage() {
                         })
                       }
                       placeholder="6x8 inch, 8x12 inch, 12x18 inch"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                     />
                   </div>
 
@@ -1587,7 +1588,7 @@ export default function AdminDashboardPage() {
                         });
                       }}
                       placeholder="Classic Black, Warm Oak, Pure White"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                     />
                   </div>
                 </div>
@@ -1622,7 +1623,7 @@ export default function AdminDashboardPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#C85250] hover:bg-[#B34341] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
                 >
                   {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
                   {saving ? "Saving..." : "Save Product"}
@@ -1661,7 +1662,7 @@ export default function AdminDashboardPage() {
                   value={editingBanner.title}
                   onChange={(e) => setEditingBanner({ ...editingBanner, title: e.target.value })}
                   placeholder="e.g. Handcrafted Wooden Keepsakes"
-                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                 />
               </div>
 
@@ -1672,7 +1673,7 @@ export default function AdminDashboardPage() {
                   value={editingBanner.description}
                   onChange={(e) => setEditingBanner({ ...editingBanner, description: e.target.value })}
                   placeholder="Short tagline or promo text"
-                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                 />
               </div>
 
@@ -1684,7 +1685,7 @@ export default function AdminDashboardPage() {
                   value={editingBanner.link}
                   onChange={(e) => setEditingBanner({ ...editingBanner, link: e.target.value })}
                   placeholder="e.g. /categories/frames or /shop"
-                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                 />
               </div>
 
@@ -1695,7 +1696,7 @@ export default function AdminDashboardPage() {
                     type="button"
                     onClick={() => bannerFileInputRef.current?.click()}
                     disabled={uploading}
-                    className="text-xs font-semibold text-[#C85250] hover:underline flex items-center gap-1"
+                    className="text-xs font-semibold text-[#EC0B12] hover:underline flex items-center gap-1"
                   >
                     <UploadCloud className="w-3.5 h-3.5" />
                     {uploading ? "Uploading..." : "Upload New Image"}
@@ -1714,7 +1715,7 @@ export default function AdminDashboardPage() {
                 ) : (
                   <div
                     onClick={() => bannerFileInputRef.current?.click()}
-                    className="border-2 border-dashed border-stone-200 rounded-xl p-8 text-center hover:border-[#C85250] cursor-pointer transition-colors"
+                    className="border-2 border-dashed border-stone-200 rounded-xl p-8 text-center hover:border-[#EC0B12] cursor-pointer transition-colors"
                   >
                     <UploadCloud className="w-8 h-8 text-stone-400 mx-auto mb-2" />
                     <p className="text-xs font-semibold text-stone-700">Click to upload banner image</p>
@@ -1733,7 +1734,7 @@ export default function AdminDashboardPage() {
                     onChange={(e) =>
                       setEditingBanner({ ...editingBanner, displayOrder: parseInt(e.target.value) || 1 })
                     }
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   />
                 </div>
 
@@ -1743,7 +1744,7 @@ export default function AdminDashboardPage() {
                       type="checkbox"
                       checked={editingBanner.enabled}
                       onChange={(e) => setEditingBanner({ ...editingBanner, enabled: e.target.checked })}
-                      className="w-4 h-4 text-[#C85250] rounded border-stone-300 focus:ring-[#C85250]"
+                      className="w-4 h-4 text-[#EC0B12] rounded border-stone-300 focus:ring-[#EC0B12]"
                     />
                     <span className="text-xs font-semibold text-stone-800">Active on Storefront</span>
                   </label>
@@ -1761,7 +1762,7 @@ export default function AdminDashboardPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#C85250] hover:bg-[#B34341] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
                 >
                   {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
                   {saving ? "Saving..." : "Save Banner"}
@@ -1812,7 +1813,7 @@ export default function AdminDashboardPage() {
                       });
                     }}
                     placeholder="e.g. Personalized Frames"
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   />
                 </div>
 
@@ -1829,7 +1830,7 @@ export default function AdminDashboardPage() {
                       })
                     }
                     placeholder="e.g. frames"
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   />
                 </div>
               </div>
@@ -1842,7 +1843,7 @@ export default function AdminDashboardPage() {
                   value={editingCategory.title}
                   onChange={(e) => setEditingCategory({ ...editingCategory, title: e.target.value })}
                   placeholder="e.g. Personalized Photo Frames & Keepsakes"
-                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                 />
               </div>
 
@@ -1853,7 +1854,7 @@ export default function AdminDashboardPage() {
                   value={editingCategory.description || ""}
                   onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
                   placeholder="Short tagline or descriptive overview for SEO & category header"
-                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                 />
               </div>
 
@@ -1868,7 +1869,7 @@ export default function AdminDashboardPage() {
                         type: e.target.value as "category" | "occasion" | "recipient",
                       })
                     }
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   >
                     <option value="category">Main Category</option>
                     <option value="occasion">Occasion</option>
@@ -1888,7 +1889,7 @@ export default function AdminDashboardPage() {
                         productCount: parseInt(e.target.value) || 0,
                       })
                     }
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   />
                 </div>
               </div>
@@ -1900,7 +1901,7 @@ export default function AdminDashboardPage() {
                     type="button"
                     onClick={() => categoryFileInputRef.current?.click()}
                     disabled={uploading}
-                    className="text-xs font-semibold text-[#C85250] hover:underline flex items-center gap-1"
+                    className="text-xs font-semibold text-[#EC0B12] hover:underline flex items-center gap-1"
                   >
                     <UploadCloud className="w-3.5 h-3.5" />
                     {uploading ? "Uploading..." : "Upload Cover Image"}
@@ -1925,12 +1926,12 @@ export default function AdminDashboardPage() {
                           setEditingCategory({ ...editingCategory, image: e.target.value })
                         }
                         placeholder="Image URL or upload"
-                        className="w-full px-2.5 py-1.5 text-xs border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C85250]"
+                        className="w-full px-2.5 py-1.5 text-xs border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                       />
                       <button
                         type="button"
                         onClick={() => categoryFileInputRef.current?.click()}
-                        className="text-[11px] text-[#C85250] hover:underline mt-1 inline-block"
+                        className="text-[11px] text-[#EC0B12] hover:underline mt-1 inline-block"
                       >
                         Change Image File
                       </button>
@@ -1939,7 +1940,7 @@ export default function AdminDashboardPage() {
                 ) : (
                   <div
                     onClick={() => categoryFileInputRef.current?.click()}
-                    className="border-2 border-dashed border-stone-200 rounded-xl p-6 text-center hover:border-[#C85250] cursor-pointer transition-colors"
+                    className="border-2 border-dashed border-stone-200 rounded-xl p-6 text-center hover:border-[#EC0B12] cursor-pointer transition-colors"
                   >
                     <UploadCloud className="w-7 h-7 text-stone-400 mx-auto mb-1.5" />
                     <p className="text-xs font-semibold text-stone-700">Click to upload category image</p>
@@ -1959,7 +1960,7 @@ export default function AdminDashboardPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#C85250] hover:bg-[#B34341] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
                 >
                   {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
                   {saving ? "Saving..." : "Save Category"}

@@ -23,21 +23,21 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   if (!product) {
     return {
-      title: "Product Not Found — Giftly",
+      title: "Product Not Found — MD Gifts",
     };
   }
 
   return {
-    title: `${product.name} — Handcrafted Personalized Gifts`,
+    title: `${product.name} — MD Gifts`,
     description: product.description,
     alternates: {
-      canonical: `https://giftly.in/product/${product.slug}`,
+      canonical: `https://mdgifts.in/product/${product.slug}`,
     },
     openGraph: {
-      title: `${product.name} | Giftly`,
+      title: `${product.name} | MD Gifts`,
       description: product.shortDescription,
-      url: `https://giftly.in/product/${product.slug}`,
-      siteName: "Giftly",
+      url: `https://mdgifts.in/product/${product.slug}`,
+      siteName: "MD Gifts",
       images: [
         {
           url: product.images[0] || "/images/hero-lifestyle.jpg",
@@ -72,17 +72,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
     image: product.images,
     brand: {
       "@type": "Brand",
-      name: "Giftly",
+      name: "MD Gifts",
     },
     offers: {
       "@type": "Offer",
-      url: `https://giftly.in/product/${product.slug}`,
+      url: `https://mdgifts.in/product/${product.slug}`,
       priceCurrency: "INR",
       price: product.price,
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
-        name: "Giftly",
+        name: "MD Gifts",
       },
     },
     aggregateRating: {

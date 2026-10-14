@@ -114,13 +114,13 @@ export function FilterSidebar({
       {/* Header with Reset (Desktop only) */}
       <div className="hidden lg:flex items-center justify-between pb-3 border-b border-[#EFE4DC]">
         <div className="flex items-center gap-2 font-semibold">
-          <SlidersHorizontal className="w-4 h-4 text-[#C85250]" />
+          <SlidersHorizontal className="w-4 h-4 text-[#EC0B12]" />
           <span>Filters</span>
         </div>
         <button
           type="button"
           onClick={handleReset}
-          className="text-xs font-semibold text-[#C85250] hover:underline"
+          className="text-xs font-semibold text-[#EC0B12] hover:underline"
         >
           Reset
         </button>
@@ -130,7 +130,7 @@ export function FilterSidebar({
       <div>
         <div className="flex items-center justify-between font-semibold text-xs text-[#3E3335] mb-2.5">
           <span>Price Range</span>
-          <span className="text-[#C85250]">Up to ₹{localFilters.maxPrice || 5000}</span>
+          <span className="text-[#EC0B12]">Up to ₹{localFilters.maxPrice || 5000}</span>
         </div>
         <input
           type="range"
@@ -139,7 +139,7 @@ export function FilterSidebar({
           step="50"
           value={localFilters.maxPrice || 5000}
           onChange={(e) => handlePriceChange(Number(e.target.value))}
-          className="w-full accent-[#C85250] cursor-pointer"
+          className="w-full accent-[#EC0B12] cursor-pointer"
         />
         <div className="flex justify-between text-[11px] text-[#8C7D80] mt-1">
           <span>₹200</span>
@@ -168,7 +168,7 @@ export function FilterSidebar({
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => toggleSize(item.key)}
-                  className="rounded border-[#D1C4BC] text-[#C85250] focus:ring-[#C85250] w-4 h-4"
+                  className="rounded border-[#D1C4BC] text-[#EC0B12] focus:ring-[#EC0B12] w-4 h-4"
                 />
                 <span>{item.label}</span>
               </label>
@@ -191,7 +191,7 @@ export function FilterSidebar({
                 type="button"
                 onClick={() => toggleColor(c.name)}
                 className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
-                  isSelected ? "ring-2 ring-offset-2 ring-[#C85250] scale-110" : "border border-[#D1C5BD]"
+                  isSelected ? "ring-2 ring-offset-2 ring-[#EC0B12] scale-110" : "border border-[#D1C5BD]"
                 }`}
                 style={{ backgroundColor: c.hex }}
                 title={c.name}
@@ -229,7 +229,7 @@ export function FilterSidebar({
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => toggleMaterial(mat)}
-                  className="rounded border-[#D1C4BC] text-[#C85250] focus:ring-[#C85250] w-4 h-4"
+                  className="rounded border-[#D1C4BC] text-[#EC0B12] focus:ring-[#EC0B12] w-4 h-4"
                 />
                 <span>{mat}</span>
               </label>
@@ -265,7 +265,7 @@ export function FilterSidebar({
           <div className="relative w-full max-h-[85vh] bg-white rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl flex flex-col z-10 animate-slide-up border border-[#EDE2DA]">
             <div className="flex items-center justify-between pb-3 border-b border-[#EFE4DC]">
               <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-[#C85250]" />
+                <SlidersHorizontal className="w-4 h-4 text-[#EC0B12]" />
                 <h3 className="font-serif text-lg font-bold text-[#221C1D]">
                   Filters
                 </h3>
@@ -273,7 +273,7 @@ export function FilterSidebar({
               <button
                 type="button"
                 onClick={onCloseMobile}
-                className="p-1.5 text-[#5C4F51] hover:text-[#C85250] rounded-full transition-colors cursor-pointer"
+                className="p-1.5 text-[#5C4F51] hover:text-[#EC0B12] rounded-full transition-colors cursor-pointer"
                 aria-label="Close filters"
               >
                 <X className="w-5 h-5" />
@@ -291,14 +291,14 @@ export function FilterSidebar({
               <button
                 type="button"
                 onClick={handleReset}
-                className="px-4 py-3 rounded-xl border border-[#DDCFC6] hover:bg-[#FAF4F0] text-[#5C4F51] hover:text-[#C85250] font-semibold text-sm transition-colors cursor-pointer shrink-0"
+                className="px-4 py-3 rounded-xl border border-[#DDCFC6] hover:bg-[#FEF2F2] text-[#5C4F51] hover:text-[#EC0B12] font-semibold text-sm transition-colors cursor-pointer shrink-0"
               >
                 Reset
               </button>
               <button
                 type="button"
                 onClick={onCloseMobile}
-                className="flex-1 bg-[#C85250] hover:bg-[#B14140] text-white py-3 px-4 rounded-xl font-semibold text-sm transition-transform active:scale-95 shadow-sm text-center cursor-pointer truncate"
+                className="flex-1 bg-[#EC0B12] hover:bg-[#D0080E] text-white py-3 px-4 rounded-xl font-semibold text-sm transition-transform active:scale-95 shadow-sm text-center cursor-pointer truncate"
               >
                 Apply Filters ({productCount} products)
               </button>

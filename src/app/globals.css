@@ -4,6 +4,12 @@
   --font-sans: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: var(--font-heading), var(--font-sans), system-ui, sans-serif;
   --font-heading: var(--font-heading), var(--font-sans), system-ui, sans-serif;
+  --color-brand-red: #EC0B12;
+  --color-brand-red-hover: #D0080E;
+  --color-brand-red-light: #FEF2F2;
+  --color-brand-green: #0194A3;
+  --color-brand-green-hover: #017C8A;
+  --color-brand-green-light: #E6F7F9;
 }
 
 @layer base {
@@ -14,18 +20,28 @@
     --card-foreground: #221C1D;
     --popover: #FFFFFF;
     --popover-foreground: #221C1D;
-    --primary: #C85250;
-    --primary-hover: #B24341;
-    --primary-light: #FDF2F0;
-    --secondary: #F4EBE6;
-    --secondary-foreground: #2D2424;
+    --primary: #EC0B12;
+    --primary-hover: #D0080E;
+    --primary-light: #FEF2F2;
+    --secondary: #E6F7F9;
+    --secondary-foreground: #01525B;
     --muted: #F3EAE4;
     --muted-foreground: #6F6466;
-    --accent: #E88B88;
+    --accent: #0194A3;
+    --accent-hover: #017C8A;
+    --accent-light: #E6F7F9;
     --border: #EFE4DC;
     --border-subtle: #F5EEE9;
-    --ring: #C85250;
+    --ring: #EC0B12;
     --radius: 0.75rem;
+
+    /* Dedicated Brand Tokens matching Logo */
+    --brand-red: #EC0B12;
+    --brand-red-hover: #D0080E;
+    --brand-red-light: #FEF2F2;
+    --brand-green: #0194A3;
+    --brand-green-hover: #017C8A;
+    --brand-green-light: #E6F7F9;
   }
 
   * {
@@ -59,7 +75,7 @@
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #C85250;
+  background: #EC0B12;
 }
 
 /* Custom utilities */

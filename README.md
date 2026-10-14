@@ -1,14 +1,14 @@
-# Giftly — Personalized Gifts Ecommerce Website
+# MD Gifts — Customized Gift Centre
 
-A modern mobile-first personalized gift shop ecommerce platform built with **Next.js 15 (Static HTML Export)**, **TypeScript**, **Tailwind CSS**, and **Cloudflare Pages** deployment.
+A modern mobile-first personalized gift shop ecommerce platform for **MD Gifts** (Kadapa, Andhra Pradesh), built with **Next.js 15 (Static HTML Export)**, **TypeScript**, **Tailwind CSS**, and **Cloudflare Pages** deployment.
 
-Designed to match the provided screenshot design specifications with exact typography, color palettes, visual density, responsive drawers, bottom navigation, and quick-view customization flows with seamless WhatsApp ordering.
+Designed to showcase handcrafted customized photo frames, mugs, acrylic keepsakes, and personalized gifts with seamless direct WhatsApp ordering (+91 7095253709).
 
 ---
 
 ## 🚀 Key Features
 
-- **Screenshot-Fidelity Design System**: Custom terracotta (`#C85250`) and soft blush cream (`#FAF7F4`) palette, Playfair Display serif headings, Plus Jakarta Sans body typography, and curated micro-interactions.
+- **Brand-Authentic Design System**: Official brand colors matching the logo emblem — vibrant brand red (`#EC0B12`) and teal-green (`#0194A3`) with soft warm blush cream (`#FAF7F4`) backgrounds, Outfit heading typography, and Plus Jakarta Sans body font.
 - **Curated Catalog (105+ Products)**: Deeply categorized across Occasions (Couples, Birthdays, Anniversaries, Families, Festivals, Friends, New Baby, Housewarming, Weddings) and Recipients (For Her, For Him, For Couples, For Parents, For Friends, For Kids, For Colleagues, For Everyone).
 - **Per-Product Customization Notes**: Interactive quick-view modal and product detail pages allowing customers to select sizes, frame colors, materials, and input customized text/names/dates per product.
 - **Direct WhatsApp Ordering**: Zero payment gateway hurdles, third-party API dependencies, or account creation requirements. Direct order details collection (Full Name + Delivery Address + Landmark) preformatted and sent directly to WhatsApp.
@@ -136,5 +136,5 @@ Cloudflare Pages detects `pages_build_output_dir: "out"` and automatically deplo
 
 ## 📄 License & Attribution
 
-Copyright © 2026 Giftly. All rights reserved.
+Copyright © 2026 MD Gifts. All rights reserved.
 Crafted with love for thoughtful gifting.

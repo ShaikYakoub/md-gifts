@@ -18,7 +18,7 @@ export function CategoriesClientView() {
           <Link
             key={cat.slug}
             href={`/categories/${cat.slug}`}
-            className="group bg-white rounded-xl border border-[#EDE2DA] overflow-hidden hover:border-[#C85250] transition-all hover:shadow-md flex flex-col text-center p-3 sm:p-4"
+            className="group bg-white rounded-xl border border-[#EDE2DA] overflow-hidden hover:border-[#EC0B12] transition-all hover:shadow-md flex flex-col text-center p-3 sm:p-4"
           >
             <div className="w-full aspect-square rounded-lg overflow-hidden bg-[#FAF3EE] mb-3">
               <ProductImage
@@ -30,7 +30,7 @@ export function CategoriesClientView() {
                 className="transition-transform duration-300 group-hover:scale-105"
               />
             </div>
-            <h2 className="font-semibold text-sm sm:text-base text-[#221C1D] group-hover:text-[#C85250] transition-colors line-clamp-1">
+            <h2 className="font-semibold text-sm sm:text-base text-[#221C1D] group-hover:text-[#EC0B12] transition-colors line-clamp-1">
               {cat.name}
             </h2>
             <span className="text-xs text-[#8C7D80] mt-0.5">
@@ -52,7 +52,7 @@ export function CategoriesClientView() {
             <Link
               key={occ.slug}
               href={`/categories/${occ.slug}`}
-              className="group p-3.5 bg-white rounded-xl border border-[#EDE2DA] hover:border-[#C85250] hover:bg-[#FAF4F0] transition-all flex flex-col justify-between"
+              className="group p-3.5 bg-white rounded-xl border border-[#EDE2DA] hover:border-[#EC0B12] hover:bg-[#FEF2F2] transition-all flex flex-col justify-between"
             >
               <div>
                 {occ.image && (
@@ -66,14 +66,14 @@ export function CategoriesClientView() {
                     />
                   </div>
                 )}
-                <h3 className="font-semibold text-sm text-[#221C1D] group-hover:text-[#C85250] transition-colors">
+                <h3 className="font-semibold text-sm text-[#221C1D] group-hover:text-[#EC0B12] transition-colors">
                   {occ.name}
                 </h3>
                 <p className="text-[11px] text-[#7A6D70] mt-1 line-clamp-2">
                   {occ.description}
                 </p>
               </div>
-              <div className="mt-3 flex items-center justify-between text-xs text-[#C85250] font-medium">
+              <div className="mt-3 flex items-center justify-between text-xs text-[#EC0B12] font-medium">
                 <span>Browse gifts</span>
                 <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
               </div>
@@ -94,7 +94,7 @@ export function CategoriesClientView() {
             <Link
               key={rec.slug}
               href={`/categories/${rec.slug}`}
-              className="group p-3.5 bg-white rounded-xl border border-[#EDE2DA] hover:border-[#C85250] hover:bg-[#FAF4F0] transition-all flex flex-col justify-between"
+              className="group p-3.5 bg-white rounded-xl border border-[#EDE2DA] hover:border-[#EC0B12] hover:bg-[#FEF2F2] transition-all flex flex-col justify-between"
             >
               <div>
                 {rec.image && (
@@ -108,14 +108,14 @@ export function CategoriesClientView() {
                     />
                   </div>
                 )}
-                <h3 className="font-semibold text-sm text-[#221C1D] group-hover:text-[#C85250] transition-colors">
+                <h3 className="font-semibold text-sm text-[#221C1D] group-hover:text-[#EC0B12] transition-colors">
                   {rec.name}
                 </h3>
                 <p className="text-[11px] text-[#7A6D70] mt-1 line-clamp-2">
                   {rec.description}
                 </p>
               </div>
-              <div className="mt-3 flex items-center justify-between text-xs text-[#C85250] font-medium">
+              <div className="mt-3 flex items-center justify-between text-xs text-[#EC0B12] font-medium">
                 <span>Browse gifts</span>
                 <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
               </div>

@@ -32,15 +32,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${taxonomy.title} — Buy Personalized ${taxonomy.name} Online`,
+    title: `${taxonomy.title} — Buy Personalized ${taxonomy.name} Online | MD Gifts`,
     description: taxonomy.description,
     alternates: {
-      canonical: `https://giftly.in/categories/${taxonomy.slug}`,
+      canonical: `https://mdgifts.in/categories/${taxonomy.slug}`,
     },
     openGraph: {
-      title: `${taxonomy.title} | Giftly`,
+      title: `${taxonomy.title} | MD Gifts`,
       description: taxonomy.description,
-      url: `https://giftly.in/categories/${taxonomy.slug}`,
+      url: `https://mdgifts.in/categories/${taxonomy.slug}`,
     },
   };
 }
@@ -79,19 +79,19 @@ export default async function CategoryPage({ params }: PageProps) {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://giftly.in",
+            item: "https://mdgifts.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Categories",
-            item: "https://giftly.in/categories",
+            item: "https://mdgifts.in/categories",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: taxonomy.name,
-            item: `https://giftly.in/categories/${taxonomy.slug}`,
+            item: `https://mdgifts.in/categories/${taxonomy.slug}`,
           },
         ],
       },
@@ -104,7 +104,7 @@ export default async function CategoryPage({ params }: PageProps) {
           "@type": "ListItem",
           position: index + 1,
           name: prod.name,
-          url: `https://giftly.in/categories/${taxonomy.slug}`,
+          url: `https://mdgifts.in/product/${prod.slug}`,
         })),
       },
     ],

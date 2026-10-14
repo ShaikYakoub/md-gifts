@@ -42,7 +42,7 @@ export function Header() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for gifts, frames, occasions..."
-            className="w-full bg-[#FAF5F1] hover:bg-[#F5ECE5] focus:bg-white text-sm text-[#221C1D] placeholder-[#8C7D80] pl-10 pr-9 py-2 sm:py-2.5 rounded-full border border-[#EDE0D6] focus:border-[#C85250] focus:ring-2 focus:ring-[#C85250]/15 outline-none transition-all shadow-2xs"
+            className="w-full bg-[#FAF5F1] hover:bg-[#F5ECE5] focus:bg-white text-sm text-[#221C1D] placeholder-[#8C7D80] pl-10 pr-9 py-2 sm:py-2.5 rounded-full border border-[#EDE0D6] focus:border-[#EC0B12] focus:ring-2 focus:ring-[#EC0B12]/15 outline-none transition-all shadow-2xs"
           />
           {searchQuery && (
             <button

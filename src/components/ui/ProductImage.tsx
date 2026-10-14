@@ -230,7 +230,7 @@ export function ProductImage({
           <ellipse cx="140" cy="80" rx="66" ry="9" fill="#5C3826" />
           {/* Print on Mug */}
           <rect x="90" y="115" width="100" height="110" rx="8" fill="#FDF7F5" stroke="#F1D6CE" strokeWidth="1" />
-          <circle cx="140" cy="148" r="16" fill="#C85250" />
+          <circle cx="140" cy="148" r="16" fill="#EC0B12" />
           <path
             d="M140 142 C140 138 132 135 128 140 C124 145 128 152 140 160 C152 152 156 145 152 140 C148 135 140 138 140 142 Z"
             fill="#FFFFFF"
@@ -238,7 +238,7 @@ export function ProductImage({
           <text x="140" y="180" fill="#2B2122" fontSize="11" fontFamily="serif" textAnchor="middle" fontWeight="bold">
             Best Friends
           </text>
-          <text x="140" y="196" fill="#C85250" fontSize="9" fontFamily="sans-serif" textAnchor="middle" letterSpacing="1">
+          <text x="140" y="196" fill="#EC0B12" fontSize="9" fontFamily="sans-serif" textAnchor="middle" letterSpacing="1">
             FOREVER & EVER
           </text>
         </svg>
@@ -283,16 +283,16 @@ export function ProductImage({
           {/* Box Lid */}
           <rect x="45" y="120" width="210" height="40" rx="8" fill="#F7CAD0" stroke="#F4ACB7" strokeWidth="3" />
           {/* Vertical Satin Ribbon */}
-          <rect x="135" y="120" width="30" height="175" fill="#C85250" />
+          <rect x="135" y="120" width="30" height="175" fill="#EC0B12" />
           {/* Horizontal Satin Ribbon */}
-          <rect x="55" y="185" width="190" height="24" fill="#C85250" />
+          <rect x="55" y="185" width="190" height="24" fill="#EC0B12" />
           {/* Large Ribbon Bow on Top */}
-          <path d="M150 120 C120 70 80 85 130 115 Z" fill="#BA403E" stroke="#9A2E2C" strokeWidth="2" />
-          <path d="M150 120 C180 70 220 85 170 115 Z" fill="#BA403E" stroke="#9A2E2C" strokeWidth="2" />
-          <circle cx="150" cy="118" r="12" fill="#E26A68" stroke="#9A2E2C" strokeWidth="2" />
+          <path d="M150 120 C120 70 80 85 130 115 Z" fill="#D0090F" stroke="#9A2E2C" strokeWidth="2" />
+          <path d="M150 120 C180 70 220 85 170 115 Z" fill="#D0090F" stroke="#9A2E2C" strokeWidth="2" />
+          <circle cx="150" cy="118" r="12" fill="#EC0B12" stroke="#9A2E2C" strokeWidth="2" />
           {/* Hanging Ribbon Tails */}
-          <path d="M142 125 C130 160 110 180 95 190" stroke="#C85250" strokeWidth="8" strokeLinecap="round" fill="none" />
-          <path d="M158 125 C170 160 190 180 205 190" stroke="#C85250" strokeWidth="8" strokeLinecap="round" fill="none" />
+          <path d="M142 125 C130 160 110 180 95 190" stroke="#EC0B12" strokeWidth="8" strokeLinecap="round" fill="none" />
+          <path d="M158 125 C170 160 190 180 205 190" stroke="#EC0B12" strokeWidth="8" strokeLinecap="round" fill="none" />
         </svg>
       ) : isHeart ? (
         // Heart Shaped Photo Frame
@@ -306,7 +306,7 @@ export function ProductImage({
           <path
             d="M150 85 C150 45 90 25 50 65 C10 105 20 170 150 290 C280 170 290 105 250 65 C210 25 150 45 150 85 Z"
             fill="#FFFFFF"
-            stroke="#C85250"
+            stroke="#EC0B12"
             strokeWidth="10"
           />
           {/* Inner Photo inside heart */}

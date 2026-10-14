@@ -86,7 +86,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         {/* 2. Text Content Area */}
         <div className="pt-1.5 sm:pt-2 px-1 sm:px-1.5">
           <h3
-            className="font-sans text-xs sm:text-sm font-bold text-[#1E191A] tracking-tight group-hover:text-[#C85250] transition-colors leading-snug truncate w-full"
+            className="font-sans text-xs sm:text-sm font-bold text-[#1E191A] tracking-tight group-hover:text-[#EC0B12] transition-colors leading-snug truncate w-full"
             title={product.name}
           >
             {product.name}
@@ -115,7 +115,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <button
             type="button"
             onClick={handleInitialAdd}
-            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#C85250] to-[#E26D68] text-white flex items-center justify-center transition-all cursor-pointer shrink-0 active:scale-90 shadow-2xs hover:opacity-95"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#EC0B12] to-[#E26D68] text-white flex items-center justify-center transition-all cursor-pointer shrink-0 active:scale-90 shadow-2xs hover:opacity-95"
             aria-label={`Add ${product.name} to cart`}
           >
             <Plus className="w-4 h-4 stroke-[2.4]" />
@@ -126,12 +126,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               e.preventDefault();
               e.stopPropagation();
             }}
-            className="w-[76px] sm:w-[88px] inline-flex items-center justify-between bg-[#FDF2F0] border border-[#F5C2BC] rounded-full p-0.5 shadow-2xs shrink-0 select-none"
+            className="w-[76px] sm:w-[88px] inline-flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-full p-0.5 shadow-2xs shrink-0 select-none"
           >
             <button
               type="button"
               onClick={handleDecrease}
-              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#C85250] hover:bg-[#C85250] hover:text-white transition-all cursor-pointer active:scale-90 shrink-0"
+              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#EC0B12] hover:bg-[#EC0B12] hover:text-white transition-all cursor-pointer active:scale-90 shrink-0"
               aria-label="Decrease quantity"
             >
               <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -143,7 +143,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               type="button"
               onClick={handleIncrease}
               disabled={totalInCart >= 99}
-              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#C85250] hover:bg-[#C85250] hover:text-white transition-all cursor-pointer active:scale-90 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#EC0B12] hover:bg-[#EC0B12] hover:text-white transition-all cursor-pointer active:scale-90 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Increase quantity"
             >
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />

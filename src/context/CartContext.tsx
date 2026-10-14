@@ -6,7 +6,8 @@ import { Product } from "@/types/catalog";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CART_STORAGE_KEY = "giftly_cart_v1";
+const CART_STORAGE_KEY = "mdgifts_cart_v1";
+const LEGACY_CART_STORAGE_KEY = "giftly_cart_v1";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -16,7 +17,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Restore cart on mount
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(CART_STORAGE_KEY);
+      const stored = localStorage.getItem(CART_STORAGE_KEY) || localStorage.getItem(LEGACY_CART_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {

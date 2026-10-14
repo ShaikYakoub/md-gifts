@@ -19,20 +19,20 @@ const outfit = Outfit({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#C85250",
+  themeColor: "#EC0B12",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://giftly.in"),
+  metadataBase: new URL("https://mdgifts.in"),
   title: {
-    default: "Giftly — Thoughtful Personalized Gifts & Photo Frames",
-    template: "%s | Giftly",
+    default: "MD Gifts — Thoughtful Personalized Gifts & Customized Gift Centre",
+    template: "%s | MD Gifts",
   },
   description:
-    "Discover handcrafted personalized photo frames, custom mugs, acrylic keepsakes, and curated gift boxes for birthdays, anniversaries, couples, and every special moment.",
+    "Discover handcrafted personalized photo frames, custom mugs, acrylic keepsakes, and curated gift boxes for birthdays, anniversaries, couples, and every special moment from MD Gifts Kadapa.",
   keywords: [
     "personalized gifts",
     "photo frames",
@@ -42,24 +42,26 @@ export const metadata: Metadata = {
     "customized mugs",
     "acrylic frames",
     "gift boxes",
-    "Giftly India",
+    "MD Gifts",
+    "MD Gifts Kadapa",
+    "Customized Gift Centre Kadapa",
   ],
-  authors: [{ name: "Giftly" }],
-  creator: "Giftly",
+  authors: [{ name: "MD Gifts" }],
+  creator: "MD Gifts",
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://giftly.in",
-    siteName: "Giftly",
-    title: "Giftly — Gifts made for the people who matter",
+    url: "https://mdgifts.in",
+    siteName: "MD Gifts",
+    title: "MD Gifts — Gifts made for the people who matter",
     description:
-      "Personalized frames, gifts & keepsakes for every occasion. Handcrafted with love and delivered across India.",
+      "Personalized frames, gifts & keepsakes for every occasion. Handcrafted with love at MD Gifts, Kadapa and delivered across India.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Giftly — Thoughtful Personalized Gifts",
+    title: "MD Gifts — Thoughtful Personalized Gifts",
     description:
-      "Handcrafted personalized photo frames, custom mugs, acrylic keepsakes, and curated gift boxes.",
+      "Handcrafted personalized photo frames, custom mugs, acrylic keepsakes, and curated gift boxes from MD Gifts.",
   },
   robots: {
     index: true,
@@ -81,7 +83,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${plusJakarta.variable} ${outfit.variable} scroll-smooth`}>
-      <body className="font-sans antialiased bg-[#FAF7F4] text-[#221C1D] min-h-screen flex flex-col selection:bg-[#FBE8E7] selection:text-[#C85250]">
+      <body className="font-sans antialiased bg-[#FAF7F4] text-[#221C1D] min-h-screen flex flex-col selection:bg-[#FEECEE] selection:text-[#EC0B12]">
         <CatalogProvider>
           <CartProvider>
             {children}

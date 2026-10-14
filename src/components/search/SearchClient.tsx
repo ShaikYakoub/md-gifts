@@ -101,7 +101,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search for gifts, frames, occasions, recipients..."
-            className="w-full bg-white text-sm sm:text-base text-[#221C1D] placeholder-[#9E9093] pl-12 pr-12 py-3.5 rounded-2xl border border-[#EDE0D6] focus:border-[#C85250] focus:ring-1 focus:ring-[#C85250] shadow-sm outline-none"
+            className="w-full bg-white text-sm sm:text-base text-[#221C1D] placeholder-[#9E9093] pl-12 pr-12 py-3.5 rounded-2xl border border-[#EDE0D6] focus:border-[#EC0B12] focus:ring-1 focus:ring-[#EC0B12] shadow-sm outline-none"
           />
           {query && (
             <button
@@ -128,7 +128,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
               key={term}
               type="button"
               onClick={() => handleChipClick(term)}
-              className="px-3 py-1 bg-white hover:bg-[#FAF2EE] text-xs text-[#4A3E40] hover:text-[#C85250] rounded-full border border-[#E5D7CE] transition-colors cursor-pointer"
+              className="px-3 py-1 bg-white hover:bg-[#FEF2F2] text-xs text-[#4A3E40] hover:text-[#EC0B12] rounded-full border border-[#E5D7CE] transition-colors cursor-pointer"
             >
               {term}
             </button>
@@ -170,8 +170,8 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
               onClick={() => setActiveTab("products")}
               className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 activeTab === "products"
-                  ? "bg-[#C85250] text-white shadow-xs"
-                  : "bg-white text-[#5C4F51] border border-[#DDCFC6] hover:bg-[#FAF2EE]"
+                  ? "bg-[#EC0B12] text-white shadow-xs"
+                  : "bg-white text-[#5C4F51] border border-[#DDCFC6] hover:bg-[#FEF2F2]"
               }`}
             >
               Products ({searchResults.length})
@@ -181,8 +181,8 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
               onClick={() => setActiveTab("categories")}
               className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 activeTab === "categories"
-                  ? "bg-[#C85250] text-white shadow-xs"
-                  : "bg-white text-[#5C4F51] border border-[#DDCFC6] hover:bg-[#FAF2EE]"
+                  ? "bg-[#EC0B12] text-white shadow-xs"
+                  : "bg-white text-[#5C4F51] border border-[#DDCFC6] hover:bg-[#FEF2F2]"
               }`}
             >
               Categories ({matchedCategories.length})
@@ -208,7 +208,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
                 <button
                   type="button"
                   onClick={() => setQuery("")}
-                  className="px-4 py-2 bg-[#C85250] text-white text-xs font-semibold rounded-xl hover:bg-[#B14140] transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-[#EC0B12] text-white text-xs font-semibold rounded-xl hover:bg-[#D0090F] transition-colors cursor-pointer"
                 >
                   Clear Search
                 </button>
@@ -224,7 +224,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
                   <Link
                     key={c.slug}
                     href={`/categories/${c.slug}`}
-                    className="group bg-white rounded-2xl border border-[#EDE2DA] overflow-hidden hover:border-[#C85250] transition-all hover:shadow-md flex flex-col text-center p-3 sm:p-4"
+                    className="group bg-white rounded-2xl border border-[#EDE2DA] overflow-hidden hover:border-[#EC0B12] transition-all hover:shadow-md flex flex-col text-center p-3 sm:p-4"
                   >
                     <div className="w-full aspect-square rounded-xl overflow-hidden bg-[#FAF3EE] mb-3">
                       <ProductImage
@@ -234,7 +234,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
                         className="transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
-                    <h3 className="font-semibold text-sm sm:text-base text-[#221C1D] group-hover:text-[#C85250] transition-colors">
+                    <h3 className="font-semibold text-sm sm:text-base text-[#221C1D] group-hover:text-[#EC0B12] transition-colors">
                       {c.name}
                     </h3>
                     <span className="text-xs text-[#8C7D80] mt-0.5">
@@ -253,7 +253,7 @@ export function SearchClient({ allProducts }: { allProducts: Product[] }) {
                 </p>
                 <Link
                   href="/categories"
-                  className="inline-block px-4 py-2 bg-[#C85250] text-white text-xs font-semibold rounded-xl hover:bg-[#B14140] transition-colors"
+                  className="inline-block px-4 py-2 bg-[#EC0B12] text-white text-xs font-semibold rounded-xl hover:bg-[#D0090F] transition-colors"
                 >
                   View All Categories
                 </Link>

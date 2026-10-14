@@ -1,9 +1,10 @@
 import { CartItem } from "@/types/cart";
+import { SITE_CONFIG } from "@/lib/siteConfig";
 
-export const WHATSAPP_PHONE = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919876543210";
+export const WHATSAPP_PHONE = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || SITE_CONFIG.whatsappNumber;
 
 export function getGeneralWhatsAppUrl(): string {
-  const message = "Hi Giftly! I have a question about personalized gifts.";
+  const message = "Hi MD Gifts! I have a question about personalized gifts.";
   return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
 }
 
@@ -21,7 +22,7 @@ export function buildOrderWhatsAppUrl(payload: OrderWhatsAppPayload): string {
   const totalItemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const lines: string[] = [
-    "🎁 *NEW ORDER REQUEST — GIFTLY*",
+    "🎁 *NEW ORDER REQUEST — MD GIFTS*",
     "",
     "👤 *Customer Details:*",
     `• *Name:* ${fullName.trim()}`,

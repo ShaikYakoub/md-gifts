@@ -123,14 +123,14 @@ export function CustomSelect<T extends string = string>({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label={ariaLabel}
-        className={`inline-flex items-center justify-between gap-2 bg-white border border-[#DDCFC6] hover:border-[#BDB0A8] focus:border-[#C85250] focus:ring-2 focus:ring-[#C85250]/15 text-[#221C1D] rounded-full pl-3.5 pr-2.5 py-1.5 sm:py-2 text-xs font-medium cursor-pointer shadow-2xs transition-all select-none outline-none ${
-          isOpen ? "border-[#C85250] ring-2 ring-[#C85250]/15" : ""
+        className={`inline-flex items-center justify-between gap-2 bg-white border border-[#DDCFC6] hover:border-[#BDB0A8] focus:border-[#EC0B12] focus:ring-2 focus:ring-[#EC0B12]/15 text-[#221C1D] rounded-full pl-3.5 pr-2.5 py-1.5 sm:py-2 text-xs font-medium cursor-pointer shadow-2xs transition-all select-none outline-none ${
+          isOpen ? "border-[#EC0B12] ring-2 ring-[#EC0B12]/15" : ""
         } ${buttonClassName}`}
       >
         <span className="truncate">{selectedOption?.label}</span>
         <ChevronDown
           className={`w-3.5 h-3.5 text-[#7A6D70] transition-transform duration-200 ease-out shrink-0 ${
-            isOpen ? "rotate-180 text-[#C85250]" : ""
+            isOpen ? "rotate-180 text-[#EC0B12]" : ""
           }`}
           aria-hidden="true"
         />
@@ -159,7 +159,7 @@ export function CustomSelect<T extends string = string>({
                 onMouseEnter={() => setFocusedIndex(idx)}
                 className={`w-full flex items-center justify-between gap-3 px-3 py-2 text-xs rounded-xl cursor-pointer select-none transition-colors text-left ${
                   isSelected
-                    ? "bg-[#FAF2EE] text-[#C85250] font-semibold"
+                    ? "bg-[#FEF2F2] text-[#EC0B12] font-semibold"
                     : isFocused
                     ? "bg-[#FAF5F2] text-[#221C1D] font-medium"
                     : "text-[#4A3E40] hover:bg-[#FAF5F2] hover:text-[#221C1D] font-medium"
@@ -167,7 +167,7 @@ export function CustomSelect<T extends string = string>({
               >
                 <span className="truncate">{option.label}</span>
                 {isSelected && (
-                  <Check className="w-3.5 h-3.5 text-[#C85250] shrink-0 stroke-[2.5]" aria-hidden="true" />
+                  <Check className="w-3.5 h-3.5 text-[#EC0B12] shrink-0 stroke-[2.5]" aria-hidden="true" />
                 )}
               </li>
             );

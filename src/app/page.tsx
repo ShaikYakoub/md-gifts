@@ -5,6 +5,8 @@ import { ShopByOccasion } from "@/components/home/ShopByOccasion";
 import { HomeProductGrids } from "@/components/home/HomeProductGrids";
 import { getTrendingProducts } from "@/data/products";
 
+import { SITE_CONFIG } from "@/lib/siteConfig";
+
 export default function HomePage() {
   const trendingProducts = getTrendingProducts();
 
@@ -14,38 +16,40 @@ export default function HomePage() {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://giftly.in/#organization",
-        name: "Giftly",
-        url: "https://giftly.in",
-        logo: "https://giftly.in/logo.png",
-        description:
-          "Handcrafted personalized photo frames, custom mugs, acrylic keepsakes, and curated gift boxes for all occasions across India.",
+        "@id": `${SITE_CONFIG.url}/#organization`,
+        name: SITE_CONFIG.name,
+        legalName: SITE_CONFIG.fullName,
+        url: SITE_CONFIG.url,
+        logo: `${SITE_CONFIG.url}/images/mdgifts-logo.svg`,
+        email: SITE_CONFIG.email,
+        description: SITE_CONFIG.description,
         address: {
           "@type": "PostalAddress",
-          addressLocality: "Kadapa",
-          addressRegion: "Andhra Pradesh",
-          postalCode: "516001",
+          streetAddress: `${SITE_CONFIG.address.building}, ${SITE_CONFIG.address.street}`,
+          addressLocality: SITE_CONFIG.address.city,
+          addressRegion: SITE_CONFIG.address.state,
+          postalCode: SITE_CONFIG.address.pincode,
           addressCountry: "IN",
         },
         contactPoint: {
           "@type": "ContactPoint",
-          telephone: "+91-9876543210",
+          telephone: `+91-${SITE_CONFIG.phone}`,
           contactType: "customer service",
           areaServed: "IN",
-          availableLanguage: ["English", "Hindi", "Telugu"],
+          availableLanguage: ["English", "Telugu", "Hindi"],
         },
       },
       {
         "@type": "WebSite",
-        "@id": "https://giftly.in/#website",
-        url: "https://giftly.in",
-        name: "Giftly",
+        "@id": `${SITE_CONFIG.url}/#website`,
+        url: SITE_CONFIG.url,
+        name: SITE_CONFIG.name,
         publisher: {
-          "@id": "https://giftly.in/#organization",
+          "@id": `${SITE_CONFIG.url}/#organization`,
         },
         potentialAction: {
           "@type": "SearchAction",
-          target: "https://giftly.in/search?q={search_term_string}",
+          target: `${SITE_CONFIG.url}/search?q={search_term_string}`,
           "query-input": "required name=search_term_string",
         },
       },

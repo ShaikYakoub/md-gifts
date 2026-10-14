@@ -1,0 +1,40 @@
+export const SITE_CONFIG = {
+  name: "MD Gifts",
+  shortName: "MD Gifts",
+  tagline: "Customized Gift Centre",
+  fullName: "MD Gifts — Customized Gift Centre",
+  description: "Personalized gifts, custom photo frames, crystal engravings, LED portraits, and thoughtful keepsakes crafted with care in Kadapa, Andhra Pradesh.",
+  url: "https://mdgifts.in",
+  email: "mdgift2020@gmail.com",
+  phone: "7095253709",
+  phoneDisplay: "+91 7095253709",
+  whatsappNumber: "917095253709",
+  address: {
+    building: "3/511",
+    street: "RAJA REDDY STREET OPP KRUPA CHURCH",
+    streetDisplay: "Raja Reddy Street, Opp Krupa Church",
+    city: "Kadapa",
+    district: "YSR District",
+    state: "Andhra Pradesh",
+    pincode: "516001",
+    country: "India",
+    formatted: "3/511, Raja Reddy Street, Opp Krupa Church, Kadapa, YSR District, Andhra Pradesh - 516001",
+    fullOfficial: "Building No./Flat No.: 3/511, Road/Street: RAJA REDDY STREET OPP KRUPA CHURCH KADAPA, City: Kadapa, District: YSR, State: Andhra Pradesh, PIN Code: 516001",
+  },
+  colors: {
+    red: "#EC0B12",
+    redHover: "#D0080E",
+    redDark: "#B8060C",
+    redLight: "#FEF2F2",
+    green: "#0194A3",
+    greenHover: "#017C8A",
+    greenDark: "#016570",
+    greenLight: "#E6F7F9",
+  },
+  social: {
+    whatsapp: "https://wa.me/917095253709",
+    instagram: "https://instagram.com/mdgifts_kadapa",
+  },
+} as const;
+
+export type SiteConfig = typeof SITE_CONFIG;

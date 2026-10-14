@@ -7,7 +7,7 @@ export const FRAME_COLORS: ColorOption[] = [
   { name: "Walnut Brown", hex: "#7B4B28" },
   { name: "Warm Champagne", hex: "#D9C3B0" },
   { name: "Blush Rose", hex: "#E89B99" },
-  { name: "Crimson Red", hex: "#C85250" },
+  { name: "Crimson Red", hex: "#EC0B12" },
 ];
 
 export const STANDARD_SIZES = [

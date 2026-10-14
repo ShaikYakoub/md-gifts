@@ -107,7 +107,7 @@ export default function CartPage() {
 
             <Link
               href="/shop"
-              className="inline-block text-sm text-[#7A6D70] hover:text-[#C85250] font-medium pt-2 transition-colors cursor-pointer"
+              className="inline-block text-sm text-[#7A6D70] hover:text-[#EC0B12] font-medium pt-2 transition-colors cursor-pointer"
             >
               Continue Browsing Gifts →
             </Link>
@@ -135,7 +135,7 @@ export default function CartPage() {
             <button
               type="button"
               onClick={clearCart}
-              className="text-xs font-semibold text-[#C85250] hover:underline cursor-pointer"
+              className="text-xs font-semibold text-[#EC0B12] hover:underline cursor-pointer"
             >
               Clear Cart
             </button>
@@ -182,7 +182,7 @@ export default function CartPage() {
 
                     {/* Custom text snippet */}
                     {item.customizationText && (
-                      <p className="text-[11px] text-[#C85250] bg-[#FAF2F0] px-2 py-0.5 rounded mt-1 truncate max-w-xs">
+                      <p className="text-[11px] text-[#EC0B12] bg-[#FEF2F2] px-2 py-0.5 rounded mt-1 truncate max-w-xs">
                         Custom: &ldquo;{item.customizationText}&rdquo;
                       </p>
                     )}
@@ -222,7 +222,7 @@ export default function CartPage() {
                         <button
                           type="button"
                           onClick={() => removeItem(item.id)}
-                          className="p-1.5 text-[#9C8F92] hover:text-[#C85250] hover:bg-[#FAF2EE] rounded-lg transition-colors cursor-pointer"
+                          className="p-1.5 text-[#9C8F92] hover:text-[#EC0B12] hover:bg-[#FEF2F2] rounded-lg transition-colors cursor-pointer"
                           aria-label="Remove item"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -243,7 +243,7 @@ export default function CartPage() {
               {/* Full Name Field (Requirements 94) */}
               <div>
                 <label htmlFor="cartFullName" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                  Full Name <span className="text-[#C85250]">*</span>
+                  Full Name <span className="text-[#EC0B12]">*</span>
                 </label>
                 <input
                   id="cartFullName"
@@ -256,7 +256,7 @@ export default function CartPage() {
                   }}
                   placeholder="e.g. Rahul Sharma"
                   className={`w-full bg-[#FAF6F2] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white transition-colors ${
-                    errors.fullName ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#C85250]"
+                    errors.fullName ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#EC0B12]"
                   }`}
                 />
                 {errors.fullName && (
@@ -270,7 +270,7 @@ export default function CartPage() {
               {/* Delivery Address Field with Auto-Expanding Input (Requirements 95-98, 103-107) */}
               <div>
                 <label htmlFor="cartAddress" className="block text-xs font-semibold text-[#3C3234] mb-1">
-                  Delivery Address <span className="text-[#C85250]">*</span>
+                  Delivery Address <span className="text-[#EC0B12]">*</span>
                   <span className="font-normal text-[#7A6D70] ml-1">
                     (Flat, Street, City, State, Pincode & Landmark)
                   </span>
@@ -285,9 +285,9 @@ export default function CartPage() {
                   }}
                   minHeight={72}
                   maxHeight={180}
-                  placeholder="e.g. Flat 402, Sunshine Heights, 4th Main Road, Kadapa, Andhra Pradesh - 516001 (Near Post Office)"
+                  placeholder="e.g. 3/511, Raja Reddy Street, Opp Krupa Church, Kadapa, Andhra Pradesh - 516001"
                   className={`bg-[#FAF6F2] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border focus:bg-white transition-colors ${
-                    errors.address ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#C85250]"
+                    errors.address ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#EC0B12]"
                   }`}
                 />
                 {errors.address && (
@@ -315,7 +315,7 @@ export default function CartPage() {
                 {/* Single Place Order CTA Button (Requirements 113, 114) */}
                 <button
                   type="submit"
-                  className="bg-[#C85250] hover:bg-[#B14140] text-white py-3.5 px-7 rounded-xl font-bold text-sm sm:text-base transition-transform active:scale-[0.98] shadow-md shadow-[#C85250]/20 flex items-center justify-center gap-2 cursor-pointer"
+                  className="bg-[#EC0B12] hover:bg-[#D0080E] text-white py-3.5 px-7 rounded-xl font-bold text-sm sm:text-base transition-transform active:scale-[0.98] shadow-md shadow-[#EC0B12]/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4 fill-current" />
                   <span>Place Order</span>
@@ -326,7 +326,7 @@ export default function CartPage() {
         ) : (
           /* Empty Cart State */
           <div className="py-16 text-center bg-white rounded-3xl border border-[#EDE2DA] p-8 max-w-md mx-auto">
-            <div className="w-16 h-16 rounded-full bg-[#FAF0EC] text-[#C85250] flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-[#FEF2F2] text-[#EC0B12] flex items-center justify-center mx-auto mb-4">
               <ShoppingBag className="w-8 h-8 stroke-[1.8]" />
             </div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
@@ -337,7 +337,7 @@ export default function CartPage() {
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 bg-[#C85250] hover:bg-[#B14140] text-white px-6 py-3 rounded-xl font-semibold text-sm transition-transform active:scale-95 shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-2 bg-[#EC0B12] hover:bg-[#D0080E] text-white px-6 py-3 rounded-xl font-semibold text-sm transition-transform active:scale-95 shadow-sm cursor-pointer"
             >
               <span>Explore Gifts</span>
               <ArrowRight className="w-4 h-4" />

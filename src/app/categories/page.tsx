@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Explore our complete collection of personalized gifts, custom photo frames, ceramic mugs, laser-engraved keychains, and luxury hampers.",
   alternates: {
-    canonical: "https://giftly.in/categories",
+    canonical: "https://mdgifts.in/categories",
   },
 };
 

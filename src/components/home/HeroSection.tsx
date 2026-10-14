@@ -138,7 +138,7 @@ export function HeroSection() {
               prevSlide();
             }}
             aria-label="Previous slide"
-            className="hidden sm:flex absolute left-3.5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-[#221C1D] hover:text-[#C85250] items-center justify-center shadow-lg backdrop-blur-xs transition-all border border-[#EDE2DA]/90 hover:scale-105 cursor-pointer"
+            className="hidden sm:flex absolute left-3.5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-[#221C1D] hover:text-[#EC0B12] items-center justify-center shadow-lg backdrop-blur-xs transition-all border border-[#EDE2DA]/90 hover:scale-105 cursor-pointer"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -150,7 +150,7 @@ export function HeroSection() {
               nextSlide();
             }}
             aria-label="Next slide"
-            className="hidden sm:flex absolute right-3.5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-[#221C1D] hover:text-[#C85250] items-center justify-center shadow-lg backdrop-blur-xs transition-all border border-[#EDE2DA]/90 hover:scale-105 cursor-pointer"
+            className="hidden sm:flex absolute right-3.5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-[#221C1D] hover:text-[#EC0B12] items-center justify-center shadow-lg backdrop-blur-xs transition-all border border-[#EDE2DA]/90 hover:scale-105 cursor-pointer"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
