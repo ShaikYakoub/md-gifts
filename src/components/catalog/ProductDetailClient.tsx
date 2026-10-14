@@ -224,28 +224,24 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
 
           {/* Prominent Price & Discount Header (Above Size) */}
           <div className="pb-3 border-b border-[#EFE4DC]">
-            <div className="flex items-baseline gap-2">
-              {discountPercent > 0 && (
-                <span className="text-[28px] sm:text-[32px] font-light text-[#CC0C39] leading-none tracking-tight relative -top-1 sm:-top-1.5">
-                  -{discountPercent}%
-                </span>
-              )}
-              <span className="inline-flex items-baseline text-[#0F1111] font-bold leading-none tracking-tight">
-                <span className="text-xs sm:text-base font-normal -translate-y-3.5 sm:-translate-y-4 mr-0.5 select-none leading-none">
-                  ₹
-                </span>
-                <span className="text-[34px] sm:text-[40px] font-bold leading-none tracking-tight">
-                  {currentPrice.toLocaleString("en-IN")}
-                </span>
-              </span>
+            {/* Selling price on top */}
+            <div className="text-2xl sm:text-3xl font-bold text-[#1E191A] tracking-tight leading-none">
+              ₹{currentPrice.toLocaleString("en-IN")}
             </div>
 
-            {mrp > currentPrice && (
-              <div className="mt-2.5 sm:mt-3 text-xs sm:text-sm text-[#565959] flex items-baseline gap-1 font-normal">
-                <span>M.R.P.: </span>
-                <span className="line-through">₹{mrp.toLocaleString("en-IN")}</span>
-              </div>
-            )}
+            {/* Below: First the MRP crossed off, then the discount */}
+            <div className="flex items-center gap-2 mt-1.5">
+              {mrp > currentPrice && (
+                <span className="text-sm sm:text-base text-[#8C7D80] line-through font-normal">
+                  ₹{mrp.toLocaleString("en-IN")}
+                </span>
+              )}
+              {discountPercent > 0 && (
+                <span className="text-xs sm:text-sm font-semibold text-[#1E7238] tracking-tight">
+                  {discountPercent}% OFF
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Selections Section */}
