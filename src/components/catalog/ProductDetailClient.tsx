@@ -16,7 +16,6 @@ import { ProductImage } from "@/components/ui/ProductImage";
 import { useCart } from "@/context/CartContext";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { AutoExpandingTextarea } from "@/components/ui/AutoExpandingTextarea";
-import { WhatsAppLogo } from "@/components/ui/WhatsAppLogo";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -106,13 +105,6 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
       price: currentPrice,
       quantity: 1,
     });
-  };
-
-  const handleWhatsAppOrder = () => {
-    const text = encodeURIComponent(
-      `Hello MD Gifts! I would like to order:\n\n*${product.name}*\n• Size: ${selectedSize}\n• Frame Color: ${selectedColor}\n• Material: ${selectedMaterial}\n${customizationText ? `• Customization: ${customizationText}\n` : ""}• Price: ₹${currentPrice.toLocaleString("en-IN")}\n\nPlease let me know how to proceed with the photo and payment!`
-    );
-    window.open(`https://wa.me/917095253709?text=${text}`, "_blank");
   };
 
   // Concise reduced description (smaller size & smaller text)
@@ -467,7 +459,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
         </div>
       </div>
 
-      {/* COMBINED DUAL-ACTION FIXED BOTTOM BAR (Mockup Style: Order on WhatsApp + Add to Cart) */}
+      {/* FIXED BOTTOM ACTION BAR: Add to Cart Controller taking entire space */}
       <div
         className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-[#EFE4DC] py-2.5 px-4 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
         style={{ paddingBottom: "max(0.625rem, env(safe-area-inset-bottom, 0px))" }}
@@ -481,30 +473,19 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </span>
           </div>
 
-          {/* Action Controller: Dual Pills */}
-          <div className="flex-1 flex items-center justify-end gap-2 sm:gap-3 max-w-md">
-            {/* 1. Order on WhatsApp (Primary Gradient Pill) */}
-            <button
-              type="button"
-              onClick={handleWhatsAppOrder}
-              className="flex-1 bg-gradient-to-r from-[#25D366] to-[#1EBE5D] hover:opacity-95 text-white py-2.5 sm:py-3 px-3 sm:px-4 rounded-full font-bold text-xs sm:text-sm transition-transform active:scale-95 shadow-xs flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
-            >
-              <WhatsAppLogo className="w-4 h-4 shrink-0" />
-              <span>Order on WhatsApp</span>
-            </button>
-
-            {/* 2. Add to Cart / Quantity Controller (Secondary Pill) */}
+          {/* Action Controller: Add to Cart taking the entire space */}
+          <div className="flex-1 flex items-center justify-end max-w-md">
             {quantityInCart === 0 ? (
               <button
                 type="button"
                 onClick={handleInitialAddToCart}
-                className="flex-1 bg-white hover:bg-[#FEF2F2] text-[#EC0B12] border-2 border-[#EC0B12] py-2.5 sm:py-3 px-3 sm:px-4 rounded-full font-bold text-xs sm:text-sm transition-transform active:scale-95 shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
+                className="w-full bg-[#EC0B12] hover:bg-[#D0080E] text-white py-2.5 sm:py-3 px-4 rounded-full font-bold text-xs sm:text-sm transition-transform active:scale-95 shadow-sm shadow-[#EC0B12]/20 flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
               >
                 <Plus className="w-4 h-4 stroke-[2.4]" />
                 <span>Add to Cart</span>
               </button>
             ) : (
-              <div className="flex-1 flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-full px-2 py-1">
+              <div className="w-full flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-full px-2 py-1">
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, -1)}
