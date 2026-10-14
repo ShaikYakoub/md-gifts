@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import Link from "next/link";
-import { ChevronRight, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { Product, FilterState } from "@/types/catalog";
 import { ProductCard } from "@/components/catalog/ProductCard";
 import { FilterSidebar } from "@/components/catalog/FilterSidebar";
@@ -18,8 +17,8 @@ const SORT_OPTIONS: SelectOption<FilterState["sort"]>[] = [
 
 interface CategoryViewProps {
   title: string;
-  description: string;
-  breadcrumbLabel: string;
+  description?: string;
+  breadcrumbLabel?: string;
   initialProducts: Product[];
   categorySlug?: string;
   taxonomyType?: "category" | "occasion" | "recipient";
@@ -28,7 +27,7 @@ interface CategoryViewProps {
 export function CategoryView({
   title,
   description,
-  breadcrumbLabel,
+  breadcrumbLabel = title,
   initialProducts,
   categorySlug,
   taxonomyType = "category",
@@ -123,19 +122,6 @@ export function CategoryView({
 
   return (
     <div className="pt-6 pb-28 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-xs text-[#7A6D70] mb-4" aria-label="Breadcrumb">
-        <Link href="/" className="hover:text-[#C85250] transition-colors">
-          Home
-        </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-[#B8ACA9]" />
-        <Link href="/categories" className="hover:text-[#C85250] transition-colors">
-          Categories
-        </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-[#B8ACA9]" />
-        <span className="text-[#221C1D] font-medium">{breadcrumbLabel}</span>
-      </nav>
-
       {/* Header Info Banner */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#EFE4DC] mb-8">
         <div>
@@ -147,9 +133,11 @@ export function CategoryView({
               ({filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"})
             </span>
           </div>
-          <p className="mt-1 text-xs text-[#7A6D70] max-w-xl leading-relaxed">
-            {description}
-          </p>
+          {description && (
+            <p className="mt-1 text-xs text-[#7A6D70] max-w-xl leading-relaxed">
+              {description}
+            </p>
+          )}
         </div>
 
         {/* Sort & Mobile Filter Toggle */}

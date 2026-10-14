@@ -20,8 +20,6 @@ export default function ShopPage() {
     <SiteLayout>
       <CategoryView
         title="All Gifts"
-        description="Browse our complete selection of thoughtful, handcrafted personalized keepsakes."
-        breadcrumbLabel="All Gifts"
         initialProducts={products}
       />
     </SiteLayout>
