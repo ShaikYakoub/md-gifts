@@ -31,9 +31,7 @@ export function Header() {
         {/* Mobile Layout (< md): 2 Rows */}
         <div className="flex md:hidden flex-col gap-2.5">
           <div className="flex items-center justify-between w-full">
-            <Link href="/" className="inline-flex items-center" aria-label="MD Gifts Home">
-              <Logo size="md" />
-            </Link>
+            <Logo size="md" />
 
             <Link
               href="/contact"
@@ -76,9 +74,7 @@ export function Header() {
         {/* Desktop Layout (md+): 1 Elegant Single Row */}
         <div className="hidden md:flex items-center justify-between gap-6 w-full">
           {/* Logo on Left */}
-          <Link href="/" className="inline-flex items-center shrink-0" aria-label="MD Gifts Home">
-            <Logo size="md" />
-          </Link>
+          <Logo size="md" />
 
           {/* Search Bar in Center */}
           <form
