@@ -14,9 +14,9 @@ interface SiteLayoutProps {
 export function SiteLayout({ children, showFooter = true }: SiteLayoutProps) {
   const pathname = usePathname();
 
-  // Cart page must never display the footer (Requirements 64, 65, 131-133)
-  const isCartPage = pathname === "/cart";
-  const shouldRenderFooter = showFooter && !isCartPage;
+  // Footer is displayed exclusively on the homepage (pathname === "/")
+  const isHomePage = pathname === "/";
+  const shouldRenderFooter = showFooter && isHomePage;
 
   return (
     <div className="flex flex-col min-h-screen">
