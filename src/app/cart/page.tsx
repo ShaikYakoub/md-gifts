@@ -49,6 +49,17 @@ export default function CartPage() {
     }
 
     setErrors(errs);
+
+    if (errs.fullName) {
+      const el = document.getElementById("cartFullName");
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      el?.focus();
+    } else if (errs.address) {
+      const el = document.getElementById("cartAddress");
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+      el?.focus();
+    }
+
     return Object.keys(errs).length === 0;
   };
 
@@ -143,7 +154,7 @@ export default function CartPage() {
         </div>
 
         {items.length > 0 ? (
-          <form onSubmit={handlePlaceOrder} className="space-y-8">
+          <form noValidate onSubmit={handlePlaceOrder} className="space-y-8">
             {/* 1. CART ITEMS AT TOP (Requirement 85) */}
             <div className="space-y-3">
               {items.map((item) => (
@@ -255,15 +266,18 @@ export default function CartPage() {
                     if (errors.fullName) setErrors({ ...errors, fullName: undefined });
                   }}
                   placeholder="e.g. Rahul Sharma"
-                  className={`w-full bg-[#FAF6F2] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white transition-colors ${
-                    errors.fullName ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#EC0B12]"
+                  className={`w-full bg-[#FAF6F2] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none focus:bg-white transition-all ${
+                    errors.fullName
+                      ? "border-[#EC0B12] ring-2 ring-[#EC0B12]/20 bg-[#FFF5F5]"
+                      : "border-[#EDE0D6] focus:border-[#EC0B12]"
                   }`}
                 />
                 {errors.fullName && (
-                  <p className="text-xs text-[#E53E3E] mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5" />
+                  <div className="animate-fade-in relative mt-2 inline-flex items-center gap-1.5 bg-[#EC0B12] text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-md">
+                    <div className="absolute -top-1 left-4 w-2 h-2 bg-[#EC0B12] rotate-45" />
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0 text-white" />
                     <span>{errors.fullName}</span>
-                  </p>
+                  </div>
                 )}
               </div>
 
@@ -286,15 +300,18 @@ export default function CartPage() {
                   minHeight={72}
                   maxHeight={180}
                   placeholder="e.g. 3/511, Raja Reddy Street, Opp Krupa Church, Kadapa, Andhra Pradesh - 516001"
-                  className={`bg-[#FAF6F2] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border focus:bg-white transition-colors ${
-                    errors.address ? "border-[#E53E3E]" : "border-[#EDE0D6] focus:border-[#EC0B12]"
+                  className={`bg-[#FAF6F2] text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border focus:bg-white transition-all ${
+                    errors.address
+                      ? "border-[#EC0B12] ring-2 ring-[#EC0B12]/20 bg-[#FFF5F5]"
+                      : "border-[#EDE0D6] focus:border-[#EC0B12]"
                   }`}
                 />
                 {errors.address && (
-                  <p className="text-xs text-[#E53E3E] mt-1 flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5" />
+                  <div className="animate-fade-in relative mt-2 inline-flex items-center gap-1.5 bg-[#EC0B12] text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-md">
+                    <div className="absolute -top-1 left-4 w-2 h-2 bg-[#EC0B12] rotate-45" />
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0 text-white" />
                     <span>{errors.address}</span>
-                  </p>
+                  </div>
                 )}
               </div>
             </div>
@@ -315,7 +332,7 @@ export default function CartPage() {
                 {/* Single Place Order CTA Button (Requirements 113, 114) */}
                 <button
                   type="submit"
-                  className="bg-[#EC0B12] hover:bg-[#D0080E] text-white py-3.5 px-7 rounded-xl font-bold text-sm sm:text-base transition-transform active:scale-[0.98] shadow-md shadow-[#EC0B12]/20 flex items-center justify-center gap-2 cursor-pointer"
+                  className="btn-lit-red text-white py-3.5 px-7 rounded-xl font-bold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4 fill-current" />
                   <span>Place Order</span>

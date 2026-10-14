@@ -137,3 +137,58 @@
   line-clamp: 3;
   overflow: hidden;
 }
+
+/* Lit Button Effect (Top edge specular highlight, depth bevel, ground shadow, ambient colored bloom) */
+.btn-lit-red {
+  background: linear-gradient(180deg, #F0282E 0%, #EC0B12 50%, #D80A10 100%);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.22),
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 8px 24px -6px rgba(236, 11, 18, 0.55);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-lit-red:hover {
+  background: linear-gradient(180deg, #F53A40 0%, #F0171D 50%, #DE0A11 100%);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.28),
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 10px 28px -4px rgba(236, 11, 18, 0.7);
+}
+
+.btn-lit-red:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.32),
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    0 4px 12px -4px rgba(236, 11, 18, 0.45);
+}
+
+.btn-lit-green {
+  background: linear-gradient(180deg, #32DE73 0%, #25D366 50%, #1EBE5D 100%);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    0 8px 24px -6px rgba(37, 211, 102, 0.5);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-lit-green:hover {
+  background: linear-gradient(180deg, #3EE47D 0%, #2AD96D 50%, #20C661 100%);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 10px 28px -4px rgba(37, 211, 102, 0.65);
+}
+
+.btn-lit-green:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    0 4px 12px -4px rgba(37, 211, 102, 0.4);
+}

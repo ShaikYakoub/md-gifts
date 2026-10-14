@@ -115,7 +115,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <button
             type="button"
             onClick={handleInitialAdd}
-            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-[#EC0B12] to-[#E26D68] text-white flex items-center justify-center transition-all cursor-pointer shrink-0 active:scale-90 shadow-2xs hover:opacity-95"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full btn-lit-red text-white flex items-center justify-center cursor-pointer shrink-0"
             aria-label={`Add ${product.name} to cart`}
           >
             <Plus className="w-4 h-4 stroke-[2.4]" />

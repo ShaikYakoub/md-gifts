@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Phone, Mail, MapPin, Send, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react";
 import { InfoPageLayout } from "@/components/informational/InfoPageLayout";
 import { WhatsAppLogo } from "@/components/ui/WhatsAppLogo";
 import { GmailLogo } from "@/components/ui/GmailLogo";
@@ -18,13 +18,31 @@ export default function ContactPage() {
     message: "",
   });
 
+  const [errors, setErrors] = useState<{ name?: string; phone?: string; message?: string }>({});
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.phone && formData.message) {
-      setSubmitted(true);
+    const errs: { name?: string; phone?: string; message?: string } = {};
+    if (!formData.name.trim()) {
+      errs.name = "Please enter your name";
     }
+    if (!formData.phone.trim()) {
+      errs.phone = "Please enter your phone or WhatsApp number";
+    }
+    if (!formData.message.trim()) {
+      errs.message = "Please write a short message or inquiry";
+    }
+
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      if (errs.name) document.getElementById("name")?.focus();
+      else if (errs.phone) document.getElementById("phone")?.focus();
+      else if (errs.message) document.getElementById("message")?.focus();
+      return;
+    }
+
+    setSubmitted(true);
   };
 
   return (
@@ -174,7 +192,7 @@ export default function ContactPage() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form noValidate onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-xs font-semibold text-[#3C3234] mb-1">
                   Name <span className="text-[#EC0B12]">*</span>
@@ -184,10 +202,22 @@ export default function ContactPage() {
                   type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, name: e.target.value });
+                    if (errors.name) setErrors({ ...errors, name: undefined });
+                  }}
                   placeholder="Enter your name"
-                  className="w-full bg-white text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#EC0B12] focus:ring-2 focus:ring-[#EC0B12]/15 outline-none transition-all shadow-2xs"
+                  className={`w-full bg-white text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none transition-all shadow-2xs ${
+                    errors.name ? "border-[#EC0B12] ring-2 ring-[#EC0B12]/20 bg-[#FFF5F5]" : "border-[#EDE0D6] focus:border-[#EC0B12]"
+                  }`}
                 />
+                {errors.name && (
+                  <div className="animate-fade-in relative mt-2 inline-flex items-center gap-1.5 bg-[#EC0B12] text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-md">
+                    <div className="absolute -top-1 left-4 w-2 h-2 bg-[#EC0B12] rotate-45" />
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0 text-white" />
+                    <span>{errors.name}</span>
+                  </div>
+                )}
               </div>
 
               <div>
@@ -199,10 +229,22 @@ export default function ContactPage() {
                   type="tel"
                   required
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, phone: e.target.value });
+                    if (errors.phone) setErrors({ ...errors, phone: undefined });
+                  }}
                   placeholder="e.g. 7095253709"
-                  className="w-full bg-white text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#EC0B12] focus:ring-2 focus:ring-[#EC0B12]/15 outline-none transition-all shadow-2xs"
+                  className={`w-full bg-white text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none transition-all shadow-2xs ${
+                    errors.phone ? "border-[#EC0B12] ring-2 ring-[#EC0B12]/20 bg-[#FFF5F5]" : "border-[#EDE0D6] focus:border-[#EC0B12]"
+                  }`}
                 />
+                {errors.phone && (
+                  <div className="animate-fade-in relative mt-2 inline-flex items-center gap-1.5 bg-[#EC0B12] text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-md">
+                    <div className="absolute -top-1 left-4 w-2 h-2 bg-[#EC0B12] rotate-45" />
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0 text-white" />
+                    <span>{errors.phone}</span>
+                  </div>
+                )}
               </div>
 
               <div>
@@ -214,10 +256,22 @@ export default function ContactPage() {
                   required
                   rows={4}
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, message: e.target.value });
+                    if (errors.message) setErrors({ ...errors, message: undefined });
+                  }}
                   placeholder="Tell us about the photo frame, mug, acrylic plaque, or custom gift you would like to create..."
-                  className="w-full bg-white text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border border-[#EDE0D6] focus:border-[#EC0B12] focus:ring-2 focus:ring-[#EC0B12]/15 outline-none transition-all shadow-2xs"
+                  className={`w-full bg-white text-sm text-[#221C1D] placeholder-[#9E9093] px-3.5 py-2.5 rounded-xl border outline-none transition-all shadow-2xs ${
+                    errors.message ? "border-[#EC0B12] ring-2 ring-[#EC0B12]/20 bg-[#FFF5F5]" : "border-[#EDE0D6] focus:border-[#EC0B12]"
+                  }`}
                 />
+                {errors.message && (
+                  <div className="animate-fade-in relative mt-2 inline-flex items-center gap-1.5 bg-[#EC0B12] text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-md">
+                    <div className="absolute -top-1 left-4 w-2 h-2 bg-[#EC0B12] rotate-45" />
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0 text-white" />
+                    <span>{errors.message}</span>
+                  </div>
+                )}
               </div>
 
               <button
