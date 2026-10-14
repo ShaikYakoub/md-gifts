@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
@@ -10,11 +10,43 @@ export function Header() {
   const pathname = usePathname();
   const isProductPage = pathname.startsWith("/product/");
 
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Always show at the top of the page
+      if (currentScrollY <= 60) {
+        setIsVisible(true);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      // Scrolling down -> hide navbar
+      if (currentScrollY > lastScrollY.current + 8) {
+        setIsVisible(false);
+      }
+      // Scrolling up -> show navbar
+      else if (currentScrollY < lastScrollY.current - 8) {
+        setIsVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <header
-      className={`sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#EFE4DC] shadow-[0_2px_8px_rgba(0,0,0,0.03)] ${
-        isProductPage ? "hidden md:block" : ""
-      }`}
+      className={`sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#EFE4DC] shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-transform duration-300 ease-in-out will-change-transform ${
+        isVisible ? "translate-y-0 pointer-events-auto" : "-translate-y-full pointer-events-none"
+      } ${isProductPage ? "hidden md:block" : ""}`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between w-full">
         {/* Logo on Left */}
