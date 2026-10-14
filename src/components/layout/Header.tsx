@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Search, ShoppingCart, ChevronDown, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
-import { CustomerSupportIcon } from "@/components/ui/CustomerSupportIcon";
 import { useCart } from "@/context/CartContext";
 import { CATEGORIES, OCCASIONS, RECIPIENTS } from "@/data/categories";
 import { useLiveCatalog } from "@/context/CatalogContext";
@@ -204,21 +203,11 @@ export function Header() {
           )}
         </form>
 
-        {/* Right Actions: Contact Button + Desktop Cart */}
-        <div className="flex items-center justify-end gap-2 sm:gap-3 shrink-0">
-          <Link
-            href="/contact"
-            className="w-10 h-10 rounded-full flex items-center justify-center bg-[#FAF5F1] hover:bg-[#F2ECE6] text-[#221C1D] hover:text-[#C85250] border border-[#EDE0D6] hover:border-[#C85250]/40 transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 shrink-0"
-            aria-label="Contact Us"
-            title="Contact Us"
-          >
-            <CustomerSupportIcon className="w-5 h-5 sm:w-5.5 sm:h-5.5 transition-colors" />
-          </Link>
-
-          {/* Desktop-only Right Actions: Cart */}
+        {/* Right Actions: Desktop Cart */}
+        <div className="hidden md:flex items-center justify-end shrink-0">
           <Link
             href="/cart"
-            className="hidden md:flex relative p-2 text-[#4A3E40] hover:text-[#C85250] hover:bg-[#FAF2EE] rounded-full transition-colors items-center justify-center cursor-pointer"
+            className="relative p-2 text-[#4A3E40] hover:text-[#C85250] hover:bg-[#FAF2EE] rounded-full transition-colors items-center justify-center cursor-pointer"
             aria-label={`Shopping cart with ${totalQuantity} items`}
           >
             <ShoppingCart className="w-5.5 h-5.5 stroke-[1.8]" />
