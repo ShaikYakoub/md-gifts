@@ -37,13 +37,13 @@ export function Header() {
 
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 pl-4 pr-1.5 py-1.5 rounded-full bg-white hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border-2 border-[#D8CAC0] hover:border-[#EC0B12] transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 shrink-0 text-sm sm:text-base font-bold cursor-pointer group"
+              className="inline-flex items-center h-8.5 sm:h-9 pl-3 pr-0 rounded-full bg-white hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border border-[#D8CAC0] hover:border-[#EC0B12] transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 shrink-0 text-xs sm:text-sm font-bold cursor-pointer group"
               aria-label="Contact Us"
               title="Contact Us"
             >
-              <span>Contact</span>
-              <span className="w-7 h-7 rounded-full bg-[#EC0B12] group-hover:bg-[#D0080E] text-white flex items-center justify-center transition-colors shrink-0 shadow-2xs">
-                <CustomerSupportIcon className="w-4 h-4 text-white" />
+              <span className="pr-2">Contact</span>
+              <span className="h-full aspect-square rounded-full bg-[#EC0B12] group-hover:bg-[#D0080E] text-white flex items-center justify-center transition-colors shrink-0 shadow-2xs">
+                <CustomerSupportIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
               </span>
             </Link>
           </div>
@@ -108,13 +108,13 @@ export function Header() {
           {/* Contact Button on Right */}
           <Link
             href="/contact"
-            className="inline-flex items-center gap-3 pl-5 pr-2 py-2 rounded-full bg-white hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border-2 border-[#D8CAC0] hover:border-[#EC0B12] transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 shrink-0 text-base font-bold cursor-pointer group"
+            className="inline-flex items-center h-9.5 sm:h-10 pl-3.5 pr-0 rounded-full bg-white hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border border-[#D8CAC0] hover:border-[#EC0B12] transition-all duration-200 shadow-2xs hover:shadow-xs active:scale-95 shrink-0 text-sm font-bold cursor-pointer group"
             aria-label="Contact Us"
             title="Contact Us"
           >
-            <span>Contact</span>
-            <span className="w-8 h-8 rounded-full bg-[#EC0B12] group-hover:bg-[#D0080E] text-white flex items-center justify-center transition-colors shrink-0 shadow-2xs">
-              <CustomerSupportIcon className="w-4.5 h-4.5 text-white" />
+            <span className="pr-2.5">Contact</span>
+            <span className="h-full aspect-square rounded-full bg-[#EC0B12] group-hover:bg-[#D0080E] text-white flex items-center justify-center transition-colors shrink-0 shadow-2xs">
+              <CustomerSupportIcon className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" />
             </span>
           </Link>
         </div>
