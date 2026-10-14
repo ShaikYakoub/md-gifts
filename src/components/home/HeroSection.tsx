@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLiveCatalog } from "@/context/CatalogContext";
+import { SearchBar } from "@/components/ui/SearchBar";
 import rawBanners from "../../../content/banners.json";
 import { Banner } from "@/types/catalog";
 
@@ -91,16 +92,23 @@ export function HeroSection() {
 
   return (
     <section
-      className="relative overflow-hidden bg-transparent py-3 sm:py-5"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      className="relative overflow-hidden bg-transparent pt-3 pb-3 sm:pt-4 sm:pb-5"
       aria-label="Promotional banner slider"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Search Bar on top of banner section */}
+        <div className="mb-3 sm:mb-4">
+          <SearchBar />
+        </div>
+
         {/* Banner Sliding Container - 1.5x height on mobile screens */}
-        <div className="relative w-full aspect-[1.9/1] sm:aspect-[3.05/1] rounded-xl overflow-hidden border border-[#EDE2DA] shadow-md bg-[#FAF4F0]">
+        <div
+          className="relative w-full aspect-[1.9/1] sm:aspect-[3.05/1] rounded-xl overflow-hidden border border-[#EDE2DA] shadow-md bg-[#FAF4F0]"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           {/* Slides Track */}
           <div
             className="flex h-full w-full transition-transform duration-700 ease-out"
