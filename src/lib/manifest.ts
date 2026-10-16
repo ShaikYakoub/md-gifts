@@ -64,17 +64,6 @@ export function saveManifest(manifest: ManifestData): void {
   }
 }
 
-export function resetManifest(): void {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.removeItem(MANIFEST_STORAGE_KEY);
-    window.dispatchEvent(
-      new CustomEvent(MANIFEST_EVENT_NAME, { detail: getDefaultManifest() })
-    );
-  } catch (err) {
-    console.error("Failed to reset manifest:", err);
-  }
-}
 
 /**
  * Merge Base Products with Live Manifest

@@ -49,7 +49,7 @@ export function ProductImage({
           fill
           priority={priority}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover object-center transition-transform duration-300"
+          className="object-cover object-center"
           onError={() => setHasImageError(true)}
         />
       </div>
@@ -69,7 +69,7 @@ export function ProductImage({
   const isWooden = slug.includes("wooden") || slug.includes("wood") || categorySlug === "home-decor";
 
   const svgClass = noPadding
-    ? "w-full h-full object-cover scale-[1.65] drop-shadow-sm transition-transform"
+    ? "w-full h-full object-cover scale-[1.65] drop-shadow-sm"
     : "w-[85%] h-[85%] object-contain drop-shadow-xl";
 
   return (

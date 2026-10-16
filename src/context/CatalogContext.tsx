@@ -9,7 +9,6 @@ import rawCategories from "../../content/categories.json";
 import {
   ManifestData,
   loadManifest,
-  resetManifest,
   mergeProducts,
   mergeBanners,
   mergeCategories,
@@ -49,7 +48,6 @@ interface CatalogContextType {
   deleteBanner: (id: string) => void;
   saveCategory: (input: CategoryInput, isNew: boolean) => void;
   deleteCategory: (slug: string) => void;
-  resetToDefaults: () => void;
 }
 
 const CatalogContext = createContext<CatalogContextType | undefined>(undefined);
@@ -239,11 +237,6 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
     setManifest({ ...updated });
   }, []);
 
-  const resetToDefaults = useCallback(() => {
-    resetManifest();
-    setManifest(null);
-  }, []);
-
   const value = useMemo(
     () => ({
       products,
@@ -270,7 +263,6 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
       deleteBanner,
       saveCategory,
       deleteCategory,
-      resetToDefaults,
     }),
     [
       products,
@@ -297,7 +289,6 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
       deleteBanner,
       saveCategory,
       deleteCategory,
-      resetToDefaults,
     ]
   );
 

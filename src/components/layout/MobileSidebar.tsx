@@ -3,10 +3,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   X,
-  Search,
   Home,
   LayoutGrid,
   PenLine,
@@ -36,9 +35,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
-import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { OCCASIONS, RECIPIENTS } from "@/data/categories";
-import { SITE_CONFIG } from "@/lib/siteConfig";
 
 interface MobileSidebarProps {
   isOpen: boolean;
@@ -70,10 +67,8 @@ const RECIPIENT_ICONS: Record<string, React.ElementType> = {
 };
 
 export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [isOccasionsOpen, setIsOccasionsOpen] = useState(true);
   const [isRecipientsOpen, setIsRecipientsOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -141,14 +136,6 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
-      onClose();
-    }
-  };
-
   if (!isOpen || !mounted) return null;
 
   return createPortal(
@@ -180,20 +167,6 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
           >
             <X className="w-5 h-5" />
           </button>
-        </div>
-
-        {/* Drawer Search matching screenshot */}
-        <div className="p-4 border-b border-[#F4EBE5] shrink-0">
-          <form onSubmit={handleSearchSubmit} className="relative">
-            <Search className="w-4 h-4 text-[#8C7D80] absolute left-3.5 top-3 pointer-events-none" />
-            <input
-              type="search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search for gifts, frames, occasions..."
-              className="w-full bg-[#FAF5F1] text-sm text-[#221C1D] placeholder-[#8C7D80] pl-10 pr-3 py-2.5 rounded-lg border border-[#EDE0D6] focus:border-[#EC0B12] outline-none"
-            />
-          </form>
         </div>
 
         {/* Scrollable Navigation Items */}
@@ -450,19 +423,6 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
           </Link>
         </div>
 
-        {/* Drawer Bottom Actions: WhatsApp Order & Help */}
-        <div className="p-4 border-t border-[#F0E6DE] space-y-2.5 bg-white shrink-0">
-          <a
-            href={`https://wa.me/${SITE_CONFIG.whatsappNumber}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={onClose}
-            className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5C] text-white py-3 px-4 rounded-xl font-medium text-sm transition-colors shadow-xs cursor-pointer"
-          >
-            <WhatsAppIcon className="w-4.5 h-4.5 fill-white" />
-            <span>Order & Chat on WhatsApp</span>
-          </a>
-        </div>
       </div>
     </div>,
     document.body

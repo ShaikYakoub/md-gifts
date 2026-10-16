@@ -14,18 +14,100 @@ import {
   UploadCloud,
   CheckCircle2,
   AlertCircle,
-  ExternalLink,
   Search,
   X,
   RefreshCw,
-  Sparkles,
   LayoutGrid,
-  RotateCcw,
   Lock,
   LogOut,
+  ChevronDown,
+  Check,
 } from "lucide-react";
 import { ProductInput, BannerInput, CategoryInput } from "@/lib/admin/validation";
 import { useLiveCatalog } from "@/context/CatalogContext";
+import { Logo } from "@/components/ui/Logo";
+import { ProductImage } from "@/components/ui/ProductImage";
+
+interface CustomSelectOption {
+  value: string;
+  label: string;
+}
+
+interface CustomSelectProps {
+  value: string;
+  onChange: (value: string) => void;
+  options: CustomSelectOption[];
+  placeholder?: string;
+  className?: string;
+}
+
+function CustomSelect({
+  value,
+  onChange,
+  options,
+  placeholder = "Select...",
+  className = "",
+}: CustomSelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [isOpen]);
+
+  const selectedOption = options.find((opt) => opt.value === value);
+
+  return (
+    <div ref={containerRef} className={`relative ${className}`}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-3 py-2 text-sm bg-white border border-stone-200 rounded-lg text-stone-700 flex items-center justify-between gap-2 hover:border-stone-300 focus:outline-none focus:ring-2 focus:ring-[#EC0B12]/20 focus:border-[#EC0B12] transition-colors cursor-pointer shadow-2xs select-none"
+      >
+        <span className="truncate font-medium">{selectedOption ? selectedOption.label : placeholder}</span>
+        <ChevronDown
+          className={`w-4 h-4 text-stone-400 shrink-0 transition-transform duration-200 ${
+            isOpen ? "rotate-180 text-stone-600" : ""
+          }`}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 top-full mt-1.5 w-full min-w-[170px] max-w-[calc(100vw-32px)] bg-white border border-stone-200 rounded-xl shadow-lg py-1 z-50 animate-in fade-in-0 zoom-in-95 max-h-60 overflow-y-auto">
+          {options.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => {
+                  onChange(opt.value);
+                  setIsOpen(false);
+                }}
+                className={`w-[calc(100%-8px)] mx-1 px-3 py-2 text-xs sm:text-sm rounded-lg flex items-center justify-between text-left transition-colors cursor-pointer ${
+                  isSelected
+                    ? "bg-[#FEF2F2] text-[#EC0B12] font-semibold"
+                    : "text-stone-700 hover:bg-stone-50 hover:text-stone-900 font-medium"
+                }`}
+              >
+                <span className="truncate">{opt.label}</span>
+                {isSelected && <Check className="w-3.5 h-3.5 text-[#EC0B12] shrink-0" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const CATEGORY_OPTIONS = [
   { slug: "frames", label: "Photo Frames" },
@@ -50,7 +132,6 @@ export default function AdminDashboardPage() {
   const [banners, setBanners] = useState<BannerInput[]>([]);
   const [categories, setCategories] = useState<CategoryInput[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
   const [uploading, setUploading] = useState<boolean>(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
@@ -68,17 +149,28 @@ export default function AdminDashboardPage() {
   const [isNewBanner, setIsNewBanner] = useState(false);
   const [editingCategory, setEditingCategory] = useState<CategoryInput | null>(null);
   const [isNewCategory, setIsNewCategory] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState<{
-    type: "product" | "banner" | "category";
-    id: string;
-    name: string;
-    permanent?: boolean;
-  } | null>(null);
-  const [resetConfirm, setResetConfirm] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const bannerFileInputRef = useRef<HTMLInputElement>(null);
   const categoryFileInputRef = useRef<HTMLInputElement>(null);
+
+  // Tab navigation refs for scrolling active tab into the middle
+  const tabProductsRef = useRef<HTMLButtonElement>(null);
+  const tabBannersRef = useRef<HTMLButtonElement>(null);
+  const tabCategoriesRef = useRef<HTMLButtonElement>(null);
+
+  // Auto-scroll selected tab to middle
+  useEffect(() => {
+    const el =
+      activeTab === "products"
+        ? tabProductsRef.current
+        : activeTab === "banners"
+        ? tabBannersRef.current
+        : tabCategoriesRef.current;
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+  }, [activeTab]);
 
   // Load initial data
   useEffect(() => {
@@ -161,13 +253,12 @@ export default function AdminDashboardPage() {
       // Catalog data remains active
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }
 
-  // Filtered Products
+  // Filtered Products (latest ones on top)
   const filteredProducts = useMemo(() => {
-    return products.filter((p) => {
+    const list = products.filter((p) => {
       const matchesSearch =
         !searchQuery ||
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -179,6 +270,22 @@ export default function AdminDashboardPage() {
         (selectedStatus === "draft" && p.enabled === false);
       return matchesSearch && matchesCategory && matchesStatus;
     });
+
+    const getScore = (p: ProductInput, idx: number) => {
+      if (p.id.startsWith("prod-")) {
+        const raw = p.id.replace("prod-", "");
+        const ts = parseInt(raw, 36);
+        if (!isNaN(ts)) return 10000000000000 + ts;
+        return 9000000000000;
+      }
+      const m = p.id.match(/^p(\d+)$/);
+      if (m) {
+        return parseInt(m[1], 10);
+      }
+      return idx;
+    };
+
+    return list.slice().sort((a, b) => getScore(b, 0) - getScore(a, 0));
   }, [products, searchQuery, selectedCategory, selectedStatus]);
 
   // Filtered Categories
@@ -195,85 +302,111 @@ export default function AdminDashboardPage() {
     });
   }, [categories, searchQuery, selectedCategoryType]);
 
-  // Dynamic category options for product editing
+  // Dynamic category options for product editing & filtering (all categories shown)
   const dynamicCategoryOptions = useMemo(() => {
-    const mainCats = categories.filter((c) => (c.type || "category") === "category");
-    if (mainCats.length > 0) {
-      return mainCats.map((c) => ({ slug: c.slug, label: c.name }));
-    }
-    return CATEGORY_OPTIONS;
-  }, [categories]);
+    const list: { slug: string; label: string }[] = [];
+    const seen = new Set<string>();
 
-  // Handle Image Upload
+    for (const c of categories) {
+      if (c.slug && !seen.has(c.slug)) {
+        seen.add(c.slug);
+        list.push({ slug: c.slug, label: c.name || c.title || c.slug });
+      }
+    }
+
+    for (const p of products) {
+      if (p.categorySlug && !seen.has(p.categorySlug)) {
+        seen.add(p.categorySlug);
+        list.push({
+          slug: p.categorySlug,
+          label: p.categorySlug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+        });
+      }
+    }
+
+    if (list.length === 0) {
+      return CATEGORY_OPTIONS;
+    }
+    return list;
+  }, [categories, products]);
+
+  // Handle Image Upload (supports multiple images at once)
   async function handleImageUpload(
     e: React.ChangeEvent<HTMLInputElement>,
     folder: "products" | "banners" | "categories"
   ) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // Validate size (5MB max)
-    if (file.size > 5 * 1024 * 1024) {
-      setToast({ message: "Image size must be less than 5MB.", type: "error" });
-      return;
-    }
+    const fileList = e.target.files;
+    if (!fileList || fileList.length === 0) return;
+    const files = Array.from(fileList);
 
     setUploading(true);
-    let uploadedUrl = "";
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", folder);
+    const newUploadedUrls: string[] = [];
 
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        const data = (await res.json()) as { url?: string };
-        if (data.url) uploadedUrl = data.url;
+    for (const file of files) {
+      // Validate size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        setToast({ message: `Image ${file.name} must be less than 5MB.`, type: "error" });
+        continue;
       }
-    } catch {
-      // Fallback to local Data URL
-    }
 
-    if (!uploadedUrl) {
+      let uploadedUrl = "";
       try {
-        uploadedUrl = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("folder", folder);
+
+        const res = await fetch("/api/admin/upload", {
+          method: "POST",
+          body: formData,
         });
+
+        if (res.ok) {
+          const data = (await res.json()) as { url?: string };
+          if (data.url) uploadedUrl = data.url;
+        }
       } catch {
-        setToast({ message: "Failed to read image file.", type: "error" });
-        setUploading(false);
-        return;
+        // Fallback to local Data URL
+      }
+
+      if (!uploadedUrl) {
+        try {
+          uploadedUrl = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        } catch {
+          // Skip on read error
+        }
+      }
+
+      if (uploadedUrl) {
+        newUploadedUrls.push(uploadedUrl);
       }
     }
 
-    if (folder === "products" && editingProduct) {
-      setEditingProduct({
-        ...editingProduct,
-        images: [...editingProduct.images, uploadedUrl],
-      });
-    } else if (folder === "banners" && editingBanner) {
-      setEditingBanner({
-        ...editingBanner,
-        image: uploadedUrl,
-      });
-    } else if (folder === "categories" && editingCategory) {
-      setEditingCategory({
-        ...editingCategory,
-        image: uploadedUrl,
+    if (newUploadedUrls.length > 0) {
+      if (folder === "products" && editingProduct) {
+        setEditingProduct((prev) =>
+          prev ? { ...prev, images: [...prev.images, ...newUploadedUrls] } : null
+        );
+      } else if (folder === "banners" && editingBanner) {
+        setEditingBanner((prev) =>
+          prev ? { ...prev, image: newUploadedUrls[0] } : null
+        );
+      } else if (folder === "categories" && editingCategory) {
+        setEditingCategory((prev) =>
+          prev ? { ...prev, image: newUploadedUrls[0] } : null
+        );
+      }
+
+      setToast({
+        message: `${newUploadedUrls.length} image${newUploadedUrls.length > 1 ? "s" : ""} uploaded successfully!`,
+        type: "success",
       });
     }
 
-    setToast({
-      message: "Image uploaded and applied successfully!",
-      type: "success",
-    });
     setUploading(false);
     if (e.target) e.target.value = "";
   }
@@ -370,54 +503,46 @@ export default function AdminDashboardPage() {
     }
   }
 
-  // Delete / Unpublish Product, Banner, or Category
-  async function handleConfirmDelete() {
-    if (!deleteConfirm) return;
+  // Direct Single-Click Delete Product, Banner, or Category
+  async function handleDelete(type: "product" | "banner" | "category", id: string, permanent = true) {
     setSaving(true);
     try {
-      if (deleteConfirm.type === "product") {
-        catalog.deleteProduct(deleteConfirm.id, deleteConfirm.permanent);
-        if (deleteConfirm.permanent) {
-          setProducts(products.filter((p) => p.id !== deleteConfirm.id));
-        } else {
-          setProducts(
-            products.map((p) => (p.id === deleteConfirm.id ? { ...p, enabled: false } : p))
-          );
-        }
+      if (type === "product") {
+        catalog.deleteProduct(id, permanent);
+        setProducts((prev) => prev.filter((p) => p.id !== id));
         try {
-          const url = `/api/admin/products?id=${encodeURIComponent(deleteConfirm.id)}${
-            deleteConfirm.permanent ? "&permanent=true" : ""
+          const url = `/api/admin/products?id=${encodeURIComponent(id)}${
+            permanent ? "&permanent=true" : ""
           }`;
           await fetch(url, { method: "DELETE" });
         } catch { /* dev fallback */ }
-      } else if (deleteConfirm.type === "banner") {
-        catalog.deleteBanner(deleteConfirm.id);
-        setBanners(banners.filter((b) => b.id !== deleteConfirm.id));
+      } else if (type === "banner") {
+        catalog.deleteBanner(id);
+        setBanners((prev) => prev.filter((b) => b.id !== id));
         try {
-          const url = `/api/admin/banners?id=${encodeURIComponent(deleteConfirm.id)}`;
+          const url = `/api/admin/banners?id=${encodeURIComponent(id)}`;
           await fetch(url, { method: "DELETE" });
         } catch { /* dev fallback */ }
-      } else if (deleteConfirm.type === "category") {
-        catalog.deleteCategory(deleteConfirm.id);
-        setCategories(categories.filter((c) => c.slug !== deleteConfirm.id));
+      } else if (type === "category") {
+        catalog.deleteCategory(id);
+        setCategories((prev) => prev.filter((c) => c.slug !== id));
         try {
-          const url = `/api/admin/categories?slug=${encodeURIComponent(deleteConfirm.id)}`;
+          const url = `/api/admin/categories?slug=${encodeURIComponent(id)}`;
           await fetch(url, { method: "DELETE" });
         } catch { /* dev fallback */ }
       }
 
       setToast({
-        message: "Item removed successfully. Storefront updated instantly.",
+        message: "Item deleted successfully. Storefront updated instantly.",
         type: "success",
       });
     } catch (err) {
       setToast({
-        message: err instanceof Error ? err.message : "Operation failed",
+        message: err instanceof Error ? err.message : "Delete failed",
         type: "error",
       });
     } finally {
       setSaving(false);
-      setDeleteConfirm(null);
     }
   }
 
@@ -463,7 +588,7 @@ export default function AdminDashboardPage() {
       setEditingBanner(null);
       setIsNewBanner(false);
       setToast({
-        message: "Banner saved successfully! Top scrolling banner updated instantly.",
+        message: "Banner saved successfully! Storefront banners updated instantly.",
         type: "success",
       });
     } catch (err) {
@@ -481,32 +606,38 @@ export default function AdminDashboardPage() {
     e.preventDefault();
     if (!editingCategory) return;
 
-    if (!editingCategory.name.trim()) {
+    const autoSlug = editingCategory.name
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    const finalCategory: CategoryInput = {
+      ...editingCategory,
+      slug: (isNewCategory ? autoSlug : editingCategory.slug) || autoSlug || `cat-${Date.now().toString(36)}`,
+      title: editingCategory.title?.trim() || editingCategory.name.trim(),
+      type: editingCategory.type || "category",
+      productCount: editingCategory.productCount ?? 0,
+    };
+
+    if (!finalCategory.name.trim()) {
       setToast({ message: "Category name is required.", type: "error" });
       return;
     }
-    if (!editingCategory.title.trim()) {
-      setToast({ message: "Category title is required.", type: "error" });
-      return;
-    }
-    if (!editingCategory.slug.trim()) {
-      setToast({ message: "Category slug is required.", type: "error" });
-      return;
-    }
-    if (!editingCategory.image.trim()) {
+    if (!finalCategory.image.trim()) {
       setToast({ message: "Category image is required.", type: "error" });
       return;
     }
 
     setSaving(true);
     try {
-      catalog.saveCategory(editingCategory, isNewCategory);
+      catalog.saveCategory(finalCategory, isNewCategory);
 
       if (isNewCategory) {
-        setCategories([...categories, editingCategory]);
+        setCategories([...categories, finalCategory]);
       } else {
         setCategories(
-          categories.map((c) => (c.slug === editingCategory.slug ? editingCategory : c))
+          categories.map((c) => (c.slug === finalCategory.slug ? finalCategory : c))
         );
       }
 
@@ -515,7 +646,7 @@ export default function AdminDashboardPage() {
         await fetch("/api/admin/categories", {
           method,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(editingCategory),
+          body: JSON.stringify(finalCategory),
         });
       } catch {
         // Dev fallback
@@ -524,7 +655,7 @@ export default function AdminDashboardPage() {
       setEditingCategory(null);
       setIsNewCategory(false);
       setToast({
-        message: "Category saved successfully! Categories on storefront updated instantly.",
+        message: "Category saved successfully! Storefront categories updated instantly.",
         type: "success",
       });
     } catch (err) {
@@ -704,18 +835,13 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF7F4] flex flex-col">
+    <div className="min-h-screen bg-[#FAF7F4] flex flex-col overflow-x-hidden w-full max-w-full">
       {/* Top Navbar */}
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#EC0B12] flex items-center justify-center text-white shadow-sm">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-stone-900 tracking-tight leading-none">Gift Shop Admin</h1>
-              <p className="text-xs text-stone-500 mt-0.5">Manage products, scrolling banners & categories</p>
-            </div>
+            <Logo size="sm" />
+            <h1 className="text-lg font-bold text-stone-900 tracking-tight leading-none">Admin</h1>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
@@ -732,88 +858,66 @@ export default function AdminDashboardPage() {
               <LogOut className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Sign Out</span>
             </button>
-            <button
-              onClick={() => setResetConfirm(true)}
-              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors border border-stone-200 cursor-pointer"
-              title="Reset Live Overrides to Baseline Defaults"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Reset Defaults</span>
-            </button>
-            <button
-              onClick={() => {
-                setRefreshing(true);
-                loadAllData();
-              }}
-              disabled={refreshing}
-              className="p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
-              title="Refresh Content"
-            >
-              <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
-            </button>
-            <Link
-              href="/"
-              target="_blank"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 transition-colors"
-            >
-              View Store
-              <ExternalLink className="w-3.5 h-3.5" />
-            </Link>
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8 border-t border-stone-100">
-          <button
-            onClick={() => setActiveTab("products")}
-            className={`py-3 text-sm font-semibold flex items-center gap-2 border-b-2 transition-colors cursor-pointer ${
-              activeTab === "products"
-                ? "border-[#EC0B12] text-[#EC0B12]"
-                : "border-transparent text-stone-500 hover:text-stone-800"
-            }`}
-          >
-            <Package className="w-4 h-4" />
-            Product Cards
-            <span className="text-xs px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-mono">
-              {products.length}
-            </span>
-          </button>
-          <button
-            onClick={() => setActiveTab("banners")}
-            className={`py-3 text-sm font-semibold flex items-center gap-2 border-b-2 transition-colors cursor-pointer ${
-              activeTab === "banners"
-                ? "border-[#EC0B12] text-[#EC0B12]"
-                : "border-transparent text-stone-500 hover:text-stone-800"
-            }`}
-          >
-            <ImageIcon className="w-4 h-4" />
-            Top Scrolling Images
-            <span className="text-xs px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-mono">
-              {banners.length}
-            </span>
-          </button>
-          <button
-            onClick={() => setActiveTab("categories")}
-            className={`py-3 text-sm font-semibold flex items-center gap-2 border-b-2 transition-colors cursor-pointer ${
-              activeTab === "categories"
-                ? "border-[#EC0B12] text-[#EC0B12]"
-                : "border-transparent text-stone-500 hover:text-stone-800"
-            }`}
-          >
-            <LayoutGrid className="w-4 h-4" />
-            Categories
-            <span className="text-xs px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-mono">
-              {categories.length}
-            </span>
-          </button>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-stone-100 overflow-x-auto scrollbar-none scroll-smooth">
+          <div className="flex justify-center items-center gap-3 sm:gap-8 min-w-max mx-auto whitespace-nowrap">
+            <button
+              ref={tabProductsRef}
+              onClick={() => setActiveTab("products")}
+              className={`py-3 px-1 text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:gap-2 border-b-2 transition-colors cursor-pointer shrink-0 snap-center ${
+                activeTab === "products"
+                  ? "border-[#EC0B12] text-[#EC0B12]"
+                  : "border-transparent text-stone-500 hover:text-stone-800"
+              }`}
+            >
+              <Package className="w-4 h-4 shrink-0" />
+              <span>Products</span>
+              <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-mono">
+                {products.length}
+              </span>
+            </button>
+            <button
+              ref={tabBannersRef}
+              onClick={() => setActiveTab("banners")}
+              className={`py-3 px-1 text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:gap-2 border-b-2 transition-colors cursor-pointer shrink-0 snap-center ${
+                activeTab === "banners"
+                  ? "border-[#EC0B12] text-[#EC0B12]"
+                  : "border-transparent text-stone-500 hover:text-stone-800"
+              }`}
+            >
+              <ImageIcon className="w-4 h-4 shrink-0" />
+              <span>Banners</span>
+              <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-mono">
+                {banners.length}
+              </span>
+            </button>
+            <button
+              ref={tabCategoriesRef}
+              onClick={() => setActiveTab("categories")}
+              className={`py-3 px-1 text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:gap-2 border-b-2 transition-colors cursor-pointer shrink-0 snap-center ${
+                activeTab === "categories"
+                  ? "border-[#EC0B12] text-[#EC0B12]"
+                  : "border-transparent text-stone-500 hover:text-stone-800"
+              }`}
+            >
+              <LayoutGrid className="w-4 h-4 shrink-0" />
+              <span>Categories</span>
+              <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 font-mono">
+                {categories.length}
+              </span>
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Toast Alert */}
       {toast && (
-        <div className="fixed bottom-5 right-5 z-50 max-w-md w-full px-4 animate-in fade-in slide-in-from-bottom-5">
+        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-md z-50 animate-in fade-in slide-in-from-bottom-4 pointer-events-none">
           <div
-            className={`p-4 rounded-xl shadow-lg border flex items-start gap-3 ${
+            className={`p-3.5 sm:p-4 rounded-xl shadow-lg border flex items-start gap-3 pointer-events-auto ${
               toast.type === "success"
                 ? "bg-emerald-50 border-emerald-200 text-emerald-900"
                 : toast.type === "error"
@@ -826,8 +930,12 @@ export default function AdminDashboardPage() {
             ) : (
               <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
             )}
-            <div className="flex-1 text-sm font-medium">{toast.message}</div>
-            <button onClick={() => setToast(null)} className="text-stone-400 hover:text-stone-600">
+            <div className="flex-1 text-xs sm:text-sm font-medium leading-relaxed">{toast.message}</div>
+            <button
+              type="button"
+              onClick={() => setToast(null)}
+              className="text-stone-400 hover:text-stone-600 p-1 shrink-0 cursor-pointer"
+            >
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -835,7 +943,7 @@ export default function AdminDashboardPage() {
       )}
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1 w-full max-w-full overflow-x-hidden">
         {loading ? (
           <div className="py-24 text-center">
             <RefreshCw className="w-8 h-8 text-[#EC0B12] animate-spin mx-auto mb-3" />
@@ -845,9 +953,9 @@ export default function AdminDashboardPage() {
           /* Products View */
           <div>
             {/* Action Bar */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6">
-              <div className="flex flex-wrap gap-2 w-full sm:w-auto items-center">
-                <div className="relative flex-1 sm:w-64">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-stretch sm:items-center mb-6">
+              <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-2 w-full sm:w-auto items-stretch sm:items-center">
+                <div className="relative w-full sm:w-64">
                   <Search className="w-4 h-4 absolute left-3 top-3 text-stone-400" />
                   <input
                     type="text"
@@ -857,27 +965,27 @@ export default function AdminDashboardPage() {
                     className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   />
                 </div>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2 text-sm bg-white border border-stone-200 rounded-lg text-stone-700 focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                >
-                  <option value="all">All Categories</option>
-                  {dynamicCategoryOptions.map((c) => (
-                    <option key={c.slug} value={c.slug}>
-                      {c.label}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value as "all" | "published" | "draft")}
-                  className="px-3 py-2 text-sm bg-white border border-stone-200 rounded-lg text-stone-700 focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                >
-                  <option value="all">All Statuses</option>
-                  <option value="published">Published</option>
-                  <option value="draft">Unpublished</option>
-                </select>
+                <div className="grid grid-cols-2 gap-2 w-full sm:w-auto">
+                  <CustomSelect
+                    value={selectedCategory}
+                    onChange={setSelectedCategory}
+                    options={[
+                      { value: "all", label: "All Categories" },
+                      ...dynamicCategoryOptions.map((c) => ({ value: c.slug, label: c.label })),
+                    ]}
+                    className="w-full sm:w-48"
+                  />
+                  <CustomSelect
+                    value={selectedStatus}
+                    onChange={(val) => setSelectedStatus(val as "all" | "published" | "draft")}
+                    options={[
+                      { value: "all", label: "All Statuses" },
+                      { value: "published", label: "Published" },
+                      { value: "draft", label: "Unpublished" },
+                    ]}
+                    className="w-full sm:w-36"
+                  />
+                </div>
               </div>
 
               <button
@@ -885,7 +993,7 @@ export default function AdminDashboardPage() {
                   setEditingProduct(createNewProductTemplate());
                   setIsNewProduct(true);
                 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors cursor-pointer shrink-0"
               >
                 <Plus className="w-4 h-4" />
                 Add Product
@@ -894,7 +1002,7 @@ export default function AdminDashboardPage() {
 
             {/* Products List / Grid */}
             {filteredProducts.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-stone-200 p-12 text-center">
+              <div className="bg-white rounded-2xl border border-stone-200 p-8 sm:p-12 text-center">
                 <Package className="w-12 h-12 text-stone-300 mx-auto mb-3" />
                 <h3 className="text-base font-semibold text-stone-900 mb-1">No products found</h3>
                 <p className="text-sm text-stone-500 mb-4">Try clearing filters or add a new product.</p>
@@ -903,7 +1011,7 @@ export default function AdminDashboardPage() {
                     setEditingProduct(createNewProductTemplate());
                     setIsNewProduct(true);
                   }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#EC0B12] text-white text-sm font-semibold rounded-lg"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#EC0B12] text-white text-sm font-semibold rounded-lg cursor-pointer"
                 >
                   <Plus className="w-4 h-4" /> Add Product
                 </button>
@@ -916,12 +1024,12 @@ export default function AdminDashboardPage() {
                     return (
                       <div
                         key={product.id}
-                        className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-stone-50/70 transition-colors"
+                        className="p-3.5 sm:p-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 hover:bg-stone-50/70 transition-colors"
                       >
-                        <div className="flex items-center gap-4 min-w-0">
+                        <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                           {/* Thumbnail */}
-                          <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-stone-100 shrink-0 border border-stone-200">
-                            {product.images[0] ? (
+                          <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden bg-stone-100 shrink-0 border border-stone-200">
+                            {product.images[0] && !product.images[0].startsWith("/images/products/") ? (
                               <Image
                                 src={product.images[0]}
                                 alt={product.name}
@@ -930,18 +1038,26 @@ export default function AdminDashboardPage() {
                                 className="object-cover"
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-stone-300">
-                                <ImageIcon className="w-6 h-6" />
-                              </div>
+                              <ProductImage
+                                slug={product.slug}
+                                name={product.name}
+                                categorySlug={product.categorySlug}
+                                image={product.images[0]}
+                                aspectRatio="square"
+                                noPadding
+                                className="w-full h-full"
+                              />
                             )}
                           </div>
 
                           {/* Info */}
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <h3 className="text-sm font-bold text-stone-900 truncate">{product.name}</h3>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h3 className="text-sm font-bold text-stone-900 truncate max-w-[190px] sm:max-w-md">
+                                {product.name}
+                              </h3>
                               <span
-                                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0 ${
                                   isPublished
                                     ? "bg-emerald-100 text-emerald-800"
                                     : "bg-stone-100 text-stone-600"
@@ -950,12 +1066,12 @@ export default function AdminDashboardPage() {
                                 {isPublished ? "Published" : "Unpublished"}
                               </span>
                               {product.offerTag && (
-                                <span className="hidden md:inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900">
+                                <span className="hidden md:inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 shrink-0">
                                   {product.offerTag}
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-stone-500">
+                            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 mt-1 text-xs text-stone-500">
                               <span className="font-semibold text-stone-900">₹{product.price}</span>
                               {product.compareAtPrice && (
                                 <span className="line-through text-stone-400">₹{product.compareAtPrice}</span>
@@ -973,21 +1089,21 @@ export default function AdminDashboardPage() {
                         </div>
 
                         {/* Actions */}
-                        <div className="flex items-center gap-2 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-3 sm:pt-0">
+                        <div className="flex items-center gap-2 w-full sm:w-auto justify-end border-t border-stone-100 sm:border-t-0 pt-2.5 sm:pt-0 shrink-0">
                           <button
                             onClick={() => handleToggleProductPublished(product)}
-                            className="p-2 text-stone-500 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors text-xs font-semibold flex items-center gap-1.5"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors text-xs font-semibold cursor-pointer"
                             title={isPublished ? "Unpublish" : "Publish"}
                           >
                             {isPublished ? (
                               <>
-                                <EyeOff className="w-4 h-4 text-stone-400" />
-                                <span className="sm:hidden">Unpublish</span>
+                                <EyeOff className="w-3.5 h-3.5 text-stone-400 shrink-0" />
+                                <span>Unpublish</span>
                               </>
                             ) : (
                               <>
-                                <Eye className="w-4 h-4 text-emerald-600" />
-                                <span className="sm:hidden text-emerald-700">Publish</span>
+                                <Eye className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                <span className="text-emerald-700">Publish</span>
                               </>
                             )}
                           </button>
@@ -997,23 +1113,16 @@ export default function AdminDashboardPage() {
                               setEditingProduct({ ...product });
                               setIsNewProduct(false);
                             }}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors cursor-pointer"
                           >
-                            <Edit3 className="w-3.5 h-3.5" />
-                            Edit
+                            <Edit3 className="w-3.5 h-3.5 shrink-0" />
+                            <span>Edit</span>
                           </button>
 
                           <button
-                            onClick={() =>
-                              setDeleteConfirm({
-                                type: "product",
-                                id: product.id,
-                                name: product.name,
-                                permanent: false,
-                              })
-                            }
-                            className="p-2 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
-                            title="Unpublish or Delete"
+                            onClick={() => handleDelete("product", product.id, true)}
+                            className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                            title="Delete Product"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -1116,14 +1225,7 @@ export default function AdminDashboardPage() {
                             Edit
                           </button>
                           <button
-                            onClick={() =>
-                              setDeleteConfirm({
-                                type: "banner",
-                                id: banner.id,
-                                name: banner.title,
-                                permanent: true,
-                              })
-                            }
+                            onClick={() => handleDelete("banner", banner.id, true)}
                             className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
                             title="Delete Banner"
                           >
@@ -1141,9 +1243,9 @@ export default function AdminDashboardPage() {
           /* Categories View */
           <div>
             {/* Action Bar */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-6">
-              <div className="flex flex-wrap gap-2 w-full sm:w-auto items-center">
-                <div className="relative flex-1 sm:w-64">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-stretch sm:items-center mb-6">
+              <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-2 w-full sm:w-auto items-stretch sm:items-center">
+                <div className="relative w-full sm:w-64">
                   <Search className="w-4 h-4 absolute left-3 top-3 text-stone-400" />
                   <input
                     type="text"
@@ -1153,47 +1255,49 @@ export default function AdminDashboardPage() {
                     className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                   />
                 </div>
-                <div className="inline-flex rounded-lg border border-stone-200 bg-white p-1 text-xs font-semibold">
-                  <button
-                    onClick={() => setSelectedCategoryType("all")}
-                    className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
-                      selectedCategoryType === "all"
-                        ? "bg-[#EC0B12] text-white"
-                        : "text-stone-600 hover:text-stone-900"
-                    }`}
-                  >
-                    All ({categories.length})
-                  </button>
-                  <button
-                    onClick={() => setSelectedCategoryType("category")}
-                    className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
-                      selectedCategoryType === "category"
-                        ? "bg-[#EC0B12] text-white"
-                        : "text-stone-600 hover:text-stone-900"
-                    }`}
-                  >
-                    Main ({categories.filter((c) => (c.type || "category") === "category").length})
-                  </button>
-                  <button
-                    onClick={() => setSelectedCategoryType("occasion")}
-                    className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
-                      selectedCategoryType === "occasion"
-                        ? "bg-[#EC0B12] text-white"
-                        : "text-stone-600 hover:text-stone-900"
-                    }`}
-                  >
-                    Occasions ({categories.filter((c) => c.type === "occasion").length})
-                  </button>
-                  <button
-                    onClick={() => setSelectedCategoryType("recipient")}
-                    className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
-                      selectedCategoryType === "recipient"
-                        ? "bg-[#EC0B12] text-white"
-                        : "text-stone-600 hover:text-stone-900"
-                    }`}
-                  >
-                    Recipients ({categories.filter((c) => c.type === "recipient").length})
-                  </button>
+                <div className="overflow-x-auto scrollbar-none max-w-full pb-0.5">
+                  <div className="inline-flex rounded-lg border border-stone-200 bg-white p-1 text-xs font-semibold shrink-0">
+                    <button
+                      onClick={() => setSelectedCategoryType("all")}
+                      className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer shrink-0 whitespace-nowrap ${
+                        selectedCategoryType === "all"
+                          ? "bg-[#EC0B12] text-white"
+                          : "text-stone-600 hover:text-stone-900"
+                      }`}
+                    >
+                      All ({categories.length})
+                    </button>
+                    <button
+                      onClick={() => setSelectedCategoryType("category")}
+                      className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer shrink-0 whitespace-nowrap ${
+                        selectedCategoryType === "category"
+                          ? "bg-[#EC0B12] text-white"
+                          : "text-stone-600 hover:text-stone-900"
+                      }`}
+                    >
+                      Main ({categories.filter((c) => (c.type || "category") === "category").length})
+                    </button>
+                    <button
+                      onClick={() => setSelectedCategoryType("occasion")}
+                      className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer shrink-0 whitespace-nowrap ${
+                        selectedCategoryType === "occasion"
+                          ? "bg-[#EC0B12] text-white"
+                          : "text-stone-600 hover:text-stone-900"
+                      }`}
+                    >
+                      Occasions ({categories.filter((c) => c.type === "occasion").length})
+                    </button>
+                    <button
+                      onClick={() => setSelectedCategoryType("recipient")}
+                      className={`px-3 py-1.5 rounded-md transition-colors cursor-pointer shrink-0 whitespace-nowrap ${
+                        selectedCategoryType === "recipient"
+                          ? "bg-[#EC0B12] text-white"
+                          : "text-stone-600 hover:text-stone-900"
+                      }`}
+                    >
+                      Recipients ({categories.filter((c) => c.type === "recipient").length})
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -1202,7 +1306,7 @@ export default function AdminDashboardPage() {
                   setEditingCategory(createNewCategoryTemplate());
                   setIsNewCategory(true);
                 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-sm font-semibold rounded-lg shadow-sm transition-colors cursor-pointer shrink-0"
               >
                 <Plus className="w-4 h-4" />
                 Add Category
@@ -1226,86 +1330,63 @@ export default function AdminDashboardPage() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
                 {filteredCategories.map((cat) => (
                   <div
                     key={cat.slug}
-                    className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col hover:border-[#EC0B12]/40 transition-all"
+                    className="bg-white rounded-xl sm:rounded-2xl border border-stone-200 overflow-hidden shadow-xs flex flex-col hover:border-[#EC0B12]/40 transition-all"
                   >
-                    <div className="relative aspect-[16/9] w-full bg-stone-100 overflow-hidden">
-                      {cat.image ? (
+                    <div className="relative aspect-square w-full bg-stone-100 overflow-hidden">
+                      {cat.image && !cat.image.startsWith("/images/categories/") ? (
                         <Image
                           src={cat.image}
                           alt={cat.name}
                           fill
-                          sizes="(max-width: 768px) 100vw, 33vw"
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                           className="object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-stone-300">
-                          <LayoutGrid className="w-10 h-10" />
-                        </div>
+                        <ProductImage
+                          slug={cat.slug}
+                          name={cat.name}
+                          categorySlug={cat.slug}
+                          image={cat.image}
+                          aspectRatio="square"
+                          noPadding
+                          className="w-full h-full"
+                        />
                       )}
-                      <div className="absolute top-3 left-3">
-                        <span
-                          className={`text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-md shadow-xs ${
-                            cat.type === "occasion"
-                              ? "bg-purple-600/90 text-white"
-                              : cat.type === "recipient"
-                              ? "bg-amber-600/90 text-white"
-                              : "bg-blue-600/90 text-white"
-                          }`}
-                        >
-                          {cat.type === "occasion"
-                            ? "Occasion"
-                            : cat.type === "recipient"
-                            ? "Recipient"
-                            : "Category"}
-                        </span>
-                      </div>
-                      <div className="absolute top-3 right-3">
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-black/60 text-white backdrop-blur-xs">
+                      <div className="absolute top-1.5 right-1.5">
+                        <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-black/60 text-white backdrop-blur-xs">
                           {cat.productCount ?? 0} items
                         </span>
                       </div>
                     </div>
 
-                    <div className="p-4 flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between gap-2 mb-1">
-                          <h3 className="font-bold text-stone-900 text-base">{cat.name}</h3>
-                          <span className="text-xs text-stone-400 font-mono">/{cat.slug}</span>
-                        </div>
-                        <h4 className="text-xs font-semibold text-stone-700 mb-1">{cat.title}</h4>
-                        {cat.description && (
-                          <p className="text-xs text-stone-500 line-clamp-2">{cat.description}</p>
-                        )}
+                    <div className="p-2.5 sm:p-3 flex-1 flex flex-col justify-between">
+                      <div className="min-w-0">
+                        <h3 className="font-bold text-stone-900 text-xs sm:text-sm truncate" title={cat.name}>
+                          {cat.name}
+                        </h3>
                       </div>
 
-                      <div className="flex items-center justify-end gap-2 border-t border-stone-100 pt-3 mt-3">
+                      <div className="flex items-center justify-between gap-1 border-t border-stone-100 pt-2 mt-2">
                         <button
                           onClick={() => {
                             setEditingCategory({ ...cat });
                             setIsNewCategory(false);
                           }}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-lg transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] sm:text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-md transition-colors cursor-pointer"
                         >
-                          <Edit3 className="w-3.5 h-3.5" />
+                          <Edit3 className="w-3 h-3" />
                           Edit
                         </button>
                         <button
-                          onClick={() =>
-                            setDeleteConfirm({
-                              type: "category",
-                              id: cat.slug,
-                              name: cat.name,
-                              permanent: true,
-                            })
-                          }
-                          className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                          onClick={() => handleDelete("category", cat.slug, true)}
+                          className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-md transition-colors cursor-pointer"
                           title="Delete Category"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
@@ -1323,6 +1404,7 @@ export default function AdminDashboardPage() {
         ref={fileInputRef}
         onChange={(e) => handleImageUpload(e, "products")}
         accept="image/png,image/jpeg,image/webp,image/avif"
+        multiple
         className="hidden"
       />
       <input
@@ -1342,118 +1424,74 @@ export default function AdminDashboardPage() {
 
       {/* PRODUCT EDITOR MODAL */}
       {editingProduct && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden my-auto animate-in zoom-in-95">
-            {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-stone-200 flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-bold text-stone-900">
-                  {isNewProduct ? "Add New Product" : `Edit Product: ${editingProduct.name}`}
-                </h3>
-                <p className="text-xs text-stone-500">Edit details and pricing for this gift item</p>
-              </div>
-              <button
-                onClick={() => setEditingProduct(null)}
-                className="p-2 text-stone-400 hover:text-stone-700 rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <form
+            onSubmit={handleSaveProduct}
+            className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] sm:max-h-[85vh] flex flex-col shadow-2xl overflow-hidden my-auto animate-in zoom-in-95 border border-stone-200"
+          >
+            {/* Modal Body */}
+            <div className="p-4 sm:p-6 space-y-5 sm:space-y-6 overflow-y-auto flex-1">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">Product Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingProduct.name}
+                    onChange={(e) => {
+                      const name = e.target.value;
+                      const slug = isNewProduct
+                        ? name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+                        : editingProduct.slug;
+                      setEditingProduct({ ...editingProduct, name, slug: slug || editingProduct.slug });
+                    }}
+                    placeholder="e.g. Personalized Wooden Photo Frame"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
+                  />
+                </div>
 
-            {/* Modal Body / Form */}
-            <form onSubmit={handleSaveProduct} className="p-6 space-y-6 overflow-y-auto flex-1">
-              {/* Basic Information */}
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400 mb-3">
-                  Basic Information
-                </h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 mb-1">Product Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={editingProduct.name}
-                      onChange={(e) => {
-                        const name = e.target.value;
-                        const slug = isNewProduct
-                          ? name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
-                          : editingProduct.slug;
-                        setEditingProduct({ ...editingProduct, name, slug: slug || editingProduct.slug });
-                      }}
-                      placeholder="e.g. Personalized Wooden Photo Frame"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">Category *</label>
+                  <CustomSelect
+                    value={editingProduct.categorySlug}
+                    onChange={(val) => setEditingProduct({ ...editingProduct, categorySlug: val })}
+                    options={dynamicCategoryOptions.map((c) => ({ value: c.slug, label: c.label }))}
+                    className="w-full"
+                  />
+                </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-semibold text-stone-700 mb-1">Category *</label>
-                      <select
-                        value={editingProduct.categorySlug}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, categorySlug: e.target.value })}
-                        className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                      >
-                        {CATEGORY_OPTIONS.map((c) => (
-                          <option key={c.slug} value={c.slug}>
-                            {c.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-stone-700 mb-1">Display Order</label>
-                      <input
-                        type="number"
-                        min="1"
-                        value={editingProduct.displayOrder}
-                        onChange={(e) =>
-                          setEditingProduct({ ...editingProduct, displayOrder: parseInt(e.target.value) || 999 })
-                        }
-                        className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 mb-1">Short Description</label>
-                    <input
-                      type="text"
-                      value={editingProduct.shortDescription}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, shortDescription: e.target.value })}
-                      placeholder="Catchy one-line description"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 mb-1">Full Description</label>
-                    <textarea
-                      rows={3}
-                      value={editingProduct.description}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                      placeholder="Detailed product specifications, materials, and care notes"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">Description</label>
+                  <textarea
+                    rows={3}
+                    value={editingProduct.description}
+                    onChange={(e) =>
+                      setEditingProduct({
+                        ...editingProduct,
+                        description: e.target.value,
+                        shortDescription: e.target.value,
+                      })
+                    }
+                    placeholder="Product details, materials, dimensions, and specifications"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
+                  />
                 </div>
               </div>
 
-              {/* Product Images */}
+              {/* Images */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
-                    Product Images *
-                  </h4>
+                  <label className="block text-xs font-semibold text-stone-700">
+                    Images * <span className="text-stone-400 font-normal text-[11px]">(1:1 ratio)</span>
+                  </label>
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-lg transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-lg transition-colors cursor-pointer"
                   >
                     <UploadCloud className="w-3.5 h-3.5 text-[#EC0B12]" />
-                    {uploading ? "Uploading..." : "Upload Image"}
+                    {uploading ? "Uploading..." : "Upload Images"}
                   </button>
                 </div>
 
@@ -1472,10 +1510,10 @@ export default function AdminDashboardPage() {
                             images: editingProduct.images.filter((_, i) => i !== idx),
                           })
                         }
-                        className="absolute top-1 right-1 p-1 bg-black/60 hover:bg-rose-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-1 right-1 p-1 bg-rose-600 hover:bg-rose-700 text-white rounded-full shadow-md z-10 transition-transform active:scale-95 cursor-pointer"
                         title="Remove image"
                       >
-                        <X className="w-3 h-3" />
+                        <X className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   ))}
@@ -1486,111 +1524,101 @@ export default function AdminDashboardPage() {
                       className="w-full border-2 border-dashed border-stone-200 rounded-xl p-6 text-center hover:border-[#EC0B12] cursor-pointer transition-colors"
                     >
                       <UploadCloud className="w-8 h-8 text-stone-400 mx-auto mb-2" />
-                      <p className="text-xs font-semibold text-stone-700">Click to upload product image</p>
-                      <p className="text-[11px] text-stone-400 mt-0.5">PNG, JPG, or WEBP up to 5MB</p>
+                      <p className="text-xs font-semibold text-stone-700">Click to upload images</p>
+                      <p className="text-[11px] text-stone-400 mt-0.5">1:1 ratio (PNG, JPG, or WEBP up to 5MB)</p>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Pricing & Offers */}
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400 mb-3">
-                  Pricing & Offers
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 mb-1">Selling Price (₹) *</label>
-                    <input
-                      type="number"
-                      required
-                      min="0"
-                      value={editingProduct.price}
-                      onChange={(e) =>
-                        setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })
-                      }
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                    />
-                  </div>
+              {/* Pricing (single line) */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">Price (₹) *</label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    value={editingProduct.price}
+                    onChange={(e) =>
+                      setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })
+                    }
+                    className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
+                  />
+                </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 mb-1">Compare-at Price (₹)</label>
-                    <input
-                      type="number"
-                      min="0"
-                      value={editingProduct.compareAtPrice || ""}
-                      onChange={(e) =>
-                        setEditingProduct({
-                          ...editingProduct,
-                          compareAtPrice: e.target.value ? parseFloat(e.target.value) : undefined,
-                        })
-                      }
-                      placeholder="e.g. 799"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">MRP (₹)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={editingProduct.compareAtPrice || ""}
+                    onChange={(e) =>
+                      setEditingProduct({
+                        ...editingProduct,
+                        compareAtPrice: e.target.value ? parseFloat(e.target.value) : undefined,
+                      })
+                    }
+                    placeholder="e.g. 799"
+                    className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
+                  />
+                </div>
 
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 mb-1">Offer Tag</label>
-                    <input
-                      type="text"
-                      value={editingProduct.offerTag || ""}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, offerTag: e.target.value })}
-                      placeholder="e.g. 20% OFF or Best Seller"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">Discount</label>
+                  <input
+                    type="text"
+                    value={editingProduct.offerTag || ""}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, offerTag: e.target.value })}
+                    placeholder="e.g. 20% OFF"
+                    className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
+                  />
                 </div>
               </div>
 
-              {/* Variants & Options */}
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400 mb-3">
-                  Sizes & Colors
-                </h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 mb-1">
-                      Sizes (comma-separated)
-                    </label>
-                    <input
-                      type="text"
-                      value={(editingProduct.sizes || []).join(", ")}
-                      onChange={(e) =>
-                        setEditingProduct({
-                          ...editingProduct,
-                          sizes: e.target.value
-                            .split(",")
-                            .map((s) => s.trim())
-                            .filter(Boolean),
-                        })
-                      }
-                      placeholder="6x8 inch, 8x12 inch, 12x18 inch"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-stone-700 mb-1">
-                      Frame Colors (comma-separated names)
-                    </label>
-                    <input
-                      type="text"
-                      value={(editingProduct.frameColors || []).map((c) => c.name).join(", ")}
-                      onChange={(e) => {
-                        const names = e.target.value
+              {/* Sizes and Frame Colors */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Sizes (comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={(editingProduct.sizes || []).join(", ")}
+                    onChange={(e) =>
+                      setEditingProduct({
+                        ...editingProduct,
+                        sizes: e.target.value
                           .split(",")
                           .map((s) => s.trim())
-                          .filter(Boolean);
-                        setEditingProduct({
-                          ...editingProduct,
-                          frameColors: names.map((name) => ({ name, hex: "#333333" })),
-                        });
-                      }}
-                      placeholder="Classic Black, Warm Oak, Pure White"
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                    />
-                  </div>
+                          .filter(Boolean),
+                      })
+                    }
+                    placeholder="6x8 inch, 8x12 inch, 12x18 inch"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 mb-1">
+                    Frame Colors (comma-separated names)
+                  </label>
+                  <input
+                    type="text"
+                    value={(editingProduct.frameColors || []).map((c) => c.name).join(", ")}
+                    onChange={(e) => {
+                      const names = e.target.value
+                        .split(",")
+                        .map((s) => s.trim())
+                        .filter(Boolean);
+                      setEditingProduct({
+                        ...editingProduct,
+                        frameColors: names.map((name) => ({ name, hex: "#333333" })),
+                      });
+                    }}
+                    placeholder="Classic Black, Warm Oak, Pure White"
+                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
+                  />
                 </div>
               </div>
 
@@ -1611,49 +1639,39 @@ export default function AdminDashboardPage() {
                 </label>
               </div>
 
-              {/* Modal Footer Actions */}
-              <div className="border-t border-stone-200 pt-4 flex items-center justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setEditingProduct(null)}
-                  className="px-4 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
-                >
-                  {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
-                  {saving ? "Saving..." : "Save Product"}
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+
+            {/* Sticky Modal Footer Actions */}
+            <div className="px-5 py-3 sm:px-6 sm:py-3.5 border-t border-stone-200 bg-stone-50/90 flex items-center justify-end gap-2.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => setEditingProduct(null)}
+                className="px-3.5 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={saving}
+                className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
+                {saving ? "Saving..." : "Save Product"}
+              </button>
+            </div>
+          </form>
         </div>
       )}
 
       {/* BANNER EDITOR MODAL */}
       {editingBanner && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden my-auto animate-in zoom-in-95">
-            <div className="px-6 py-4 border-b border-stone-200 flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-bold text-stone-900">
-                  {isNewBanner ? "Add New Banner" : "Edit Banner"}
-                </h3>
-                <p className="text-xs text-stone-500">Configure promotional sliding banners</p>
-              </div>
-              <button
-                onClick={() => setEditingBanner(null)}
-                className="p-2 text-stone-400 hover:text-stone-700 rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveBanner} className="p-6 space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <form
+            onSubmit={handleSaveBanner}
+            className="bg-white rounded-2xl max-w-xl w-full max-h-[92vh] sm:max-h-[85vh] flex flex-col shadow-2xl overflow-hidden my-auto animate-in zoom-in-95 border border-stone-200"
+          >
+            {/* Modal Body */}
+            <div className="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1">
               <div>
                 <label className="block text-xs font-semibold text-stone-700 mb-1">Banner Title *</label>
                 <input
@@ -1678,32 +1696,39 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-stone-700 mb-1">Destination Link *</label>
-                <input
-                  type="text"
-                  required
-                  value={editingBanner.link}
-                  onChange={(e) => setEditingBanner({ ...editingBanner, link: e.target.value })}
-                  placeholder="e.g. /categories/frames or /shop"
-                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
+                <label className="block text-xs font-semibold text-stone-700 mb-1">Category *</label>
+                <CustomSelect
+                  value={
+                    dynamicCategoryOptions.some((opt) => `/categories/${opt.slug}` === editingBanner.link || opt.slug === editingBanner.link)
+                      ? (editingBanner.link.startsWith("/categories/") ? editingBanner.link : `/categories/${editingBanner.link}`)
+                      : (dynamicCategoryOptions[0] ? `/categories/${dynamicCategoryOptions[0].slug}` : "")
+                  }
+                  onChange={(val) => setEditingBanner({ ...editingBanner, link: val })}
+                  options={dynamicCategoryOptions.map((c) => ({
+                    value: `/categories/${c.slug}`,
+                    label: c.label,
+                  }))}
+                  className="w-full"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-semibold text-stone-700">Banner Image *</label>
+                  <label className="block text-xs font-semibold text-stone-700">
+                    Image * <span className="text-stone-400 font-normal text-[11px]">(16:9 ratio)</span>
+                  </label>
                   <button
                     type="button"
                     onClick={() => bannerFileInputRef.current?.click()}
                     disabled={uploading}
-                    className="text-xs font-semibold text-[#EC0B12] hover:underline flex items-center gap-1"
+                    className="text-xs font-semibold text-[#EC0B12] hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <UploadCloud className="w-3.5 h-3.5" />
-                    {uploading ? "Uploading..." : "Upload New Image"}
+                    {uploading ? "Uploading..." : "Upload Image"}
                   </button>
                 </div>
                 {editingBanner.image ? (
-                  <div className="relative aspect-[16/7] w-full rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mt-2">
+                  <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mt-2">
                     <Image
                       src={editingBanner.image}
                       alt="Banner Preview"
@@ -1711,20 +1736,28 @@ export default function AdminDashboardPage() {
                       sizes="500px"
                       className="object-cover"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setEditingBanner({ ...editingBanner, image: "" })}
+                      className="absolute top-2 right-2 p-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-full shadow-md z-10 transition-transform active:scale-95 cursor-pointer"
+                      title="Remove image"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
                 ) : (
                   <div
                     onClick={() => bannerFileInputRef.current?.click()}
-                    className="border-2 border-dashed border-stone-200 rounded-xl p-8 text-center hover:border-[#EC0B12] cursor-pointer transition-colors"
+                    className="border-2 border-dashed border-stone-200 rounded-xl p-6 sm:p-8 text-center hover:border-[#EC0B12] cursor-pointer transition-colors"
                   >
                     <UploadCloud className="w-8 h-8 text-stone-400 mx-auto mb-2" />
-                    <p className="text-xs font-semibold text-stone-700">Click to upload banner image</p>
-                    <p className="text-[11px] text-stone-400 mt-0.5">High-resolution banner (16:7 or 16:9 ratio)</p>
+                    <p className="text-xs font-semibold text-stone-700">Click to upload image</p>
+                    <p className="text-[11px] text-stone-400 mt-0.5">16:9 ratio (PNG, JPG, or WEBP up to 5MB)</p>
                   </div>
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="pt-2 space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-stone-700 mb-1">Display Order</label>
                   <input
@@ -1738,204 +1771,109 @@ export default function AdminDashboardPage() {
                   />
                 </div>
 
-                <div className="flex flex-col justify-end">
-                  <label className="flex items-center gap-2 cursor-pointer pb-2">
+                {/* Visibility Toggle Switch */}
+                <div className="border-t border-stone-100 pt-3 flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-stone-900">Active on Storefront</h4>
+                    <p className="text-[11px] sm:text-xs text-stone-500">Enable banner on homepage sliding carousel</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer shrink-0">
                     <input
                       type="checkbox"
-                      checked={editingBanner.enabled}
+                      checked={editingBanner.enabled !== false}
                       onChange={(e) => setEditingBanner({ ...editingBanner, enabled: e.target.checked })}
-                      className="w-4 h-4 text-[#EC0B12] rounded border-stone-300 focus:ring-[#EC0B12]"
+                      className="sr-only peer"
                     />
-                    <span className="text-xs font-semibold text-stone-800">Active on Storefront</span>
+                    <div className="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
                   </label>
                 </div>
               </div>
+            </div>
 
-              <div className="border-t border-stone-200 pt-4 flex items-center justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setEditingBanner(null)}
-                  className="px-4 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
-                >
-                  {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
-                  {saving ? "Saving..." : "Save Banner"}
-                </button>
-              </div>
-            </form>
-          </div>
+            {/* Sticky Modal Footer Actions */}
+            <div className="px-5 py-3 sm:px-6 sm:py-3.5 border-t border-stone-200 bg-stone-50/90 flex items-center justify-end gap-2.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => setEditingBanner(null)}
+                className="px-3.5 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={saving}
+                className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
+                {saving ? "Saving..." : "Save Banner"}
+              </button>
+            </div>
+          </form>
         </div>
       )}
 
       {/* CATEGORY EDITOR MODAL */}
       {editingCategory && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden my-auto animate-in zoom-in-95">
-            <div className="px-6 py-4 border-b border-stone-200 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+          <form
+            onSubmit={handleSaveCategory}
+            className="bg-white rounded-2xl max-w-xl w-full max-h-[92vh] sm:max-h-[85vh] flex flex-col shadow-2xl overflow-hidden my-auto animate-in zoom-in-95 border border-stone-200"
+          >
+            {/* Modal Body */}
+            <div className="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1">
               <div>
-                <h3 className="text-lg font-bold text-stone-900">
-                  {isNewCategory ? "Add New Category" : `Edit Category: ${editingCategory.name}`}
-                </h3>
-                <p className="text-xs text-stone-500">Edit taxonomy title, descriptions, type and cover image</p>
-              </div>
-              <button
-                onClick={() => setEditingCategory(null)}
-                className="p-2 text-stone-400 hover:text-stone-700 rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveCategory} className="p-6 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-stone-700 mb-1">Category Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={editingCategory.name}
-                    onChange={(e) => {
-                      const name = e.target.value;
-                      const slug = isNewCategory
-                        ? name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
-                        : editingCategory.slug;
-                      setEditingCategory({
-                        ...editingCategory,
-                        name,
-                        title: editingCategory.title || name,
-                        slug: slug || editingCategory.slug,
-                      });
-                    }}
-                    placeholder="e.g. Personalized Frames"
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-stone-700 mb-1">Slug (URL Path) *</label>
-                  <input
-                    type="text"
-                    required
-                    value={editingCategory.slug}
-                    onChange={(e) =>
-                      setEditingCategory({
-                        ...editingCategory,
-                        slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""),
-                      })
-                    }
-                    placeholder="e.g. frames"
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-stone-700 mb-1">Page Title *</label>
+                <label className="block text-xs font-semibold text-stone-700 mb-1">Category Name *</label>
                 <input
                   type="text"
                   required
-                  value={editingCategory.title}
-                  onChange={(e) => setEditingCategory({ ...editingCategory, title: e.target.value })}
-                  placeholder="e.g. Personalized Photo Frames & Keepsakes"
+                  value={editingCategory.name}
+                  onChange={(e) => {
+                    const name = e.target.value;
+                    const autoSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                    setEditingCategory({
+                      ...editingCategory,
+                      name,
+                      title: name,
+                      slug: isNewCategory ? autoSlug : (editingCategory.slug || autoSlug),
+                    });
+                  }}
+                  placeholder="e.g. Personalized Frames"
                   className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
                 />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-stone-700 mb-1">Description</label>
-                <textarea
-                  rows={2}
-                  value={editingCategory.description || ""}
-                  onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
-                  placeholder="Short tagline or descriptive overview for SEO & category header"
-                  className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-stone-700 mb-1">Category Type *</label>
-                  <select
-                    value={editingCategory.type || "category"}
-                    onChange={(e) =>
-                      setEditingCategory({
-                        ...editingCategory,
-                        type: e.target.value as "category" | "occasion" | "recipient",
-                      })
-                    }
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                  >
-                    <option value="category">Main Category</option>
-                    <option value="occasion">Occasion</option>
-                    <option value="recipient">Recipient</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-stone-700 mb-1">Product Count</label>
-                  <input
-                    type="number"
-                    min="0"
-                    value={editingCategory.productCount || 0}
-                    onChange={(e) =>
-                      setEditingCategory({
-                        ...editingCategory,
-                        productCount: parseInt(e.target.value) || 0,
-                      })
-                    }
-                    className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                  />
-                </div>
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-semibold text-stone-700">Cover / Badge Image *</label>
+                  <label className="block text-xs font-semibold text-stone-700">
+                    Image * <span className="text-stone-400 font-normal text-[11px]">(1:1 ratio)</span>
+                  </label>
                   <button
                     type="button"
                     onClick={() => categoryFileInputRef.current?.click()}
                     disabled={uploading}
-                    className="text-xs font-semibold text-[#EC0B12] hover:underline flex items-center gap-1"
+                    className="text-xs font-semibold text-[#EC0B12] hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <UploadCloud className="w-3.5 h-3.5" />
-                    {uploading ? "Uploading..." : "Upload Cover Image"}
+                    {uploading ? "Uploading..." : "Upload Image"}
                   </button>
                 </div>
                 {editingCategory.image ? (
-                  <div className="flex items-center gap-4 mt-2 p-3 bg-stone-50 rounded-xl border border-stone-200">
-                    <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-white border border-stone-200 flex-shrink-0">
-                      <Image
-                        src={editingCategory.image}
-                        alt="Category Preview"
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <input
-                        type="text"
-                        value={editingCategory.image}
-                        onChange={(e) =>
-                          setEditingCategory({ ...editingCategory, image: e.target.value })
-                        }
-                        placeholder="Image URL or upload"
-                        className="w-full px-2.5 py-1.5 text-xs border border-stone-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EC0B12]"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => categoryFileInputRef.current?.click()}
-                        className="text-[11px] text-[#EC0B12] hover:underline mt-1 inline-block"
-                      >
-                        Change Image File
-                      </button>
-                    </div>
+                  <div className="relative w-28 h-28 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 mt-2">
+                    <Image
+                      src={editingCategory.image}
+                      alt="Category Preview"
+                      fill
+                      sizes="112px"
+                      className="object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setEditingCategory({ ...editingCategory, image: "" })}
+                      className="absolute top-1.5 right-1.5 p-1 bg-rose-600 hover:bg-rose-700 text-white rounded-full shadow-md z-10 transition-transform active:scale-95 cursor-pointer"
+                      title="Remove image"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 ) : (
                   <div
@@ -1943,122 +1881,32 @@ export default function AdminDashboardPage() {
                     className="border-2 border-dashed border-stone-200 rounded-xl p-6 text-center hover:border-[#EC0B12] cursor-pointer transition-colors"
                   >
                     <UploadCloud className="w-7 h-7 text-stone-400 mx-auto mb-1.5" />
-                    <p className="text-xs font-semibold text-stone-700">Click to upload category image</p>
-                    <p className="text-[11px] text-stone-400 mt-0.5">PNG, JPG, or WEBP (Square or Landscape)</p>
+                    <p className="text-xs font-semibold text-stone-700">Click to upload image</p>
+                    <p className="text-[11px] text-stone-400 mt-0.5">1:1 ratio (PNG, JPG, or WEBP up to 5MB)</p>
                   </div>
                 )}
               </div>
+            </div>
 
-              <div className="border-t border-stone-200 pt-4 flex items-center justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setEditingCategory(null)}
-                  className="px-4 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50"
-                >
-                  {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
-                  {saving ? "Saving..." : "Save Category"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* DELETE / UNPUBLISH CONFIRMATION DIALOG */}
-      {deleteConfirm && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl animate-in zoom-in-95">
-            <h3 className="text-base font-bold text-stone-900 mb-2">
-              Remove {deleteConfirm.type === "product" ? "Product" : deleteConfirm.type === "category" ? "Category" : "Banner"}?
-            </h3>
-            <p className="text-xs text-stone-600 mb-4">
-              Are you sure you want to remove{" "}
-              <strong className="text-stone-900">&quot;{deleteConfirm.name}&quot;</strong>?
-              {deleteConfirm.type === "product"
-                ? " You can choose to unpublish it to keep it for later, or delete it permanently."
-                : deleteConfirm.type === "category"
-                ? " This will remove the category from the live storefront and navigation."
-                : " This will remove the banner from the storefront."}
-            </p>
-
-            <div className="flex flex-col gap-2">
-              {deleteConfirm.type === "product" && (
-                <button
-                  onClick={() => {
-                    deleteConfirm.permanent = false;
-                    handleConfirmDelete();
-                  }}
-                  disabled={saving}
-                  className="w-full py-2.5 px-4 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold rounded-lg transition-colors"
-                >
-                  Unpublish Only (Recommended)
-                </button>
-              )}
+            {/* Sticky Modal Footer Actions */}
+            <div className="px-5 py-3 sm:px-6 sm:py-3.5 border-t border-stone-200 bg-stone-50/90 flex items-center justify-end gap-2.5 shrink-0">
               <button
-                onClick={() => {
-                  deleteConfirm.permanent = true;
-                  handleConfirmDelete();
-                }}
+                type="button"
+                onClick={() => setEditingCategory(null)}
+                className="px-3.5 py-2 text-xs font-semibold text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
                 disabled={saving}
-                className="w-full py-2.5 px-4 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-lg transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 bg-[#EC0B12] hover:bg-[#D0090F] text-white text-xs font-semibold rounded-lg shadow-sm transition-colors disabled:opacity-50 cursor-pointer"
               >
-                Delete Permanently
-              </button>
-              <button
-                onClick={() => setDeleteConfirm(null)}
-                className="w-full py-2 px-4 text-stone-500 hover:text-stone-800 text-xs font-semibold transition-colors mt-1"
-              >
-                Cancel
+                {saving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
+                {saving ? "Saving..." : "Save Category"}
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* RESET CONFIRMATION MODAL */}
-      {resetConfirm && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl animate-in zoom-in-95">
-            <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mb-3">
-              <RotateCcw className="w-5 h-5" />
-            </div>
-            <h3 className="text-base font-bold text-stone-900 mb-2">
-              Reset to Baseline Defaults?
-            </h3>
-            <p className="text-xs text-stone-600 mb-4">
-              This will clear all local browser overrides for Products, Top Scrolling Banners, and Categories, reverting the storefront back to the original baseline seed data.
-            </p>
-
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => {
-                  catalog.resetToDefaults();
-                  loadAllData();
-                  setResetConfirm(false);
-                  setToast({
-                    message: "Catalog reset to default seed data successfully.",
-                    type: "info",
-                  });
-                }}
-                className="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg transition-colors"
-              >
-                Reset Everything
-              </button>
-              <button
-                onClick={() => setResetConfirm(false)}
-                className="w-full py-2 px-4 text-stone-500 hover:text-stone-800 text-xs font-semibold transition-colors mt-1"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+          </form>
         </div>
       )}
     </div>

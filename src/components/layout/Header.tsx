@@ -74,11 +74,11 @@ export function Header({ onOpenSidebar }: HeaderProps = {}) {
           {/* Contact Button on Right */}
           <Link
             href="/contact"
-            className="group inline-flex items-center justify-end h-8.5 sm:h-9.5 md:h-10 pl-3.5 pr-0 md:pl-0 rounded-full bg-white hover:bg-[#FEF2F2] md:bg-transparent md:hover:bg-white text-[#221C1D] hover:text-[#EC0B12] border border-[#D8CAC0] hover:border-[#EC0B12] md:border-transparent md:hover:border-[#D8CAC0] transition-all duration-300 ease-out shadow-2xs hover:shadow-xs active:scale-95 shrink-0 text-xs sm:text-sm font-bold cursor-pointer"
+            className="group inline-flex items-center justify-end h-8.5 sm:h-9.5 md:h-10 pl-3.5 pr-0 rounded-full bg-white hover:bg-[#FEF2F2] text-[#221C1D] hover:text-[#EC0B12] border border-[#D8CAC0] hover:border-[#EC0B12] transition-colors duration-200 shadow-2xs shrink-0 text-xs sm:text-sm font-bold cursor-pointer"
             aria-label="Contact Us"
             title="Contact Us"
           >
-            <span className="whitespace-nowrap overflow-hidden transition-all duration-300 ease-out pr-2.5 md:pr-0 md:pl-0 md:max-w-0 md:opacity-0 md:translate-x-3 md:group-hover:max-w-[100px] md:group-hover:opacity-100 md:group-hover:translate-x-0 md:group-hover:pl-3.5 md:group-hover:pr-2.5">
+            <span className="whitespace-nowrap pr-2.5">
               Contact
             </span>
             <span className="h-full aspect-square rounded-full border-2 border-[#EC0B12] bg-white group-hover:bg-[#FEF2F2] text-[#EC0B12] flex items-center justify-center transition-colors duration-200 shrink-0 shadow-2xs">
