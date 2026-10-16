@@ -2,15 +2,23 @@ import React from "react";
 
 interface CustomerSupportIconProps {
   className?: string;
+  strokeWidth?: number;
 }
 
-export function CustomerSupportIcon({ className = "w-5 h-5" }: CustomerSupportIconProps) {
+export function CustomerSupportIcon({
+  className = "w-5 h-5",
+  strokeWidth = 3.5,
+}: CustomerSupportIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 130 130"
       className={className}
       fill="currentColor"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinejoin="round"
+      strokeLinecap="round"
       aria-hidden="true"
     >
       <path

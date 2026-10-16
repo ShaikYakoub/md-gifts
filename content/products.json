@@ -275,7 +275,8 @@
     "isFeatured": true,
     "isPersonalizedFavourite": true,
     "enabled": true,
-    "displayOrder": 3
+    "displayOrder": 3,
+    "isBestSeller": true
   },
   {
     "id": "p4",
@@ -375,7 +376,8 @@
     ],
     "isTrending": true,
     "enabled": true,
-    "displayOrder": 4
+    "displayOrder": 4,
+    "isBestSeller": true
   },
   {
     "id": "p5",
@@ -610,7 +612,8 @@
     "isTrending": true,
     "isUnder499": true,
     "enabled": true,
-    "displayOrder": 7
+    "displayOrder": 7,
+    "isBestSeller": true
   },
   {
     "id": "p8",
@@ -766,7 +769,8 @@
     ],
     "isTrending": true,
     "enabled": true,
-    "displayOrder": 9
+    "displayOrder": 9,
+    "isBestSeller": true
   },
   {
     "id": "p10",
@@ -2189,7 +2193,8 @@
     ],
     "isUnder499": true,
     "enabled": true,
-    "displayOrder": 29
+    "displayOrder": 29,
+    "isBestSeller": true
   },
   {
     "id": "p30",

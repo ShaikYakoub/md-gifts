@@ -9,6 +9,7 @@ interface ProductImageProps {
   className?: string;
   aspectRatio?: "square" | "portrait" | "wide";
   priority?: boolean;
+  noPadding?: boolean;
 }
 
 export function ProductImage({
@@ -19,6 +20,7 @@ export function ProductImage({
   className = "",
   aspectRatio = "portrait",
   priority = false,
+  noPadding = false,
 }: ProductImageProps) {
   const [hasImageError, setHasImageError] = useState(false);
 
@@ -66,19 +68,26 @@ export function ProductImage({
   const isAcrylic = slug.includes("acrylic") || name.toLowerCase().includes("acrylic");
   const isWooden = slug.includes("wooden") || slug.includes("wood") || categorySlug === "home-decor";
 
+  const svgClass = noPadding
+    ? "w-full h-full object-cover scale-[1.65] drop-shadow-sm transition-transform"
+    : "w-[85%] h-[85%] object-contain drop-shadow-xl";
+
   return (
     <div
-      className={`relative w-full overflow-hidden bg-gradient-to-b from-[#FBF4EE] to-[#F5E8E0] flex items-center justify-center select-none ${ratioClasses} ${className}`}
+      className={`relative w-full overflow-hidden ${
+        noPadding ? "bg-[#FAF5F0]" : "bg-gradient-to-b from-[#FBF4EE] to-[#F5E8E0]"
+      } flex items-center justify-center select-none ${ratioClasses} ${className}`}
     >
-      {/* Background warm ambiance */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.8)_0%,rgba(247,235,225,0.4)_70%,rgba(238,220,208,0.7)_100%)] pointer-events-none" />
+      {!noPadding && (
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.8)_0%,rgba(247,235,225,0.4)_70%,rgba(238,220,208,0.7)_100%)] pointer-events-none" />
+      )}
 
       {/* Product-specific realistic SVG illustration */}
       {isLed ? (
         // Glowing LED Frame with Heart
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -112,7 +121,7 @@ export function ProductImage({
         // 3D Silhouette Night Lamp
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -146,7 +155,7 @@ export function ProductImage({
         // Vintage Carved Wooden Music Box
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -169,7 +178,7 @@ export function ProductImage({
         // 9-Grid Photo Collage Frame
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -204,7 +213,7 @@ export function ProductImage({
         // Personalized Ceramic Mug
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -246,7 +255,7 @@ export function ProductImage({
         // Laser Engraved Keychain
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -272,7 +281,7 @@ export function ProductImage({
         // Luxury Gift Box with Ribbon
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -298,7 +307,7 @@ export function ProductImage({
         // Heart Shaped Photo Frame
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -323,7 +332,7 @@ export function ProductImage({
         // Floating Clear Acrylic Block
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -344,7 +353,7 @@ export function ProductImage({
         // Solid Teak / Pine Wooden Frame
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -365,7 +374,7 @@ export function ProductImage({
         // Standard Signature Couple Photo Frame (matching screenshot)
         <svg
           viewBox="0 0 300 360"
-          className="w-[85%] h-[85%] object-contain drop-shadow-xl"
+          className={svgClass}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >

@@ -20,7 +20,6 @@ interface InfoPageLayoutProps {
 export function InfoPageLayout({
   title,
   subtitle,
-  breadcrumbLabel: _breadcrumbLabel,
   navItems,
   children,
 }: InfoPageLayoutProps) {

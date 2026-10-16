@@ -3,12 +3,14 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { HeroSection } from "@/components/home/HeroSection";
 import { ShopByOccasion } from "@/components/home/ShopByOccasion";
 import { HomeProductGrids } from "@/components/home/HomeProductGrids";
-import { getTrendingProducts } from "@/data/products";
+import { getTrendingProducts, getBestSellerProducts, getUnder499Products } from "@/data/products";
 
 import { SITE_CONFIG } from "@/lib/siteConfig";
 
 export default function HomePage() {
   const trendingProducts = getTrendingProducts();
+  const bestSellerProducts = getBestSellerProducts();
+  const under499Products = getUnder499Products();
 
   // Structured Data (JSON-LD) for Organization & WebSite
   const jsonLd = {
@@ -49,7 +51,7 @@ export default function HomePage() {
         },
         potentialAction: {
           "@type": "SearchAction",
-          target: `${SITE_CONFIG.url}/search?q={search_term_string}`,
+          target: `${SITE_CONFIG.url}/shop?q={search_term_string}`,
           "query-input": "required name=search_term_string",
         },
       },
@@ -70,8 +72,12 @@ export default function HomePage() {
       {/* 2. Shop by Occasion */}
       <ShopByOccasion />
 
-      {/* 3-5. Reactive Product Card Grids (Trending, Collections) */}
-      <HomeProductGrids initialTrending={trendingProducts} />
+      {/* 3-7. Reactive Product Card Grids (Trending, Best Sellers, Under 499, Collections) */}
+      <HomeProductGrids
+        initialTrending={trendingProducts}
+        initialBestSellers={bestSellerProducts}
+        initialUnder499={under499Products}
+      />
     </SiteLayout>
   );
 }

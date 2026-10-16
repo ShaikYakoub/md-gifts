@@ -11,6 +11,7 @@ interface AutoExpandingTextareaProps {
   minHeight?: number;
   maxHeight?: number;
   required?: boolean;
+  autoFocus?: boolean;
   className?: string;
   "aria-label"?: string;
 }
@@ -24,6 +25,7 @@ export function AutoExpandingTextarea({
   minHeight = 60,
   maxHeight = 220,
   required = false,
+  autoFocus = false,
   className = "",
   "aria-label": ariaLabel,
 }: AutoExpandingTextareaProps) {
@@ -55,6 +57,7 @@ export function AutoExpandingTextarea({
       }}
       placeholder={placeholder}
       required={required}
+      autoFocus={autoFocus}
       aria-label={ariaLabel}
       rows={1}
       style={{

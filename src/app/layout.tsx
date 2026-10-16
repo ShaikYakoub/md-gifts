@@ -3,6 +3,8 @@ import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { CatalogProvider } from "@/context/CatalogContext";
+import { TopLoader } from "@/components/ui/TopLoader";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -84,9 +86,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakarta.variable} ${outfit.variable} scroll-smooth`}>
       <body className="font-sans antialiased bg-[#FAF7F4] text-[#221C1D] min-h-screen flex flex-col selection:bg-[#FEECEE] selection:text-[#EC0B12]">
+        <TopLoader />
         <CatalogProvider>
           <CartProvider>
             {children}
+            <MobileBottomNav />
           </CartProvider>
         </CatalogProvider>
       </body>

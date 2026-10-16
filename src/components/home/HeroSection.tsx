@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLiveCatalog } from "@/context/CatalogContext";
-import { SearchBar } from "@/components/ui/SearchBar";
 import rawBanners from "../../../content/banners.json";
 import { Banner } from "@/types/catalog";
 
@@ -96,11 +95,6 @@ export function HeroSection() {
       aria-label="Promotional banner slider"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Search Bar on top of banner section */}
-        <div className="mb-3 sm:mb-4">
-          <SearchBar />
-        </div>
-
         {/* Banner Sliding Container - 1.5x height on mobile screens */}
         <div
           className="relative w-full aspect-[1.9/1] sm:aspect-[3.05/1] rounded-xl overflow-hidden border border-[#EDE2DA] shadow-md bg-[#FAF4F0]"

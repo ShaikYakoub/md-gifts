@@ -300,7 +300,7 @@ export function FilterSidebar({
                 onClick={onCloseMobile}
                 className="flex-1 bg-[#EC0B12] hover:bg-[#D0080E] text-white py-3 px-4 rounded-xl font-semibold text-sm transition-transform active:scale-95 shadow-sm text-center cursor-pointer truncate"
               >
-                Apply Filters ({productCount} products)
+                Apply Filters ({productCount})
               </button>
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import {
@@ -71,10 +72,15 @@ const RECIPIENT_ICONS: Record<string, React.ElementType> = {
 export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isOccasionsOpen, setIsOccasionsOpen] = useState(true);
   const [isRecipientsOpen, setIsRecipientsOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Auto-expand accordion if current page is inside it
   useEffect(() => {
@@ -138,16 +144,16 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
       onClose();
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex md:hidden"
+      className="fixed inset-0 z-[100] flex md:hidden"
       role="dialog"
       aria-modal="true"
       aria-label="Mobile Navigation Menu"
@@ -458,6 +464,7 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
           </a>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

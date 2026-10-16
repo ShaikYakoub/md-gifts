@@ -37,6 +37,7 @@ interface CatalogContextType {
   getProductsByOccasion: (occasionSlug: string) => Product[];
   getProductsByRecipient: (recipientSlug: string) => Product[];
   getTrendingProducts: () => Product[];
+  getBestSellerProducts: () => Product[];
   getPersonalizedFavourites: () => Product[];
   getUnder499Products: () => Product[];
   getTaxonomyBySlug: (slug: string) => CategoryInfo | undefined;
@@ -174,13 +175,22 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
     [products]
   );
 
+  const getBestSellerProducts = useCallback(() => {
+    const explicit = products.filter((p) => p.isBestSeller);
+    if (explicit.length >= 4) return explicit.slice(0, 8);
+    const others = products
+      .filter((p) => !p.isBestSeller)
+      .sort((a, b) => (b.reviewsCount || 0) - (a.reviewsCount || 0));
+    return [...explicit, ...others].slice(0, 8);
+  }, [products]);
+
   const getPersonalizedFavourites = useCallback(
-    () => products.filter((p) => p.isPersonalizedFavourite).slice(0, 6),
+    () => products.filter((p) => p.isPersonalizedFavourite).slice(0, 8),
     [products]
   );
 
   const getUnder499Products = useCallback(
-    () => products.filter((p) => p.isUnder499).slice(0, 6),
+    () => products.filter((p) => p.isUnder499).slice(0, 8),
     [products]
   );
 
@@ -249,6 +259,7 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
       getProductsByOccasion,
       getProductsByRecipient,
       getTrendingProducts,
+      getBestSellerProducts,
       getPersonalizedFavourites,
       getUnder499Products,
       getTaxonomyBySlug,
@@ -275,6 +286,7 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
       getProductsByOccasion,
       getProductsByRecipient,
       getTrendingProducts,
+      getBestSellerProducts,
       getPersonalizedFavourites,
       getUnder499Products,
       getTaxonomyBySlug,

@@ -80,10 +80,17 @@ export function getTrendingProducts(): Product[] {
   return PRODUCTS.filter((p) => p.isTrending).slice(0, 8);
 }
 
+export function getBestSellerProducts(): Product[] {
+  const explicit = PRODUCTS.filter((p) => p.isBestSeller);
+  if (explicit.length >= 4) return explicit.slice(0, 8);
+  const others = PRODUCTS.filter((p) => !p.isBestSeller).sort((a, b) => (b.reviewsCount || 0) - (a.reviewsCount || 0));
+  return [...explicit, ...others].slice(0, 8);
+}
+
 export function getPersonalizedFavourites(): Product[] {
-  return PRODUCTS.filter((p) => p.isPersonalizedFavourite).slice(0, 6);
+  return PRODUCTS.filter((p) => p.isPersonalizedFavourite).slice(0, 8);
 }
 
 export function getUnder499Products(): Product[] {
-  return PRODUCTS.filter((p) => p.isUnder499).slice(0, 6);
+  return PRODUCTS.filter((p) => p.isUnder499).slice(0, 8);
 }

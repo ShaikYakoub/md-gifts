@@ -66,7 +66,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group relative bg-white rounded-2xl sm:rounded-3xl border border-[#EDE2DA] p-1 pb-2 sm:p-1.5 sm:pb-2.5 shadow-2xs hover:shadow-lg hover:border-[#D9C4B7] transition-all duration-300 cursor-pointer flex flex-col select-none"
+      className="group relative bg-white rounded-2xl sm:rounded-3xl border border-[#EDE2DA] p-1 pb-2 sm:p-1.5 sm:pb-2.5 shadow-2xs hover:shadow-md hover:-translate-y-0.5 hover:border-[#D9C4B7] active:scale-[0.97] active:translate-y-0 transition-all duration-200 ease-out cursor-pointer flex flex-col select-none"
       aria-label={`View and customize ${product.name}`}
     >
       <div>
@@ -126,12 +126,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               e.preventDefault();
               e.stopPropagation();
             }}
-            className="w-[76px] sm:w-[88px] inline-flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-full p-0.5 shadow-2xs shrink-0 select-none"
+            className="w-[76px] sm:w-[88px] inline-flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-full p-0.5 shrink-0 select-none"
           >
             <button
               type="button"
               onClick={handleDecrease}
-              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#EC0B12] hover:bg-[#EC0B12] hover:text-white transition-all cursor-pointer active:scale-90 shrink-0"
+              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#EC0B12] hover:bg-[#EC0B12] hover:text-white transition-colors cursor-pointer shrink-0"
               aria-label="Decrease quantity"
             >
               <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -143,7 +143,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               type="button"
               onClick={handleIncrease}
               disabled={totalInCart >= 99}
-              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#EC0B12] hover:bg-[#EC0B12] hover:text-white transition-all cursor-pointer active:scale-90 shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[#EC0B12] hover:bg-[#EC0B12] hover:text-white transition-colors cursor-pointer shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Increase quantity"
             >
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
