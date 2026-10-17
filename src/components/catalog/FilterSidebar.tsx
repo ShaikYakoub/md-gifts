@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, SlidersHorizontal, Check } from "lucide-react";
+import { X, SlidersHorizontal, Check, RotateCcw } from "lucide-react";
 import { FilterState } from "@/types/catalog";
 import { FRAME_COLORS } from "@/data/products";
 
@@ -120,9 +120,10 @@ export function FilterSidebar({
         <button
           type="button"
           onClick={handleReset}
-          className="text-xs font-semibold text-[#EC0B12] hover:underline"
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#EC0B12]/40 hover:text-[#EC0B12] transition-colors shadow-2xs group cursor-pointer"
         >
-          Reset
+          <span>Reset</span>
+          <RotateCcw className="w-3 h-3 text-[#7A6D70] group-hover:text-[#EC0B12] transition-transform group-hover:-rotate-45" />
         </button>
       </div>
 

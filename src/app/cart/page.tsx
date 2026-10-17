@@ -178,9 +178,10 @@ export default function CartPage() {
           <button
             type="button"
             onClick={clearCart}
-            className="text-xs font-semibold text-[#EC0B12] hover:underline cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#EC0B12]/40 hover:text-[#EC0B12] transition-colors shadow-2xs group cursor-pointer"
           >
-            Clear Cart
+            <span>Clear cart</span>
+            <Trash2 className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#EC0B12] transition-colors" />
           </button>
         </div>
 
@@ -318,11 +319,11 @@ export default function CartPage() {
               >
                 <Store
                   className={`w-4 h-4 transition-colors duration-200 ${
-                    fulfillmentType === "pickup" ? "text-[#0194A3]" : "text-[#7A6D70]"
+                    fulfillmentType === "pickup" ? "text-[#EC0B12]" : "text-[#7A6D70]"
                   }`}
                 />
                 <span>Pickup</span>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#0194A3] bg-[#E6F7F9] px-2 py-0.5 rounded-full shrink-0">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#16A34A] bg-[#F0FDF4] px-2 py-0.5 rounded-full shrink-0">
                   Free
                 </span>
               </button>

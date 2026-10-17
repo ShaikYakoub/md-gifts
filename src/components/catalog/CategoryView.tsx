@@ -146,15 +146,15 @@ function CategoryViewInner({
   }, [activeSearchTerm, title]);
 
   return (
-    <div className="pt-6 pb-28 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="pt-6 pb-28 sm:py-10 max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
       {/* 1. Main Title & Info Header with bottom divider line */}
-      <div className="pb-4 border-b border-[#EFE4DC] mb-4 sm:mb-6">
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
+      <div className="pb-4 border-b border-[#EFE4DC] mb-4 sm:mb-6 md:mb-7">
+        <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#221C1D] tracking-tight">
           {displayTitle}
         </h1>
 
         {description && (
-          <p className="mt-1 text-xs sm:text-sm text-[#7A6D70] max-w-2xl leading-relaxed">
+          <p className="mt-1 text-xs sm:text-sm md:text-base text-[#7A6D70] max-w-2xl leading-relaxed">
             {description}
           </p>
         )}
@@ -234,7 +234,7 @@ function CategoryViewInner({
 
           {/* Products Grid */}
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-5 md:gap-6 lg:gap-7">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

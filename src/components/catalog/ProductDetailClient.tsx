@@ -11,6 +11,7 @@ import {
   ShoppingBag,
   ShoppingCart,
   ArrowLeft,
+  ArrowRight,
   X,
   ChevronDown,
 } from "lucide-react";
@@ -139,7 +140,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
     (product.description ? product.description.split(/(?<=[.!?])\s+/)[0] : "");
 
   return (
-    <div className="relative pt-0 sm:pt-4 pb-20 sm:py-10 max-w-7xl mx-auto">
+    <div className="relative pt-0 sm:pt-4 pb-28 sm:pb-36 max-w-7xl mx-auto">
       {/* Floating Back Button (Follows everywhere as user scrolls on mobile) */}
       <button
         type="button"
@@ -472,17 +473,17 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               <button
                 type="button"
                 onClick={handleInitialAddToCart}
-                className="w-full btn-lit-red text-white py-3.5 px-6 rounded-xl font-bold text-base flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full btn-lit-red text-white py-3.5 px-6 rounded-xl font-bold text-base flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <ShoppingBag className="w-5 h-5" />
                 <span>Add to Cart</span>
               </button>
             ) : (
-              <div className="w-full flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-xl px-3 py-1.5">
+              <div className="w-full flex items-center justify-between bg-white border border-[#D5C7BC] rounded-xl px-3 py-1.5 shadow-2xs">
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, -1)}
-                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#4A3E40] hover:text-[#EC0B12] hover:bg-black/5 transition-colors cursor-pointer"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#16A34A] hover:bg-[#F0FDF4] active:bg-[#DCFCE7] transition-colors cursor-pointer"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="w-6 h-6 stroke-[2.5]" />
@@ -495,7 +496,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, 1)}
-                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#4A3E40] hover:text-[#EC0B12] hover:bg-black/5 transition-colors cursor-pointer"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center text-[#16A34A] hover:bg-[#F0FDF4] active:bg-[#DCFCE7] transition-colors cursor-pointer"
                   aria-label="Increase quantity"
                 >
                   <Plus className="w-6 h-6 stroke-[2.5]" />
@@ -521,7 +522,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
           >
             <ShoppingCart className="w-5 h-5 text-[#221C1D] group-hover:text-[#EC0B12] transition-colors" />
             {totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#EC0B12] text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#EC0B12] text-white text-[10px] font-bold w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-xs">
                 {totalQuantity}
               </span>
             )}
@@ -533,17 +534,17 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
               <button
                 type="button"
                 onClick={handleInitialAddToCart}
-                className="w-full btn-lit-red text-white py-2.5 sm:py-3 px-4 rounded-full font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap"
+                className="w-full btn-lit-red text-white py-2.5 sm:py-3 px-4 rounded-full font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap shadow-2xs"
               >
                 <Plus className="w-4 h-4 stroke-[2.4]" />
                 <span>Add to Cart</span>
               </button>
             ) : (
-              <div className="w-full flex items-center justify-between bg-[#FEF2F2] border border-[#F5C2BC] rounded-full px-2 py-1">
+              <div className="w-full flex items-center justify-between bg-white border border-[#D5C7BC] rounded-full px-2 py-1 shadow-2xs">
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, -1)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#4A3E40] hover:text-[#EC0B12] hover:bg-black/5 transition-colors cursor-pointer"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#16A34A] hover:bg-[#F0FDF4] active:bg-[#DCFCE7] transition-colors cursor-pointer"
                   aria-label="Decrease quantity"
                 >
                   <Minus className="w-4 h-4 stroke-[2.5]" />
@@ -556,7 +557,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                 <button
                   type="button"
                   onClick={() => cartItem && updateQuantity(cartItem.id, 1)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#4A3E40] hover:text-[#EC0B12] hover:bg-black/5 transition-all cursor-pointer active:scale-90"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#16A34A] hover:bg-[#F0FDF4] active:bg-[#DCFCE7] transition-colors cursor-pointer active:scale-90"
                   aria-label="Increase quantity"
                 >
                   <Plus className="w-4 h-4 stroke-[2.5]" />
@@ -576,9 +577,10 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
             </h2>
             <Link
               href={`/categories/${product.categorySlug}`}
-              className="text-xs sm:text-sm font-semibold text-[#EC0B12] hover:underline"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#EC0B12]/40 hover:text-[#EC0B12] transition-colors shadow-2xs group"
             >
-              View More →
+              <span>View more</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#EC0B12] transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 

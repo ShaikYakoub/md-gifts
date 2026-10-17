@@ -10,7 +10,7 @@ interface TechmecsCreditProps {
 export function TechmecsCredit({ className = "" }: TechmecsCreditProps) {
   return (
     <div
-      className={`inline-flex flex-col items-center justify-center gap-1 text-xs sm:text-sm text-[#7A6D70] font-sans ${className}`}
+      className={`inline-flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-[#7A6D70] font-sans ${className}`}
     >
       <span className="font-normal text-[#6C5E61]">Website by</span>
       <a

@@ -48,7 +48,7 @@ function SearchBarInner({
       onSubmit={handleSearchSubmit}
       className={`w-full relative flex items-center ${className}`}
     >
-      <Search className="w-4 h-4 text-[#8C7D80] absolute left-4 pointer-events-none" />
+      <Search className="w-4 h-4 md:w-4.5 md:h-4.5 text-[#8C7D80] absolute left-4 pointer-events-none" />
       <input
         id={id}
         name="q"
@@ -56,7 +56,7 @@ function SearchBarInner({
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-[#FAF5F1] hover:bg-[#F5ECE5] focus:bg-white text-sm text-[#221C1D] placeholder-[#8C7D80] pl-11 pr-10 py-2.5 sm:py-3 rounded-full border border-[#EDE0D6] focus:border-[#EC0B12] focus:ring-2 focus:ring-[#EC0B12]/15 outline-none transition-all shadow-2xs hover:shadow-xs [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden [&::-ms-clear]:hidden"
+        className="w-full bg-[#FAF5F1] hover:bg-[#F5ECE5] focus:bg-white text-sm md:text-[15px] text-[#221C1D] placeholder-[#8C7D80] pl-11 pr-10 py-2.5 sm:py-3 md:py-3.5 rounded-full border border-[#EDE0D6] focus:border-[#EC0B12] focus:ring-2 focus:ring-[#EC0B12]/15 outline-none transition-all shadow-2xs hover:shadow-xs [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden [&::-ms-clear]:hidden"
       />
       {searchQuery && (
         <button

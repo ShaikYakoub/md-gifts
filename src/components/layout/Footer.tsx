@@ -6,10 +6,10 @@ import { SITE_CONFIG } from "@/lib/siteConfig";
 export function Footer() {
   return (
     <footer className="bg-[#FAF4F0] border-t border-[#EDE1D7] text-[#4A3E40] pt-8 pb-28 md:pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center">
+      <div className="max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 space-y-6 text-center">
 
         {/* Quick & Policy Links */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs text-[#6C5E61] pt-1">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5 text-xs sm:text-sm text-[#6C5E61] pt-1">
           <Link href="/shop" className="hover:text-[#EC0B12] transition-colors">
             Shop All
           </Link>

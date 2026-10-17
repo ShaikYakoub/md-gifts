@@ -58,23 +58,23 @@ export function ShopByRecipient() {
   const remainingRecipients = displayRecipients.slice(3, 8);
 
   return (
-    <section className="py-5 sm:py-8 bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
+    <section className="py-5 sm:py-8 lg:py-10 bg-transparent">
+      <div className="max-w-7xl xl:max-w-[1440px] 2xl:max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
+        <div className="flex items-center justify-between mb-4 sm:mb-6 md:mb-7">
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-bold text-[#221C1D] tracking-tight">
             Shop by Recipient
           </h2>
           <Link
             href="/categories"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#EC0B12]/40 hover:text-[#EC0B12] transition-colors shadow-2xs group"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold border border-[#E8DFD8] bg-white text-[#221C1D] hover:bg-[#FAF5F1] hover:border-[#EC0B12]/40 hover:text-[#EC0B12] transition-colors shadow-2xs group"
           >
             <span>View all</span>
-            <ArrowRight className="w-3.5 h-3.5 text-[#7A6D70] group-hover:text-[#EC0B12] transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#7A6D70] group-hover:text-[#EC0B12] transition-transform group-hover:translate-x-0.5" />
           </Link>
         </div>
 
         {/* Recipient Cards - 4 columns on mobile (3 normal + 1 View All), 8 on desktop */}
-        <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-8 gap-2 sm:gap-3 lg:gap-3.5">
+        <div className="grid grid-cols-4 sm:grid-cols-8 lg:grid-cols-8 gap-2.5 sm:gap-4 md:gap-4.5 lg:gap-5 xl:gap-6">
           {/* First 3 Recipients (Visible on all screens) */}
           {firstThree.map((rec) => (
             <Link
@@ -82,7 +82,7 @@ export function ShopByRecipient() {
               href={`/categories/${rec.slug}`}
               className="flex flex-col items-center group w-full"
             >
-              <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-[#FEF2F2] border border-[#EDE0D6] group-hover:border-[#E8C2B3] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5">
+              <div className="w-full aspect-square rounded-xl sm:rounded-2xl bg-[#FEF2F2] border border-[#EDE0D6] group-hover:border-[#E8C2B3] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md">
                 <Image
                   src={rec.image}
                   alt={rec.name}
@@ -91,7 +91,7 @@ export function ShopByRecipient() {
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
-              <span className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#382E30] group-hover:text-[#EC0B12] transition-colors text-center truncate w-full px-0.5" title={rec.name}>
+              <span className="mt-1.5 sm:mt-2 md:mt-2.5 text-xs sm:text-sm md:text-sm lg:text-[15px] font-semibold text-[#382E30] group-hover:text-[#EC0B12] transition-colors text-center truncate w-full px-0.5" title={rec.name}>
                 {rec.name}
               </span>
             </Link>
@@ -103,12 +103,12 @@ export function ShopByRecipient() {
             className="flex flex-col items-center group w-full sm:hidden"
             aria-label="View all recipients"
           >
-            <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-gradient-to-br from-[#FEF2F2] to-[#E6F7F9] border border-[#EDE0D6] group-hover:border-[#EC0B12] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5 flex items-center justify-center">
-              <div className="w-8 h-8 rounded-full bg-white shadow-2xs border border-[#EDE0D6] flex items-center justify-center text-[#EC0B12] group-hover:bg-[#EC0B12] group-hover:text-white group-hover:border-[#EC0B12] transition-all duration-300 group-hover:scale-105">
+            <div className="w-full aspect-square rounded-xl bg-gradient-to-br from-[#FEF2F2] to-[#E6F7F9] border border-[#EDE0D6] group-hover:border-[#EC0B12] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-white shadow-2xs border border-[#EDE0D6] flex items-center justify-center text-[#EC0B12] group-hover:bg-[#EC0B12] group-hover:text-white transition-all duration-300">
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
               </div>
             </div>
-            <span className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#EC0B12] group-hover:text-[#D0080E] transition-colors text-center line-clamp-1 w-full px-0.5">
+            <span className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-semibold text-[#EC0B12] group-hover:text-[#D0080E] transition-colors text-center line-clamp-1 w-full px-0.5">
               View all
             </span>
           </Link>
@@ -120,7 +120,7 @@ export function ShopByRecipient() {
               href={`/categories/${rec.slug}`}
               className="hidden sm:flex flex-col items-center group w-full"
             >
-              <div className="w-full aspect-square rounded-lg sm:rounded-xl bg-[#FEF2F2] border border-[#EDE0D6] group-hover:border-[#E8C2B3] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:-translate-y-0.5">
+              <div className="w-full aspect-square rounded-xl sm:rounded-2xl bg-[#FEF2F2] border border-[#EDE0D6] group-hover:border-[#E8C2B3] overflow-hidden relative shadow-sm transition-all duration-300 group-hover:shadow-md">
                 <Image
                   src={rec.image}
                   alt={rec.name}
@@ -129,7 +129,7 @@ export function ShopByRecipient() {
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
-              <span className="mt-1.5 sm:mt-2 text-xs sm:text-sm font-medium text-[#382E30] group-hover:text-[#EC0B12] transition-colors text-center truncate w-full px-0.5" title={rec.name}>
+              <span className="mt-1.5 sm:mt-2 md:mt-2.5 text-xs sm:text-sm md:text-sm lg:text-[15px] font-semibold text-[#382E30] group-hover:text-[#EC0B12] transition-colors text-center truncate w-full px-0.5" title={rec.name}>
                 {rec.name}
               </span>
             </Link>

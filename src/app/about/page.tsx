@@ -1,12 +1,14 @@
 import React from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Heart, Gem, Gift, MapPin } from "lucide-react";
-import { InfoPageLayout } from "@/components/informational/InfoPageLayout";
+import Link from "next/link";
+import { Heart, Gem, Gift } from "lucide-react";
+import { SiteLayout } from "@/components/layout/SiteLayout";
+import { CustomerSupportIcon } from "@/components/ui/CustomerSupportIcon";
 import { SITE_CONFIG } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
-  title: "About Us — MD Gifts Customized Gift Centre",
+  title: `About Us — ${SITE_CONFIG.fullName}`,
   description:
     "Learn about MD Gifts: handcrafted personalized photo frames, custom mugs, crystal keepsakes, and curated gift boxes crafted with love in Kadapa, Andhra Pradesh.",
   alternates: {
@@ -16,96 +18,90 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <InfoPageLayout
-      title="About MD Gifts"
-      subtitle="Thoughtful customized gifts for every milestone. Handcrafted with love in Kadapa, made to last forever."
-      breadcrumbLabel="About Us"
-    >
-      <div className="space-y-8">
-        {/* Narrative & Visual */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-7 space-y-4 text-sm sm:text-base text-[#5C4F51] leading-relaxed">
-            <p>
-              At <strong className="text-[#221C1D]">{SITE_CONFIG.fullName}</strong>, we believe every gift tells a heartfelt story. Based in the heart of Kadapa on Raja Reddy Street, our creative workshop is dedicated to turning life&apos;s most cherished moments into enduring, museum-grade keepsakes.
-            </p>
-            <p>
-              From anniversary milestones and wedding portraits to newborn memories, customized mugs, and festive surprises, we craft every personalized piece with precision and love. We don&apos;t just print photos — we curate emotional treasures that bring a warm smile every single day.
-            </p>
-            <div className="pt-1 flex items-center gap-2 text-xs font-medium text-[#0194A3]">
-              <MapPin className="w-4 h-4 shrink-0 text-[#EC0B12]" />
-              <span>Workshop: {SITE_CONFIG.address.formatted}</span>
+    <SiteLayout>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="space-y-8 sm:space-y-10">
+          {/* Main Description & Visual with Title inside - matching height */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-10 items-stretch">
+            {/* Left: Title + Minimal Story */}
+            <div className="md:col-span-7 flex flex-col justify-center space-y-4">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#221C1D] tracking-tight">
+                About MD Gifts
+              </h1>
+              <div className="space-y-3 text-sm sm:text-base text-[#5C4F51] leading-relaxed">
+                <p>
+                  Started in Kadapa, we now have 3 locations running across Andhra Pradesh, crafting personalized frames, custom mugs, and thoughtful keepsakes.
+                </p>
+                <p>
+                  Every gift is handcrafted with love to celebrate life&apos;s special moments and last a lifetime.
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="md:col-span-5 aspect-[4/3] sm:aspect-square relative rounded-2xl overflow-hidden border border-[#EDE0D6] shadow-sm">
-            <Image
-              src="/images/newsletter-gift.jpg"
-              alt="MD Gifts handcrafted gift presentation"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 350px"
-            />
-          </div>
-        </div>
 
-        {/* Value Pillars */}
-        <div className="pt-4 border-t border-[#EFE4DC] grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="p-4 bg-[#FAF5F1] rounded-xl border border-[#EDE1D7] flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#FEF2F2] flex items-center justify-center shrink-0">
-              <Heart className="w-5 h-5 text-[#EC0B12]" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-sm text-[#221C1D]">Made with Love</h3>
-              <p className="text-xs text-[#7A6D70] mt-0.5">
-                Thoughtfully crafted personal gifts tailored to your exact memories and words.
-              </p>
+            {/* Right: Image matching height */}
+            <div className="md:col-span-5 relative min-h-[220px] sm:min-h-[240px] rounded-2xl overflow-hidden border border-[#EDE0D6] shadow-2xs">
+              <Image
+                src="/images/newsletter-gift.jpg"
+                alt="MD Gifts handcrafted gift presentation"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 400px"
+                priority
+              />
             </div>
           </div>
 
-          <div className="p-4 bg-[#FAF5F1] rounded-xl border border-[#EDE1D7] flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#E6F7F9] flex items-center justify-center shrink-0">
-              <Gem className="w-5 h-5 text-[#0194A3]" />
+          {/* Value Pillars: Loose (no cards, no hover animations) */}
+          <div className="pt-6 sm:pt-8 border-t border-[#EFE4DC] grid grid-cols-3 gap-3 sm:gap-8 text-center">
+            <div className="flex flex-col items-center justify-center gap-2.5 sm:gap-3 group">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#FEF2F2] flex items-center justify-center text-[#EC0B12]">
+                <Heart className="w-6 h-6 sm:w-8 sm:h-8" />
+              </div>
+              <h3 className="font-serif font-bold text-xs sm:text-base md:text-lg text-[#221C1D] group-hover:text-[#EC0B12] transition-colors">
+                Made with Love
+              </h3>
             </div>
-            <div>
-              <h3 className="font-semibold text-sm text-[#221C1D]">Premium Craftsmanship</h3>
-              <p className="text-xs text-[#7A6D70] mt-0.5">
-                Archival non-fade inks, solid timber framing, and high-clarity crystal acrylics.
-              </p>
+
+            <div className="flex flex-col items-center justify-center gap-2.5 sm:gap-3 group">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#FEF2F2] flex items-center justify-center text-[#EC0B12]">
+                <Gem className="w-6 h-6 sm:w-8 sm:h-8" />
+              </div>
+              <h3 className="font-serif font-bold text-xs sm:text-base md:text-lg text-[#221C1D] group-hover:text-[#EC0B12] transition-colors">
+                Premium Craftsmanship
+              </h3>
+            </div>
+
+            <div className="flex flex-col items-center justify-center gap-2.5 sm:gap-3 group">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#FEF2F2] flex items-center justify-center text-[#EC0B12]">
+                <Gift className="w-6 h-6 sm:w-8 sm:h-8" />
+              </div>
+              <h3 className="font-serif font-bold text-xs sm:text-base md:text-lg text-[#221C1D] group-hover:text-[#EC0B12] transition-colors">
+                For Every Occasion
+              </h3>
             </div>
           </div>
 
-          <div className="p-4 bg-[#FAF5F1] rounded-xl border border-[#EDE1D7] flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#FEF2F2] flex items-center justify-center shrink-0">
-              <Gift className="w-5 h-5 text-[#EC0B12]" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-sm text-[#221C1D]">For Every Occasion</h3>
-              <p className="text-xs text-[#7A6D70] mt-0.5">
-                Birthdays, weddings, couples, housewarmings, anniversaries, and festive celebrations.
-              </p>
-            </div>
+          {/* CTA Section */}
+          <div className="pt-6 sm:pt-8 border-t border-[#EFE4DC] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#221C1D] tracking-tight">
+              Wanna know more?
+            </h2>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center justify-end h-10 pl-4 pr-0 rounded-full bg-white text-[#221C1D] hover:text-[#EC0B12] border border-[#D8CAC0] transition-colors duration-150 shadow-2xs shrink-0 text-sm font-bold cursor-pointer"
+              aria-label="Contact Us"
+              title="Contact Us"
+            >
+              <span className="whitespace-nowrap pr-2.5 transition-colors">
+                Contact
+              </span>
+              <span className="h-full aspect-square rounded-full border-2 border-[#EC0B12] bg-white text-[#EC0B12] flex items-center justify-center transition-colors shrink-0 shadow-2xs">
+                <CustomerSupportIcon className="w-5 h-5 text-[#EC0B12]" />
+              </span>
+            </Link>
           </div>
-        </div>
-
-        {/* Commitment Banner */}
-        <div className="p-6 bg-[#FEF2F2] rounded-2xl border border-[#FCD5D7] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="space-y-1 text-center sm:text-left">
-            <h4 className="font-semibold text-sm sm:text-base text-[#221C1D]">
-              Direct WhatsApp Support & Digital Proofs
-            </h4>
-            <p className="text-xs text-[#7A6D70]">
-              We share design proofs via WhatsApp before printing to ensure your gift looks 100% perfect.
-            </p>
-          </div>
-          <a
-            href={`https://wa.me/${SITE_CONFIG.whatsappNumber}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2.5 bg-[#EC0B12] hover:bg-[#D0080E] text-white text-xs font-semibold rounded-xl shrink-0 transition-colors cursor-pointer"
-          >
-            Chat with MD Gifts Designer
-          </a>
         </div>
       </div>
-    </InfoPageLayout>
+    </SiteLayout>
   );
 }
